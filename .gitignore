@@ -45,3 +45,8 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+# VPP build files
+*.bak*
+*.bak
+*.lck
