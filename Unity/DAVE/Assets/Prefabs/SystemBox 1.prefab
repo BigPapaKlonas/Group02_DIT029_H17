@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 33907780985011248}
   - component: {fileID: 65257707512476282}
   - component: {fileID: 23034493832792184}
+  - component: {fileID: 114154033795682180}
   m_Layer: 0
   m_Name: SystemBox 1
   m_TagString: Untagged
@@ -177,3 +178,16 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4278190080
+--- !u!114 &114154033795682180
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1550830525836188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91134ed94d3f941598fb35a9a5bc2110, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineSegmentPrefab: {fileID: 1393219438810050, guid: 7418bc302e9684e3498a8fb9b168d0bb,
+    type: 2}
