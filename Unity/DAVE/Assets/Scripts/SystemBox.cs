@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class SystemBox : MonoBehaviour {
 
+	public GameObject lTarget;
 	public GameObject lineSegmentPrefab;
-	float cooldown = 0.4f;
+	float cooldown = 0.35f;
 	float cooldownRemaining = 0;
 	GameObject target;
 	// Use this for initialization
 	void Start () {
 
 		Vector3 v = new Vector3(this.transform.position.x, 0, this.transform.position.z);
-		target = (GameObject)Instantiate(lineSegmentPrefab, v, this.transform.rotation);
+		target = (GameObject)Instantiate(lTarget, v, this.transform.rotation);
 		
 	}
 	
