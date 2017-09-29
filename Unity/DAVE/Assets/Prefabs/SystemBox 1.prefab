@@ -21,6 +21,8 @@ GameObject:
   - component: {fileID: 4650253279243368}
   - component: {fileID: 23958116688674502}
   - component: {fileID: 102994678157208200}
+  - component: {fileID: 114294878699828010}
+  - component: {fileID: 114003861065116190}
   m_Layer: 0
   m_Name: SystemName
   m_TagString: Untagged
@@ -178,6 +180,18 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4278190080
+--- !u!114 &114003861065116190
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1180844058875850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a422744aa856514cade92b4c1353452, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camera: {fileID: 0}
 --- !u!114 &114154033795682180
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -192,3 +206,15 @@ MonoBehaviour:
   lTarget: {fileID: 0}
   lineSegmentPrefab: {fileID: 1393219438810050, guid: 7418bc302e9684e3498a8fb9b168d0bb,
     type: 2}
+--- !u!114 &114294878699828010
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1180844058875850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6dcb5f9f8bf782d4bbb9fd801c27012d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  className: 

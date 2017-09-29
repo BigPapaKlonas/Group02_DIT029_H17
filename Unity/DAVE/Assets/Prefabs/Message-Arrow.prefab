@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 224790781178983200}
   - component: {fileID: 23502574615075082}
   m_Layer: 0
-  m_Name: Message Arrow
+  m_Name: Message-Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
