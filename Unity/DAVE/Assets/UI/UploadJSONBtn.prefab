@@ -9,20 +9,20 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1434574865926640}
+  m_RootGameObject: {fileID: 1400285414701248}
   m_IsPrefabParent: 1
---- !u!1 &1434574865926640
+--- !u!1 &1400285414701248
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 224396580336571242}
-  - component: {fileID: 222295001807162066}
-  - component: {fileID: 114244898234716340}
-  - component: {fileID: 114763074065990808}
-  - component: {fileID: 114193910426616818}
+  - component: {fileID: 224539048457409352}
+  - component: {fileID: 222238329858473030}
+  - component: {fileID: 114179704423847666}
+  - component: {fileID: 114565294488098186}
+  - component: {fileID: 114882625173929302}
   m_Layer: 5
   m_Name: UploadJSONBtn
   m_TagString: Untagged
@@ -30,16 +30,16 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1509022521361258
+--- !u!1 &1492859663470522
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 224183822543018344}
-  - component: {fileID: 222814066259996722}
-  - component: {fileID: 114689747594845218}
+  - component: {fileID: 224128426172210122}
+  - component: {fileID: 222861168837403702}
+  - component: {fileID: 114432468708745046}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -47,29 +47,12 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &114193910426616818
+--- !u!114 &114179704423847666
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1434574865926640}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f18e6c962289d364ba717476a7b94a19, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Title: 
-  FileName: 
-  Directory: 
-  Extension: txt
-  Multiselect: 0
-  output: 
---- !u!114 &114244898234716340
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1434574865926640}
+  m_GameObject: {fileID: 1400285414701248}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
@@ -91,12 +74,12 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114689747594845218
+--- !u!114 &114432468708745046
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1509022521361258}
+  m_GameObject: {fileID: 1492859663470522}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
@@ -124,12 +107,12 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Upload Diagram
---- !u!114 &114763074065990808
+--- !u!114 &114565294488098186
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1434574865926640}
+  m_GameObject: {fileID: 1400285414701248}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
@@ -159,35 +142,52 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 114244898234716340}
+  m_TargetGraphic: {fileID: 114179704423847666}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!222 &222295001807162066
+--- !u!114 &114882625173929302
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1400285414701248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f18e6c962289d364ba717476a7b94a19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Title: Select the your diagram file..
+  FileName: 
+  Directory: 
+  Extension: json
+  Multiselect: 0
+  output: '{"a":123,"b":"4 5 6"}'
+--- !u!222 &222238329858473030
 CanvasRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1434574865926640}
---- !u!222 &222814066259996722
+  m_GameObject: {fileID: 1400285414701248}
+--- !u!222 &222861168837403702
 CanvasRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1509022521361258}
---- !u!224 &224183822543018344
+  m_GameObject: {fileID: 1492859663470522}
+--- !u!224 &224128426172210122
 RectTransform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1509022521361258}
+  m_GameObject: {fileID: 1492859663470522}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 224396580336571242}
+  m_Father: {fileID: 224539048457409352}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -195,17 +195,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!224 &224396580336571242
+--- !u!224 &224539048457409352
 RectTransform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1434574865926640}
+  m_GameObject: {fileID: 1400285414701248}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 224183822543018344}
+  - {fileID: 224128426172210122}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
