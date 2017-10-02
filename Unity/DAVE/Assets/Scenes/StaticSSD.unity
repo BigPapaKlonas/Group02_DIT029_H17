@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657934, g: 0.4964136, b: 0.5748189, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.4964127, b: 0.5748172, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -166,6 +166,16 @@ Prefab:
         type: 2}
       propertyPath: m_FontSize
       value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 114003861065116190, guid: 5dfe543d50a65dc4fb869305d8a4b0a1,
+        type: 2}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 673992360}
+    - target: {fileID: 114294878699828010, guid: 5dfe543d50a65dc4fb869305d8a4b0a1,
+        type: 2}
+      propertyPath: className
+      value: 'user1 : User'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5dfe543d50a65dc4fb869305d8a4b0a1, type: 2}
@@ -550,6 +560,16 @@ Prefab:
       propertyPath: m_FontSize
       value: 14
       objectReference: {fileID: 0}
+    - target: {fileID: 114003861065116190, guid: 5dfe543d50a65dc4fb869305d8a4b0a1,
+        type: 2}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 673992360}
+    - target: {fileID: 114294878699828010, guid: 5dfe543d50a65dc4fb869305d8a4b0a1,
+        type: 2}
+      propertyPath: className
+      value: 'gw : Gateway'
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5dfe543d50a65dc4fb869305d8a4b0a1, type: 2}
   m_IsPrefabParent: 0
@@ -565,6 +585,7 @@ GameObject:
   - component: {fileID: 673992359}
   - component: {fileID: 673992358}
   - component: {fileID: 673992357}
+  - component: {fileID: 673992362}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -635,13 +656,32 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 673992356}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 6.79, y: 2.42, z: 1.61}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2076585170}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &673992362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 673992356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24521cb667802d447a90310ce3260ef2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panSpeed: 0
+  cameraDistance: 10
+  mouseSpeed: 4
+  scrollSpeed: 2
+  rotateDampening: 10
+  scrollDampening: 6
+  rightClicked: 0
+  leftClicked: 0
 --- !u!1 &894079424
 GameObject:
   m_ObjectHideFlags: 0
@@ -1022,6 +1062,16 @@ Prefab:
       propertyPath: m_FontSize
       value: 14
       objectReference: {fileID: 0}
+    - target: {fileID: 114003861065116190, guid: 5dfe543d50a65dc4fb869305d8a4b0a1,
+        type: 2}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 673992360}
+    - target: {fileID: 114294878699828010, guid: 5dfe543d50a65dc4fb869305d8a4b0a1,
+        type: 2}
+      propertyPath: className
+      value: 'user2 : User'
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5dfe543d50a65dc4fb869305d8a4b0a1, type: 2}
   m_IsPrefabParent: 0
@@ -1118,6 +1168,35 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ea0e9491cf6e8a14da7abe2c58da28ad, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &2076585169
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 2076585170}
+  m_Layer: 0
+  m_Name: CameraRotator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2076585170
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2076585169}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 673992361}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2121118735
 Prefab:
   m_ObjectHideFlags: 0
