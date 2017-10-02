@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 224790781178983200}
   - component: {fileID: 23502574615075082}
   m_Layer: 0
-  m_Name: Message Arrow
+  m_Name: Message-Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -254,7 +254,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1845356767241940}
-  m_Mesh: {fileID: 4300000, guid: 5f16f57ede28648a693c0bebe857acf2, type: 3}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!33 &33846309894870436
 MeshFilter:
   m_ObjectHideFlags: 1
