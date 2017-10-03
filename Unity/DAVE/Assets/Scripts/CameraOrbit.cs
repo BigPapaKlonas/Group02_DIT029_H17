@@ -7,19 +7,15 @@ public class CameraOrbit : MonoBehaviour
     private Transform cameraParent;     // The object the camera is being rotated about
 
     private Vector3 cameraRotation;     // Store camera rotation frames
-    private Vector3 oldPosition;         // CameraParent's position before draging
-    private Vector3 newPosition;        //
+    private Vector3 oldPosition;        // CameraParent's position before draging
+    private Vector3 newPosition;        // Button click's position, used when draging cameraParent
 
-    private float cameraDistance = 10f; // Initial Distance from Camera
-    private float mouseSpeed = 4f;      // Camera Rotation speed
-    private float scrollSpeed = 2f;     // Camera Zoom speed
+    private float cameraDistance = 10f; // Distance from Camera
+    private float movingSpeed = 4f;     // Camera Rotation speed
     private float rotateDampening = 10f;// Used for a smoother rotation
     private float scrollDampening = 6f; // USed for a smoother zoom
 
-    bool dragging = false;
-    Plane movePlane;
-
-    private bool rightClicked = false;   // Used to check if RMB (Right Mouse Button) has been pressed down
+    private bool rightClicked = false;   // Used to check if RMB has been pressed down
 
     // Initialization of transform objects
     void Start()
@@ -32,6 +28,7 @@ public class CameraOrbit : MonoBehaviour
     void LateUpdate()
     {
         // Call method to move camera
+        MoveCameraKeyboard();
         MoveCamera();
 
         // Call method to rotate camera
@@ -43,24 +40,19 @@ public class CameraOrbit : MonoBehaviour
             ZoomCamera();
         }
 
-        //Actual Camera Transformations
-        Quaternion QT = Quaternion.Euler(cameraRotation.y, cameraRotation.x, 0); // Rotates y amount of degrees along x-axis and vise versa
+        // Rotates y amount of degrees along x-axis and vise versa
+        Quaternion QT = Quaternion.Euler(cameraRotation.y, cameraRotation.x, 0);
 
         // Animates the rotation
-        this.cameraParent.rotation = Quaternion.Lerp(this.cameraParent.rotation, QT, Time.deltaTime * rotateDampening);
+        this.cameraParent.rotation = Quaternion.Lerp(this.cameraParent.rotation, QT, 
+            Time.deltaTime * rotateDampening);
 
         // Animates zooming in and out
-        if (this.cameraPosition.localPosition.z != this.cameraDistance * -1f)
+        if (this.cameraPosition.localPosition.z != cameraDistance * -1f)
         {
-            this.cameraPosition.localPosition = new Vector3(0f, 0f, Mathf.Lerp(this.cameraPosition.localPosition.z, 
-                this.cameraDistance * -1f, Time.deltaTime * scrollDampening));
+            this.cameraPosition.localPosition = new Vector3(0f, 0f, Mathf.Lerp(this.cameraPosition.localPosition.z,
+                cameraDistance * -1f, Time.deltaTime * scrollDampening));
         }
-    }
-
-    void OnMouseDown()
-    {
-        dragging = true;
-        movePlane = new Plane(-Camera.main.transform.forward, transform.position);
     }
 
     void RotateCamera()
@@ -82,8 +74,8 @@ public class CameraOrbit : MonoBehaviour
             //Rotation of the Camera based on Mouse Coordinates
             if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
             {
-                cameraRotation.x += Input.GetAxis("Mouse X") * mouseSpeed;  // Change camera's x coordinate
-                cameraRotation.y += Input.GetAxis("Mouse Y") * mouseSpeed;  // Change camera's y coordinate
+                cameraRotation.x += Input.GetAxis("Mouse X") * movingSpeed;  // Change camera rotation's x value
+                cameraRotation.y += Input.GetAxis("Mouse Y") * movingSpeed;  // Change camera rotation's y value
 
                 //Clamps the camera's y coordinate so the camera does not flip or go over the horizon while rotating
                 if (cameraRotation.y < 0f)
@@ -96,27 +88,70 @@ public class CameraOrbit : MonoBehaviour
 
     void ZoomCamera()
     {
-        float scrollLength = Input.GetAxis("Mouse ScrollWheel") * scrollSpeed;  // Calculate the distance to scroll
-        scrollLength *= (this.cameraDistance * 0.3f);                           // Smoother zoom, the further from the start the quicker the zoom                    
+        // Calculate the distance to scroll, 0.5f just a multiplier, Scrollwhell
+        float scrollLength = Input.GetAxis("Mouse ScrollWheel") * movingSpeed * 0.5f;
+        // Smoother zoom, the further from the start the quicker the zoom 
+        scrollLength *= (this.cameraDistance * 0.3f);                   
 
-        this.cameraDistance += scrollLength * -1f;                              // Moves the camera when zooming
-        this.cameraDistance = Mathf.Clamp(this.cameraDistance, 1.5f, 100f);     // Sets min and max bounds for zoom length
+        // Moves the camera when zooming
+        this.cameraDistance += scrollLength * -1f;
+        // Sets min and max bounds for zoom length
+        this.cameraDistance = Mathf.Clamp(this.cameraDistance, 1.5f, 100f);
+    }
+
+
+    void MoveCameraKeyboard()
+    {
+        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+        {
+            // Move camera right (relative to where it's facing)
+            cameraParent.position += cameraParent.right * movingSpeed * 2.5f * Time.deltaTime;
+        }
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+        {
+            // Move camera left (relative to where it's facing) by inverting .right
+            cameraParent.position -= cameraParent.right * movingSpeed * 2.5f * Time.deltaTime;
+        }
+        if (Input.GetKey(KeyCode.W))
+        {
+            // Move camera forward (relative to where it's facing)
+            cameraParent.position += cameraParent.forward * movingSpeed * 2.5f * Time.deltaTime;
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            // Move camera back (relative to where it's facing) by inverting .forward
+            cameraParent.position -= cameraParent.forward * movingSpeed * 2.5f * Time.deltaTime;
+        }
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            // Move camera up along Y axis by using Vector3.up
+            cameraParent.position += Vector3.up * movingSpeed * 2.5f * Time.deltaTime;
+        }
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            // Move camera down along Y axis by inverting Vector3.up
+            cameraParent.position -= Vector3.up * movingSpeed * 2.5f * Time.deltaTime;
+        }
     }
 
     void MoveCamera()
     {
-        // If LMB has been pressed down save the camera parent's locations
+        // If LMB has been pressdoed down save the camera parent's locations
         if (Input.GetMouseButtonDown(0))
         {
-            oldPosition = cameraParent.position;                                    // oldPosition initialized to camera parent's location when LMB clicked
-            newPosition = Camera.main.ScreenToViewportPoint(Input.mousePosition);   // Getting the position of where the parent was moved
+            // oldPosition initialized to camera parent's location when LMB clicked
+            oldPosition = cameraParent.position;
+            // Getting the position of where the parent was moved
+            newPosition = Camera.main.ScreenToViewportPoint(Input.mousePosition);
         }
 
         // Moves the camera parent object
         if (Input.GetMouseButton(0))
         {
-            Vector3 currentPosition = Camera.main.ScreenToViewportPoint(Input.mousePosition) - newPosition; // Get the difference between where the mouse clicked and where it moved
-            cameraParent.position = oldPosition - currentPosition * (mouseSpeed * 1.5f);                    // Moving the camera parent's position by reinitializing cameraParent's position
+            // Get the difference between where the mouse clicked and where it moved
+            Vector3 currentPosition = Camera.main.ScreenToViewportPoint(Input.mousePosition) - newPosition;
+            // Moving the camera parent's position by reinitializing cameraParent's position
+            cameraParent.position = oldPosition - currentPosition * (movingSpeed * 1.5f);
         }
     }
 }
