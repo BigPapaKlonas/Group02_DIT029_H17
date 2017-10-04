@@ -11,7 +11,7 @@ public class ChangeTextMeshText : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        className = "I AM CHANGABLE EVEN AFTER COMPILATION";
+        //className = "I AM CHANGABLE EVEN AFTER COMPILATION";
         display();
 
     }
