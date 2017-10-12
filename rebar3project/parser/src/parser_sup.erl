@@ -29,12 +29,12 @@ start_link() ->
 %% Child :: {Id,StartFunc,Restart,Shutdown,Type,Modules}
 init([]) ->
     {ok, { {one_for_all, 3, 60},
-        [#{id => mychat,
-            start => {mychat, start_link, []},
+        [#{id => parser,
+            start => {parser, start_link, []},
             restart => permanent,
             shutdown => 1000,
             type => worker,
-            modules => [mychat]}]} }.
+            modules => [parser]}]} }.
 
 %%====================================================================
 %% Internal functions

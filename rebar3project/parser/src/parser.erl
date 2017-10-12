@@ -1,4 +1,5 @@
 -module(parser).
+
 -export([encode/1, parse_to_map/1, get_SD/0, get_DD/0, get_CD/0, get_processes/1, get_classes/1,
   get_relationships/1, get_type/1, get_mapping/1, get_diagram/1, get_diagram_contents/1]).
 
@@ -13,7 +14,7 @@
       false -> 'not a valid JSON'
     end.
 
-  %% Removes potential meta data from decoded JSON
+  %% Removes potential meta data from decoded JSON, if no meta present, just returns X
   remove_meta(X) -> maps:remove(<<"meta">>, X).
 
   %% Returns the diagram type
@@ -55,14 +56,13 @@
                       _Else -> 'Error, not a deployment diagram'
                     end.
 
-
   %% Converts Erlang binary map into JSON string
   encode(X) ->
     io:format("Encoding to JSON string ~p~n", ['...']), jsx:encode(X).
 
   %% Returns a JSON sequence diagram
   get_SD() ->
-    {ok, File} = file:read_file("SD.json"), parse_to_map(File).
+    {ok, File} = file:read_file("SD.json"), timer:sleep(5000), parse_to_map(File).
 
   %% Returns a JSON class diagram
   get_CD() ->
