@@ -1,73 +1,77 @@
 -module(parser).
+-behaviour(gen_server).
 
--export([encode/1, parse_to_map/1, get_SD/0, get_DD/0, get_CD/0, get_processes/1, get_classes/1,
-  get_relationships/1, get_type/1, get_mapping/1, get_diagram/1, get_diagram_contents/1]).
+-export([start_link/0, stop/0, crash/0, start_wait/0, terminate/2, parse/1]).
+-export([init/1, handle_call/3]).
 
-  %% Returns the JSON as an Erlang map without the meta data
-  parse_to_map(X) -> Z = remove_meta(decode_map(X)), io:format("The ~p map has the following keys: ~p~n~n",
-    [get_type(Z), maps:keys(Z)]), Z.
+start_link() ->
+  gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
-  %% Decodes the JSON file into an Erlang map
-  decode_map(X) ->
-    case jsx:is_json(X) of
-      true  -> jsx:decode(X, [return_maps]);
-      false -> 'not a valid JSON'
-    end.
+init(_Args) -> {ok, []}.
 
-  %% Removes potential meta data from decoded JSON, if no meta present, just returns X
-  remove_meta(X) -> maps:remove(<<"meta">>, X).
+start_wait() ->
+  io:format("Enter \'quit\' to exit.~n"),
+  display_prompt(),
+  receive_loop().
 
-  %% Returns the diagram type
-  get_type(X) -> maps:get(<<"type">>, X).
+handle_call({parse, Path}, {P, _Ref}, State) ->
+  spawn_parse_process(Path, P),
+  {reply, ok, State};
+handle_call(crash, _, _) -> error(crash);
+handle_call(stop, _, State) ->
+  io:format("stopping!~n"),
+  {stop, terminated, State}.
 
-  %% Returns the diagram
-  get_diagram(X) -> case get_type(X) of
-                      <<"sequence_diagram">> -> maps:get(<<"diagram">>, X);
-                      _Else -> 'Error, not a sequence diagram'
-                    end.
+terminate(_Reason, _State) -> ok.
 
-  %% Returns the diagram contents in a list
-  get_diagram_contents(X) -> case get_type(X) of
-                      <<"sequence_diagram">> -> maps:get(<<"content">>, parser:get_diagram(X));
-                      _Else -> 'Error, not a sequence diagram'
-                    end.
+parse(M) -> gen_server:call(?MODULE, {parse, M}).
 
-  %% Returns the processes in a list
-  get_processes(X) -> case get_type(X) of
-                        <<"sequence_diagram">> -> maps:get(<<"processes">>, X);
-                        _Else -> 'Error, not a sequence diagram'
-                      end.
+crash() -> gen_server:call(?MODULE, crash).
 
-  %% Returns the diagram type
-  get_classes(X) -> case get_type(X) of
-                      <<"class_diagram">> -> maps:get(<<"classes">>, X);
-                      _Else -> 'Error, not a class diagram'
-                    end.
+stop() -> gen_server:call(?MODULE, stop).
 
-  %% Returns the relationships in a list
-  get_relationships(X) -> case get_type(X) of
-                            <<"class_diagram">> -> maps:get(<<"relationships">>, X);
-                            _Else -> 'Error, not a class diagram'
-                          end.
+%% Spawns a new process for every parsing job received
+spawn_parse_process(Path, Pid) ->
+  spawn(fun () ->
+    M = parser_methods:parse_to_map(load_file(Path)),
+    Pid ! {send, M}
+        end),
+  ok.
 
-  %% Returns the diagram type
-  get_mapping(X) -> case get_type(X) of
-                      <<"deployment_diagram">> -> maps:get(<<"mapping">>, X);
-                      _Else -> 'Error, not a deployment diagram'
-                    end.
+%% for debugging purpose, going to be replaced by the actual communication protocol
+load_file(Path) ->
+  case Path of
+    "SD\n"    -> D = "SD.json";
+    "DD\n"    -> D = "DD.json";
+    "CD\n"    -> D = "CD.json";
+    _Else     -> D = "CD.json"
+  end,
+  {ok, File} = file:read_file(D), File.
 
-  %% Converts Erlang binary map into JSON string
-  encode(X) ->
-    io:format("Encoding to JSON string ~p~n", ['...']), jsx:encode(X).
+% The prompt is handled by a separate process.
+% Every time a message is entered (and io:get_line()
+% returns) the separate process will send a message
+% to the main process (and terminate).
+display_prompt() ->
+  Client = self(),
+  spawn(fun () ->
+    io:format("What kinda JSON do you want to load (SD, DD or CD)?~n"),
+    M = io:get_line("> "),
+    Client ! {entered, M, self(), make_ref()}
+        end),
+  ok.
 
-  %% Returns a JSON sequence diagram
-  get_SD() ->
-    {ok, File} = file:read_file("SD.json"), timer:sleep(5000), parse_to_map(File).
-
-  %% Returns a JSON class diagram
-  get_CD() ->
-    {ok, File} = file:read_file("CD.json"), parse_to_map(File).
-
-  %% Returns a JSON deployment diagram
-  get_DD() ->
-    {ok, File} = file:read_file("DD.json"), parse_to_map(File).
+%% Loop that keeps the receive statement going
+receive_loop() ->
+  receive
+    {send, M}        ->
+      io:format("~p~n", [M]),
+      receive_loop();
+    {entered, "quit\n", _Pid, _Ref} ->
+      ok;
+    {entered, M, Pid, Ref}        ->
+      io:format("Parsed on PID: ~p with REF: ~p~n", [Pid, Ref]),
+      parse(M),
+      display_prompt(),
+      receive_loop()
+  end.
