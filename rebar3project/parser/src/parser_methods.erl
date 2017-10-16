@@ -15,8 +15,7 @@
   get_relationships/1, get_type/1, get_mapping/1, get_diagram/1, get_diagram_contents/1]).
 
 %% Returns the JSON as an Erlang map without the meta data
-parse_to_map(X) -> Z = remove_meta(decode_map(X)), io:format("The ~p map has the following keys: ~p~n~n",
-  [get_type(Z), maps:keys(Z)]), Z.
+parse_to_map(X) -> Z = remove_meta(decode_map(X)), Z. %%io:format("The ~p map has the following keys: ~p~n~n", [get_type(Z), maps:keys(Z)])
 
 %% Decodes the JSON file into an Erlang map
 decode_map(X) ->

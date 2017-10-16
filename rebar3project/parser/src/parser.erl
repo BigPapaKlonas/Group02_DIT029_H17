@@ -1,8 +1,6 @@
 -module(parser).
 -behaviour(gen_server).
-
--export([start_link/0, stop/0, crash/0, start_wait/0, terminate/2, parse/1]).
--export([init/1, handle_call/3]).
+-export([start_link/0, stop/0, crash/0, start_wait/0, terminate/2, parse/1, init/1, handle_call/3]).
 
 start_link() ->
   gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
@@ -10,12 +8,13 @@ start_link() ->
 init(_Args) -> {ok, []}.
 
 start_wait() ->
+  io:format("What kinda JSON do you want to load (SD, DD or CD)?~n"),
   io:format("Enter \'quit\' to exit.~n"),
   display_prompt(),
   receive_loop().
 
-handle_call({parse, Path}, {P, _Ref}, State) ->
-  spawn_parse_process(Path, P),
+handle_call({parse, Path}, {Pid, _Ref}, State) ->
+  spawn_parse_process(Path, Pid),
   {reply, ok, State};
 handle_call(crash, _, _) -> error(crash);
 handle_call(stop, _, State) ->
@@ -34,7 +33,7 @@ stop() -> gen_server:call(?MODULE, stop).
 spawn_parse_process(Path, Pid) ->
   spawn(fun () ->
     M = parser_methods:parse_to_map(load_file(Path)),
-    Pid ! {send, M}
+    Pid ! {parsed, M, {self(), make_ref()}}
         end),
   ok.
 
@@ -55,22 +54,21 @@ load_file(Path) ->
 display_prompt() ->
   Client = self(),
   spawn(fun () ->
-    io:format("What kinda JSON do you want to load (SD, DD or CD)?~n"),
     M = io:get_line("> "),
-    Client ! {entered, M, self(), make_ref()}
+    Client ! {parse, M, self(), make_ref()}
         end),
   ok.
 
 %% Loop that keeps the receive statement going
 receive_loop() ->
   receive
-    {send, M}        ->
+    {parsed, M, {Pid, Ref}}        ->
+      io:format("JSON parsed on PID: ~p with REF: ~p~n", [Pid, Ref]),
       io:format("~p~n", [M]),
       receive_loop();
-    {entered, "quit\n", _Pid, _Ref} ->
+    {parse, "quit\n", _Pid, _Ref} ->
       ok;
-    {entered, M, Pid, Ref}        ->
-      io:format("Parsed on PID: ~p with REF: ~p~n", [Pid, Ref]),
+    {parse, M, _Pid, _Ref}        ->
       parse(M),
       display_prompt(),
       receive_loop()
