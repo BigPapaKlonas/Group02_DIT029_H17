@@ -29,7 +29,6 @@ public class CameraOrbit : MonoBehaviour
     {
         // Call method to move camera
         MoveCameraKeyboard();
-        MoveCamera();
 
         // Call method to rotate camera
         RotateCamera();
@@ -131,27 +130,6 @@ public class CameraOrbit : MonoBehaviour
         {
             // Move camera down along Y axis by inverting Vector3.up
             cameraParent.position -= Vector3.up * movingSpeed * 2.5f * Time.deltaTime;
-        }
-    }
-
-    void MoveCamera()
-    {
-        // If LMB has been pressdoed down save the camera parent's locations
-        if (Input.GetMouseButtonDown(0))
-        {
-            // oldPosition initialized to camera parent's location when LMB clicked
-            oldPosition = cameraParent.position;
-            // Getting the position of where the parent was moved
-            newPosition = Camera.main.ScreenToViewportPoint(Input.mousePosition);
-        }
-
-        // Moves the camera parent object
-        if (Input.GetMouseButton(0))
-        {
-            // Get the difference between where the mouse clicked and where it moved
-            Vector3 currentPosition = Camera.main.ScreenToViewportPoint(Input.mousePosition) - newPosition;
-            // Moving the camera parent's position by reinitializing cameraParent's position
-            cameraParent.position = oldPosition - currentPosition * (movingSpeed * 1.5f);
         }
     }
 }
