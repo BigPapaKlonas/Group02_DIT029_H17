@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,29 +9,31 @@ public class ProcessAnimation : MonoBehaviour {
     Vector3 place;
     public GameObject messagePrefab;
     public GameObject emptyTarget;
-    public GameObject dest;
-    public GameObject nextDest;
+    public Queue destList;
+    public GameObject current;
+
     private bool sent;
-    Vector3 v;
+    Vector3 nextPos;
 
     public float speed = 0.01f;
     float maxScale = 7f;
     float counter;
     Transform d;
     private Renderer rend;
-    
+
     // Use this for initialization
     void Start () {
+
         vector3 = transform.position;
         originalScale = transform.localScale.y;
         endScale = originalScale;
         counter = 0;
         sent = false;
         rend = GetComponent<Renderer>();
-        
-        
+
+
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
         //scl = scl + growFactor;
@@ -46,7 +48,7 @@ public class ProcessAnimation : MonoBehaviour {
         //    //We assign temp variable back to transform scale
         //    transform.localScale = temp;
         //}
-        if (counter < 150) {
+        if (counter < 100) {
             counter++;
             place = transform.localScale;
             place.y = Mathf.MoveTowards(transform.localScale.y, endScale, Time.deltaTime * speed);
@@ -57,7 +59,7 @@ public class ProcessAnimation : MonoBehaviour {
         else if(sent == false) {
             sent = true;
             SendMessage();
-            
+
         }
 	}
 
@@ -67,23 +69,44 @@ public class ProcessAnimation : MonoBehaviour {
 
     }
     void SendMessage() {
+      Debug.Log("SendMessage: " + destList.Count);
+      if(destList.Count > 0){
+        GameObject next = (GameObject)destList.Dequeue();
+        Debug.Log("next: " + next);
         float y = this.transform.position.y - 0.3f;
-        v = new Vector3(this.transform.position.x, y, this.transform.position.z);
-        GameObject empty = (GameObject)Instantiate(emptyTarget, v, this.transform.rotation);
-        GameObject messageGO = (GameObject)Instantiate(messagePrefab, this.transform.position, this.transform.rotation);
+
+        nextPos = new Vector3(
+          this.transform.position.x,
+          y,
+          this.transform.position.z
+        );
+        GameObject empty = (GameObject)Instantiate(
+          emptyTarget,
+          nextPos,
+          this.transform.rotation
+        );
+        GameObject messageGO = (GameObject)Instantiate(
+          messagePrefab,
+          this.transform.position,
+          this.transform.rotation
+        );
         MessageAnimation m = messageGO.GetComponent<MessageAnimation>();
-        v = new Vector3(dest.transform.position.x, y, dest.transform.position.z);
-        GameObject emptyGO = (GameObject)Instantiate(emptyTarget, v, this.transform.rotation);
+        nextPos = new Vector3(
+          next.transform.position.x,
+          y,
+          next.transform.position.z
+        );
+        GameObject emptyGO = (GameObject)Instantiate(emptyTarget, nextPos, this.transform.rotation);
 
         m.origin = empty.transform;
-        
         m.destination = emptyGO.transform;
-        m.nextd = nextDest;
-        m.nextnextd = this.gameObject;
 
+        m.current = next;
+        m.destList = destList;
+      }
     }
     float BottomBox() {
-        
+
         Mesh mesh = GetComponent<MeshFilter>().mesh;
         Vector3[] vertices = mesh.vertices;
         float lowest = Mathf.Infinity;
