@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - LineSegment
+  - g
+  - u1
+  - u2
+  - u3
+  - SystemBox
   layers:
   - Default
   - TransparentFX

@@ -18,6 +18,7 @@ public class MessageAnimation : MonoBehaviour {
     public GameObject currentEmpty;
     private Vector3 v;
 
+
     // Use this for initialization
     void Start () {
 
@@ -51,26 +52,21 @@ public class MessageAnimation : MonoBehaviour {
 
     void MessageRecieved()
     {
-        Debug.Log("MessageRecieved: " + destList.Count);
 
-          Debug.Log("current: " + current.transform.position.y);
+        Vector3 currentPos = new Vector3(
+          current.transform.position.x,
+          destination.position.y,
+          current.transform.position.z
+        );
 
-          Vector3 currentPos = new Vector3(
-            current.transform.position.x,
-            destination.position.y,
-            current.transform.position.z
-          );
+        GameObject activationBoxGO = (GameObject)Instantiate(
+          activationBoxPrefab,
+          currentPos,
+          this.transform.rotation
+        );
 
-          GameObject activationBoxGO = (GameObject)Instantiate(
-            activationBoxPrefab,
-            currentPos,
-            this.transform.rotation
-          );
-
-          Debug.Log("activationBoxGO: " + currentPos);
-
-          ProcessAnimation p = activationBoxGO.GetComponent<ProcessAnimation>();
-          p.destList = destList;
+        ProcessAnimation p = activationBoxGO.GetComponent<ProcessAnimation>();
+        p.destList = destList;
 
 
         // ToDo: p.nextDest = nextnextd;

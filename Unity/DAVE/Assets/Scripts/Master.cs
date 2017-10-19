@@ -5,26 +5,31 @@ using UnityEngine;
 public class Master : MonoBehaviour {
 
   public GameObject activationBoxPrefab;
-  private Vector3 origoOfSystemBox;
   public string[] destinationTags;
   public Queue destList;
-  public string systemBoxTag;
+
+  private bool sent;
 
   void Start () {
-    NewMessage();
-    StartMessageChain();
+
+    sent = false;
   }
 
   void Update () {
 
-    
+    if(GameObject.FindWithTag("SystemBox") != null && sent == false){
+      NewMessage();
+      StartMessageChain();
+      sent = true;
+    }
+
   }
 
   void NewMessage () {
     destList = new Queue();
 
     foreach (string tag in destinationTags) {
-      GameObject tmp = GameObject.FindWithTag(tag);
+      GameObject tmp = GameObject.Find(tag);
       destList.Enqueue(tmp);
     }
   }
@@ -33,10 +38,11 @@ public class Master : MonoBehaviour {
 
     if(destList.Count > 0){
 
-    GameObject first = (GameObject)destList.Dequeue();
+    GameObject first = (GameObject) destList.Dequeue();
+
     Vector3 positioning = new Vector3(
       first.transform.position.x,
-      first.transform.position.y + 0.5f,
+      first.transform.position.y - 1,
       first.transform.position.z
     );
 
