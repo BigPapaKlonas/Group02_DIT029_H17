@@ -8,6 +8,7 @@ public class ScaleObject : MonoBehaviour
     public float zScale;
 
     private Vector3 scaleObject;
+    private Transform child;
 
     // Initialization
     void Start()
@@ -23,6 +24,7 @@ public class ScaleObject : MonoBehaviour
 
     void display()
     {
+        transform.localScale = transform.localScale;
         scaleObject = new Vector3(xScale, yScale, zScale);
         transform.localScale = scaleObject;
     }
