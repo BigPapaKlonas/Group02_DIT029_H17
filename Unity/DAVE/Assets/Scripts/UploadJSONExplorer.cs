@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using SFB;
+using SimpleJSON;
+using System.Linq;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Button))]
 public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
@@ -14,9 +17,7 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
     public string Extension = "json";
     public bool Multiselect = false;
 
-    public string output;
-
-    public void OnPointerDown(PointerEventData eventData) { }
+      public void OnPointerDown(PointerEventData eventData) { }
 
     void Start()
     {
@@ -43,30 +44,83 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
         yield return loader;
 
         // Read the json from the file into a string
-        output = loader.text;
+        string output = loader.text;
 
         // Debug: Json text
         Debug.Log("JSON: " + output);
+        //JSONParser.parse(output);
+        Parse(output);
+    }
 
-        /*
-        // Pass the json to JsonUtility, and tell it to create a GameData object from it
-               GameData loadedData = JsonUtility.FromJson<GameData>(dataAsJson);
-        public class PlayerInfo
+    public void Parse(string jsonString)
     {
-        public string name;
-        public int lives;
-        public float health;
+        var N = JSON.Parse(jsonString);
 
-        public static PlayerInfo CreateFromJSON(string jsonString)
+        var meta = N["meta"].AsObject;          // .."["version"].Value" to get version 
+        string diagram_type = N["type"].Value;  //
+        var process = N["processes"].AsArray;   // gets all processes in a JSONArray, N["processes"][0].AsObject to get the first process
+        var diagram = N["diagram"].AsObject;    //gets diagram as JSONObject, N["diagram"]["content"][0]["content"][0].AsObject to get the first
+                                                //                              message from the first parallelism  
+
+        Debug.Log("Meta: " + meta.ToString());
+        Debug.Log("Type: " + diagram_type);
+        Debug.Log("Process: " + process.ToString());
+        Debug.Log("Diagram: " + diagram.ToString());
+    }
+
+    public static void parse(string jsonString)
+    {
+        JSONCLASS myJSONDiagram = new JSONCLASS();
+        JsonUtility.FromJsonOverwrite(jsonString, myJSONDiagram);
+        Debug.Log("JSON: " + myJSONDiagram.Type);
+        Debug.Log("JSON: " + myJSONDiagram.Meta.getFormat());
+    }
+
+    public class JSONCLASS
+    {
+        public Meta Meta { get; set; }
+        public Diagram Diagram { get; set; }
+        public List<Process> Processes { get; set; }
+        public string Type { get; set; }
+    }
+
+
+
+    public class Meta
+    {
+        public string Format { get; set; }
+        public List<object> Extensions { get; set; }
+        public string Version { get; set; }
+
+        public string getFormat()
         {
-            return JsonUtility.FromJson<PlayerInfo>(jsonString);
+            return Format;
         }
+    }
 
-        // Given JSON input:
-        // {"name":"Dr Charles","lives":3,"health":0.8}
-        // this example will return a PlayerInfo object with
-        // name == "Dr Charles", lives == 3, and health == 0.8f.
-    }**/
+    public class Diagram
+    {
+        public List<Content> Content { get; set; }
+        public string Node { get; set; }
+    }
 
+    public class Content
+    {
+        public List<OtherContent> OtherContent { get; set; }
+        public string Node { get; set; }
+    }
+
+    public class OtherContent
+    {
+        public List<string> Message { get; set; }
+        public string From { get; set; }
+        public string Node { get; set; }
+        public string To { get; set; }
+    }
+
+    public class Process
+    {
+        public string Class { get; set; }
+        public string Name { get; set; }
     }
 }
