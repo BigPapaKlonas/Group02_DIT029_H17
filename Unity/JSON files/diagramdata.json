@@ -7,6 +7,13 @@
  "type" : "sequence_diagram",
  "processes" : [
  {
+<<<<<<< HEAD
+=======
+ "class" : "Gateway",
+ "name" : "g"
+ },
+ {
+>>>>>>> 804d139b22b0cece9c191a1d2a1455643c2230ee
  "class" : "User",
  "name" : "u1"
  },
@@ -17,10 +24,13 @@
  {
  "class" : "User",
  "name" : "u3"
+<<<<<<< HEAD
  },
  {
  "class" : "Gateway",
  "name" : "g"
+=======
+>>>>>>> 804d139b22b0cece9c191a1d2a1455643c2230ee
  }
  ],
  "diagram" : {
@@ -73,4 +83,8 @@
  }
  ]
  }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 804d139b22b0cece9c191a1d2a1455643c2230ee
