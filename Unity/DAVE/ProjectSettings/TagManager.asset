@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - LineSegment
+  - System_Box
+  - Activation_Box
   - g
   - u1
   - u2
