@@ -4,7 +4,6 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using SFB;
 using SimpleJSON;
-using System.Linq;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(Button))]
@@ -48,79 +47,34 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
 
         // Debug: Json text
         Debug.Log("JSON: " + output);
-        //JSONParser.parse(output);
-        Parse(output);
+
+        // To get a JSON object
+        var JSON = QuickType.JsonHelper.ParseToClass(output);
+
+        // Example how to get informatzione
+        Debug.Log("We have got: " + JSON.Processes.Count + " processes");
+        foreach (var process in JSON.Processes)
+        {
+            Debug.LogFormat("Class: {0}" + "\r\n" + "Name: {1}", process.Class, process.Name);
+        }
     }
 
     public void Parse(string jsonString)
     {
         var N = JSON.Parse(jsonString);
-
-        var meta = N["meta"].AsObject;          // .."["version"].Value" to get version 
-        string diagram_type = N["type"].Value;  //
-        var process = N["processes"].AsArray;   // gets all processes in a JSONArray, N["processes"][0].AsObject to get the first process
-        var diagram = N["diagram"].AsObject;    //gets diagram as JSONObject, N["diagram"]["content"][0]["content"][0].AsObject to get the first
-                                                //                              message from the first parallelism  
+        var meta = N["meta"].AsObject;          // .."["version"].Value" to get version
+        string diagram_type = N["type"].Value;
 
         Debug.Log("Meta: " + meta.ToString());
         Debug.Log("Type: " + diagram_type);
-        Debug.Log("Process: " + process.ToString());
-        Debug.Log("Diagram: " + diagram.ToString());
-    }
-
-    public static void parse(string jsonString)
-    {
-        JSONCLASS myJSONDiagram = new JSONCLASS();
-        JsonUtility.FromJsonOverwrite(jsonString, myJSONDiagram);
-        Debug.Log("JSON: " + myJSONDiagram.Type);
-        Debug.Log("JSON: " + myJSONDiagram.Meta.getFormat());
-    }
-
-    public class JSONCLASS
-    {
-        public Meta Meta { get; set; }
-        public Diagram Diagram { get; set; }
-        public List<Process> Processes { get; set; }
-        public string Type { get; set; }
-    }
-
-
-
-    public class Meta
-    {
-        public string Format { get; set; }
-        public List<object> Extensions { get; set; }
-        public string Version { get; set; }
-
-        public string getFormat()
+        if (diagram_type.Equals("sequence_diagram"))
         {
-            return Format;
-        }
-    }
+            var process = N["processes"].AsArray;   // gets all processes in a JSONArray, N["processes"][0].AsObject to get the first process
+            var diagram = N["diagram"].AsObject;    //gets diagram as JSONObject, N["diagram"]["content"][0]["content"][0].AsObject to get the first
+                                                    //                              message from the first parallelism
 
-    public class Diagram
-    {
-        public List<Content> Content { get; set; }
-        public string Node { get; set; }
-    }
-
-    public class Content
-    {
-        public List<OtherContent> OtherContent { get; set; }
-        public string Node { get; set; }
-    }
-
-    public class OtherContent
-    {
-        public List<string> Message { get; set; }
-        public string From { get; set; }
-        public string Node { get; set; }
-        public string To { get; set; }
-    }
-
-    public class Process
-    {
-        public string Class { get; set; }
-        public string Name { get; set; }
+            Debug.Log("Process: " + process.ToString());
+            Debug.Log("Process: " + process.ToString());
+        }  
     }
 }
