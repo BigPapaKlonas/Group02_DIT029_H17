@@ -48,33 +48,47 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
         // Debug: Json text
         Debug.Log("JSON: " + output);
 
-        // To get a JSON object
-        var JSON = QuickType.JsonHelper.ParseToClass(output);
+        ParseToJSONClass(output);
+        //ParseToJSONObjects(output);
 
-        // Example how to get informatzione
-        Debug.Log("We have got: " + JSON.Processes.Count + " processes");
-        foreach (var process in JSON.Processes)
+    }
+
+    public void ParseToJSONClass(string jsonString)
+    {
+        var N = JSON.Parse(jsonString);
+        string diagram_type = N["type"].Value;
+
+        if (diagram_type.Equals("sequence_diagram"))
         {
-            Debug.LogFormat("Class: {0}" + "\r\n" + "Name: {1}", process.Class, process.Name);
+            // To get a JSON object
+            var JSONObject = QuickType.JsonHelper.ParseToClass(jsonString);
+
+            // Example how to get informatzione
+            Debug.Log("We have got: " + JSONObject.Processes.Count + " processes");
+
+            foreach (var process in JSONObject.Processes)
+            {
+                Debug.LogFormat("Class: {0}" + "\r\n" + "Name: {1}", process.Class, process.Name);
+            }
         }
     }
 
-    public void Parse(string jsonString)
+    public void ParseToJSONObjects(string jsonString)
     {
-        var N = JSON.Parse(jsonString);
-        var meta = N["meta"].AsObject;          // .."["version"].Value" to get version
-        string diagram_type = N["type"].Value;
+        var jSONNode = JSON.Parse(jsonString);
+        string diagram_type = jSONNode["type"].Value;
+        var meta = jSONNode["meta"].AsObject;          // .."["version"].Value" to get version
 
         Debug.Log("Meta: " + meta.ToString());
         Debug.Log("Type: " + diagram_type);
+
         if (diagram_type.Equals("sequence_diagram"))
         {
-            var process = N["processes"].AsArray;   // gets all processes in a JSONArray, N["processes"][0].AsObject to get the first process
-            var diagram = N["diagram"].AsObject;    //gets diagram as JSONObject, N["diagram"]["content"][0]["content"][0].AsObject to get the first
-                                                    //                              message from the first parallelism
-
+            var process = jSONNode["processes"].AsArray;   // gets all processes in a JSONArray, jSONNode["processes"][0].AsObject to get the first process
+            var diagram = jSONNode["diagram"].AsObject;    //gets diagram as JSONObject, jSONNode["diagram"]["content"][0]["content"][0].AsObject to get the first
+                                                           //                              message from the first parallelism
             Debug.Log("Process: " + process.ToString());
             Debug.Log("Process: " + process.ToString());
-        }  
+        }
     }
 }
