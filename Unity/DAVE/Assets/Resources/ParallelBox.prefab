@@ -131,8 +131,6 @@ GameObject:
   - component: {fileID: 65140527289483574}
   - component: {fileID: 23643047966255554}
   - component: {fileID: 114907309689152856}
-  - component: {fileID: 114797945747786180}
-  - component: {fileID: 114076555777336962}
   m_Layer: 0
   m_Name: ParallelBox
   m_TagString: Untagged
@@ -1092,34 +1090,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114076555777336962
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1323050705074624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 885cf79f1a362804898c6b267e61457f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  xPosition: -0.06733239
-  yPosition: 1.7748313
-  zPosition: 0.845
---- !u!114 &114797945747786180
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1323050705074624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3981db60188d224c9d703e716d81b07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  xScale: 1.1346648
-  yScale: 4.5496626
-  zScale: 7.03
 --- !u!114 &114907309689152856
 MonoBehaviour:
   m_ObjectHideFlags: 1

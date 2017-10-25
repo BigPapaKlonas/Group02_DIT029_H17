@@ -1,58 +1,60 @@
 ﻿using UnityEngine;
 
-public class PlaceParallelism : MonoBehaviour {
+public class PlaceParallelism : MonoBehaviour
+{
 
     private Transform parallelBox;
-    private Vector3 targetLocation;
 
+    // Maximum Points for Activation Boxes
     private float xMax;
     private float yMax;
     private float zMax;
 
+    // Minimum Points for Activation Boxes
     private float xMin;
     private float yMin;
     private float zMin;
 
-    private float seqBoxPosition = 0;
-    private bool isSeqBox;
-
+    // Vectors use for parallelBox transformation
     private Vector3 maxObject;
     private Vector3 minObject;
 
-    GameObject[] myObjects;
-    private float parPosition;
-    private float pos;
+    // The Y-Coordinate of the sequential activation box
+    private float seqBoxY;
 
-    // Use this for initialization
-    void Start () {
+    // Array of game objects with "Activation_Box" tag
+    GameObject[] myObjects;
+
+    // Used for initialization
+    void Start()
+    {
         parallelBox = transform;
         myObjects = GameObject.FindGameObjectsWithTag("Activation_Box");
-    }
-	
-	// Update is called once per frame
-	void Update () {
+
         FindSeqBox();
         FindMaxMin(myObjects);
-        ScaleLineChildren();
 
         parallelBox.position = Vector3.Lerp(maxObject, minObject, 0.5f);
+
+        // Adding extra size to the max object to make the parallel box go outside the activation boxes
+        maxObject = new Vector3(maxObject.x + 1f, maxObject.y + 1f, maxObject.z + 1f);
         parallelBox.localScale = maxObject - minObject;
-        
-        PositionObject myInstance = parallelBox.GetComponent<PositionObject>();
-        myInstance.xPosition = parallelBox.position.x;
-        myInstance.yPosition = parallelBox.position.y;
-        myInstance.zPosition = parallelBox.position.z;
-
-        ScaleObject myScale = parallelBox.GetComponent<ScaleObject>();
-        myScale.xScale = parallelBox.localScale.x + 1f;
-        myScale.yScale = parallelBox.localScale.y + 1f;
-        myScale.zScale = parallelBox.localScale.z + 1f;
-
-        parPosition = parallelBox.position.y + parallelBox.localScale.y / 2;
     }
 
+    // Update is called once per frame
+    void Update()
+    {
+        PlaceLine();
+    }
+
+    /*
+     * Finds the maximum and minimum points of the all the activation boxes present in scene
+     * and makes Vector3 with these values, which are used for positioning and scalling 
+     * the parallelBox's transform
+     */
     void FindMaxMin(GameObject[] gameObjectArray)
     {
+        // Finding max and min points of the activation boxes
         foreach (GameObject obj in gameObjectArray)
         {
             xMax = Mathf.Max(obj.transform.position.x, xMax);
@@ -70,7 +72,7 @@ public class PlaceParallelism : MonoBehaviour {
              * offset of line texture
             if (obj == isSeqBox)
             {
-                seqBoxPosition = obj.transform.position.y 
+                seqBoxY = obj.transform.position.y 
                     + (obj.transform.localScale.y / 2);
             }
             **/
@@ -79,26 +81,35 @@ public class PlaceParallelism : MonoBehaviour {
         minObject = new Vector3(xMin, yMin, zMin);
     }
 
-    void ScaleLineChildren()
+    /*
+     * Used to position the dashed line of the parallelBox along the y axis as well as keep it from stretching
+     */
+    void PlaceLine()
     {
         float scaleLineX = parallelBox.GetChild(0).transform.localScale.x;
-        float scaleLineY = 0.05f;
+        float scaleLineY = 0.025f;
         float scaleLineZ = parallelBox.GetChild(0).transform.localScale.z;
 
+        // Looping through the Line Children and applying custom y scale to keep them from stretching
         foreach (Transform line in parallelBox.transform)
         {
             line.transform.localScale = new Vector3(scaleLineX, scaleLineY, scaleLineZ);
-            line.transform.position = new Vector3(line.transform.position.x, 
-                pos, line.transform.position.z);
+            
+            // Changing the Y position of the dashed line to the top Y coordinate of the "seq" node
+            line.transform.position = new Vector3(line.transform.position.x,
+                seqBoxY, line.transform.position.z);
         }
         // Scalling side line
         parallelBox.GetChild(5).transform.localScale = new Vector3(scaleLineX, scaleLineY, 0.5f);
         parallelBox.GetChild(11).transform.localScale = new Vector3(scaleLineX, scaleLineY, 0.5f);
     }
 
+    /*
+     * Used to find the sequential box's top y coordinate (and find the "seq" activation box in the future)
+     */
     void FindSeqBox()
     {
-        GameObject posObj = myObjects[2];
-        pos = posObj.transform.position.y + posObj.transform.localScale.y / 2 + 0.02f;
+        // Getting the top y coordinate plus a little extra space to make the line appear above the box
+        seqBoxY = myObjects[4].GetComponent<MeshRenderer>().bounds.max.y + 0.025f;
     }
 }
