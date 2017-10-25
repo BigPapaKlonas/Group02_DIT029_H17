@@ -69,10 +69,8 @@ public class ProcessAnimation : MonoBehaviour {
 
     }
     void SendMessage() {
-      Debug.Log("SendMessage: " + destList.Count);
       if(destList.Count > 0){
         GameObject next = (GameObject)destList.Dequeue();
-        Debug.Log("next: " + next);
         float y = this.transform.position.y - 0.3f;
 
         nextPos = new Vector3(

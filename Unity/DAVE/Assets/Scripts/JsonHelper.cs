@@ -52,13 +52,13 @@
     public partial class Content
     {
         [JsonProperty("content")]
-        public List<OtherContent> OtherContent { get; set; }
+        public List<BaseContent> SubContent { get; set; }
 
         [JsonProperty("node")]
         public string Node { get; set; }
     }
 
-    public partial class OtherContent
+    public partial class BaseContent
     {
         [JsonProperty("message")]
         public List<string> Message { get; set; }
