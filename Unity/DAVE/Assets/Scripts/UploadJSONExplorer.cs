@@ -47,10 +47,7 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
         // Debug: Json text
         Debug.Log("JSON: " + output);
 
-
-        // Creates a broker for the rendering.
+        // Creates a broker for the parsing and rendering.
         JsonBroker broker = new JsonBroker(output);
-        // Renders the SystemBoxes and the messages
-        broker.Render();
     }
 }
