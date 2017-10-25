@@ -14,9 +14,9 @@ public class SystemBox : MonoBehaviour {
 
 		Vector3 v = new Vector3(this.transform.position.x, 0, this.transform.position.z);
 		target = (GameObject)Instantiate(lTarget, v, this.transform.rotation);
-		
+
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 
@@ -25,7 +25,7 @@ public class SystemBox : MonoBehaviour {
 			cooldownRemaining = cooldown;
 			newLifeLine(target);
 		}
-		
+
 	}
 
 	void newLifeLine(GameObject t){

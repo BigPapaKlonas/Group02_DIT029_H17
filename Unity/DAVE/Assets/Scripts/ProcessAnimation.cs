@@ -48,7 +48,7 @@ public class ProcessAnimation : MonoBehaviour {
         //    //We assign temp variable back to transform scale
         //    transform.localScale = temp;
         //}
-        if (counter < 100) {
+        if (counter < 40) {
             counter++;
             place = transform.localScale;
             place.y = Mathf.MoveTowards(transform.localScale.y, endScale, Time.deltaTime * speed);
