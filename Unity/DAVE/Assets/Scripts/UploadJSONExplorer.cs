@@ -3,8 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using SFB;
-using SimpleJSON;
-using System.Collections.Generic;
 
 [RequireComponent(typeof(Button))]
 public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
@@ -17,7 +15,7 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
     public bool Multiselect = false;
     private Button button;
 
-      public void OnPointerDown(PointerEventData eventData) { }
+    public void OnPointerDown(PointerEventData eventData) { }
 
     void Start()
     {
