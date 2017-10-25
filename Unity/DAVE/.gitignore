@@ -1,5 +1,10 @@
 .DS_Store
 
+/Assets/StandaloneFileBrowser.meta
+/Assets/StandaloneFileBrowser/Plugins.meta
+/Assets/StandaloneFileBrowser/Plugins/Ookii.Dialogs.dll.meta
+/Assets/StandaloneFileBrowser/Plugins/System.Windows.Forms.dll.meta
+
 .eunit
 deps
 *.o

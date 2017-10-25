@@ -7,6 +7,11 @@ TagManager:
   - LineSegment
   - System_Box
   - Activation_Box
+  - g
+  - u1
+  - u2
+  - u3
+  - SystemBox
   layers:
   - Default
   - TransparentFX

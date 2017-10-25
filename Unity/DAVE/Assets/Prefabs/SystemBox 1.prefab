@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 114154033795682180}
   m_Layer: 0
   m_Name: SystemBox 1
-  m_TagString: Untagged
+  m_TagString: SystemBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57,7 +57,7 @@ Transform:
   m_GameObject: {fileID: 1550830525836188}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1.5}
   m_Children:
   - {fileID: 4650253279243368}
   m_Father: {fileID: 0}
@@ -186,7 +186,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1180844058875850}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a422744aa856514cade92b4c1353452, type: 3}
   m_Name: 
@@ -203,7 +203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91134ed94d3f941598fb35a9a5bc2110, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lTarget: {fileID: 0}
+  lTarget: {fileID: 1307446253056046, guid: 7d1c42c80d03846dcb5e486213d2ab4b, type: 2}
   lineSegmentPrefab: {fileID: 1393219438810050, guid: 7418bc302e9684e3498a8fb9b168d0bb,
     type: 2}
 --- !u!114 &114294878699828010
@@ -212,7 +212,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1180844058875850}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6dcb5f9f8bf782d4bbb9fd801c27012d, type: 3}
   m_Name: 
