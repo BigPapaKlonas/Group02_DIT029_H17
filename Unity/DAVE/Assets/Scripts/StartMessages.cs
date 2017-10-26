@@ -1,12 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class StartMessages : MonoBehaviour {
 
   public GameObject activationBoxPrefab;
 
-  public void NewMessage (QuickType.JSON json) {
+  public void NewMessage (JSONSequence json) {
 
     // Check for parallelism:
     if(json.Diagram.Content.Count > 1){

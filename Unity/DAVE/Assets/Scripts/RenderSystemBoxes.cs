@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Newtonsoft.Json;
-using SFB;
 
 public class RenderSystemBoxes : MonoBehaviour {
 
@@ -12,7 +8,7 @@ public class RenderSystemBoxes : MonoBehaviour {
 
   private Button button;
 
-  public void CreateSystemBoxes (QuickType.JSON json) {
+  public void CreateSystemBoxes (JSONSequence json) {
     
     foreach(var process in json.Processes){
       // Placing the Boxes

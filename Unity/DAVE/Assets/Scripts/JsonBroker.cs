@@ -1,55 +1,76 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class JsonBroker : MonoBehaviour 
+public class JsonBroker
 {
-
-    private QuickType.JSON json;
     private Button uplButton;
-    private Text invalidJSON;
-    public float invalidJSONTextDuration = 3f;
 
     public JsonBroker(string nJson)
     {
-
         if (IsValidJson(nJson))
         {
-            Debug.Log("Entered true" + " bool är : " + IsValidJson(nJson));
+            // Creates a JsonHelper for the parsing.
+            JsonHelper JsonHelper = new JsonHelper(nJson);
 
-            QuickType.JSON parsed = QuickType.JsonHelper.ParseToClass(nJson);
-            this.json = parsed;
-            uplButton = GameObject.Find("UploadBtn").GetComponent<Button>();
-            Render();
+            switch (JsonHelper.GetDiagramType())
+            {
+                case "sequence_diagram":
+                    Debug.Log("Sequence");
+                    uplButton = GameObject.Find("UploadBtn").GetComponent<Button>();
+                    RenderSequence(JsonHelper.ParseSequence());
+                    break;
+                case "class_diagram":
+                    Debug.Log("Class");
+                    RenderClass(JsonHelper.ParseClass());
+                    break;
+                case "deployment_diagram":
+                    Debug.Log("deployment");
+                    RenderDeployment(JsonHelper.ParseDeployment());
+                    break;
+                default:
+                    Debug.Log("Invalid diagram type");
+                    break;
+            }
         }
         else
         {
-            //invalidJSON = GameObject.Find("InvalidJSON").GetComponent<Text>();
-            //StartCoroutine(TemporarilyActivate());
+            Debug.Log("Invalid JSON");
+            //throw new ArgumentException("The JSON is Invalid");
         }
-
     }
 
-    public void Render()
+    public void RenderSequence(JSONSequence JSONSequence)
     {
-        RenderSystemBoxes();
-        RenderMessages();
+        RenderSystemBoxes(JSONSequence);
+        RenderMessages(JSONSequence);
     }
 
-    private void RenderSystemBoxes()
+    public void RenderClass(JSONClass JSONClass)
     {
-        uplButton.GetComponent<RenderSystemBoxes>().CreateSystemBoxes(this.json);
+        //Placeholder
     }
 
-    private void RenderMessages()
+    public void RenderDeployment(JSONDeployment JSONDeployment)
     {
-        uplButton.GetComponent<StartMessages>().NewMessage(this.json);
+        //Placeholder
     }
-    //Validates the Json string (https://stackoverflow.com/questions/14977848/how-to-make-sure-that-string-is-valid-json-using-json-net)
-    private static bool IsValidJson(string strInput)
+
+
+    private void RenderSystemBoxes(JSONSequence JSONSequence)
+    {
+        uplButton.GetComponent<RenderSystemBoxes>().CreateSystemBoxes(JSONSequence);
+    }
+
+    private void RenderMessages(JSONSequence JSONSequence)
+    {
+        uplButton.GetComponent<StartMessages>().NewMessage(JSONSequence);
+    }
+
+    private bool IsValidJson(string strInput)
+    //https://stackoverflow.com/questions/14977848/how-to-make-sure-that-string-is-valid-json-using-json-net
     {
         strInput = strInput.Trim();
         if ((strInput.StartsWith("{") && strInput.EndsWith("}")) || //For object
@@ -58,11 +79,11 @@ public class JsonBroker : MonoBehaviour
             try
             {
                 var obj = JToken.Parse(strInput);
+                obj.Equals(obj); //Could not suppress warning 'value is assigned but never use' so this prevents the error message
                 return true;
             }
-            catch (JsonReaderException jex)
+            catch (JsonReaderException jex) //Exception in parsing json
             {
-                //Exception in parsing json
                 Debug.Log(jex.Message);
                 return false;
             }
@@ -76,12 +97,5 @@ public class JsonBroker : MonoBehaviour
         {
             return false;
         }
-    }
-
-    private IEnumerator TemporarilyActivate()
-    {
-        invalidJSON.enabled = true;
-        yield return new WaitForSeconds(invalidJSONTextDuration);
-        invalidJSON.enabled = false;
     }
 }
