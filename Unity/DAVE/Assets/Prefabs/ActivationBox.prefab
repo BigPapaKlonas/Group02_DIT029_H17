@@ -56,7 +56,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 58ced43bed3d74d88b0eea74dbf0f5f9, type: 2}
+  - {fileID: 2100000, guid: af0b09429aea24e089b94dff2444be22, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -109,6 +109,7 @@ MonoBehaviour:
     type: 2}
   emptyTarget: {fileID: 1248533151736012, guid: 288663dd66643d84db0aad19ab827f01,
     type: 2}
-  dest: {fileID: 0}
-  nextDest: {fileID: 0}
+  current: {fileID: 0}
+  messageText: {fileID: 1437364483429642, guid: adf0234177d97b24aa23c4dc7a80ac74,
+    type: 2}
   speed: 0.5

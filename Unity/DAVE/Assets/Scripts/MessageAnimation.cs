@@ -17,60 +17,66 @@ public class MessageAnimation : MonoBehaviour {
     public GameObject current;
     public GameObject currentEmpty;
     private Vector3 v;
+    public Vector3 currentPos;
+    public Vector3 distThisFrame;
+    GameObject arrowhead;
+
 
     // Use this for initialization
     void Start () {
 
+        arrowhead = this.transform.Find("Arrowhead").gameObject;
         messageLine = GetComponent<LineRenderer>();
         messageLine.SetPosition(0, origin.position);
         messageLine.SetWidth(.1f, .1f);
+        
         dist = Vector3.Distance(origin.position, destination.position);
 
         sent = false;
 
         v = new Vector3(destination.position.x, destination.position.y, destination.position.z);
 
+        currentPos = new Vector3(
+        current.transform.position.x,
+        destination.position.y + 0.1f,
+        current.transform.position.z
+        );
+
     }
 
 	// Update is called once per frame
 	void Update () {
-
-        if(counter < dist) {
-
+        
+        if (counter < 1) {
+            
             counter += .1f / speed;
 
 
-            Vector3 distThisFrame = Vector3.Lerp(origin.position, destination.position, counter);
+            distThisFrame = Vector3.Lerp(origin.position, destination.position, counter);
             messageLine.SetPosition(1, distThisFrame);
+            arrowhead.GetComponent<Arrowhead>().changePos(distThisFrame);
+           
 
         }else if(sent == false) {
-            sent = true;
+
             MessageRecieved();
+            sent = true;
+            
         }
 	}
 
-    void MessageRecieved()
-    {
-        Debug.Log("MessageRecieved: " + destList.Count);
+    void MessageRecieved() {
+        
 
-          Debug.Log("current: " + current.transform.position.y);
+        GameObject activationBoxGO = (GameObject)Instantiate(
+        activationBoxPrefab,
+        currentPos,
+        this.transform.rotation
+        );
 
-          Vector3 currentPos = new Vector3(
-            current.transform.position.x,
-            destination.position.y,
-            current.transform.position.z
-          );
-
-          GameObject activationBoxGO = (GameObject)Instantiate(
-            activationBoxPrefab,
-            currentPos,
-            this.transform.rotation
-          );
-
-          Debug.Log("activationBoxGO: " + currentPos);
-
-          ProcessAnimation p = activationBoxGO.GetComponent<ProcessAnimation>();
-          p.destList = destList;
+        ProcessAnimation p = activationBoxGO.GetComponent<ProcessAnimation>();
+        p.destList = destList;
+        p.current = current;
 
 
         // ToDo: p.nextDest = nextnextd;

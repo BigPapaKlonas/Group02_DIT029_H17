@@ -36,7 +36,7 @@ public class Master : MonoBehaviour {
     GameObject first = (GameObject)destList.Dequeue();
     Vector3 positioning = new Vector3(
       first.transform.position.x,
-      first.transform.position.y + 0.5f,
+      first.transform.position.y - 0.5f,
       first.transform.position.z
     );
 
@@ -48,6 +48,7 @@ public class Master : MonoBehaviour {
 
     ProcessAnimation p = activationBoxGO.GetComponent<ProcessAnimation>();
     p.destList = destList;
+    p.current = first;
 
     }
   }
