@@ -12,6 +12,7 @@ TagManager:
   - u2
   - u3
   - SystemBox
+  - Line
   layers:
   - Default
   - TransparentFX

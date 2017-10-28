@@ -38,15 +38,13 @@ public class PlaceParallelism : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      FindMaxMin(myObjects);
+        FindMaxMin(myObjects);
 
-      parallelBox.position = Vector3.Lerp(maxObject, minObject, 0.5f);
+        parallelBox.position = Vector3.Lerp(maxObject, minObject, 0.5f);
 
-      // Adding extra size to the max object to make the parallel box go outside the activation boxes
-      maxObject = new Vector3(maxObject.x + 1f, maxObject.y + 1f, maxObject.z + 1f);
-      parallelBox.localScale = maxObject - minObject;
-
-      PlaceLine();
+        // Adding extra size to the max object to make the parallel box go outside the activation boxes
+        maxObject = new Vector3(maxObject.x + 1f, maxObject.y + 1f, maxObject.z + 1f);
+        parallelBox.localScale = maxObject - minObject;
     }
 
     /*
@@ -81,29 +79,6 @@ public class PlaceParallelism : MonoBehaviour
         }
         maxObject = new Vector3(xMax, yMax, zMax);
         minObject = new Vector3(xMin, yMin, zMin);
-    }
-
-    /*
-     * Used to position the dashed line of the parallelBox along the y axis as well as keep it from stretching
-     */
-    void PlaceLine()
-    {
-        float scaleLineX = parallelBox.GetChild(0).transform.localScale.x;
-        float scaleLineY = 0.025f;
-        float scaleLineZ = parallelBox.GetChild(0).transform.localScale.z;
-
-        // Looping through the Line Children and applying custom y scale to keep them from stretching
-        foreach (Transform line in parallelBox.transform)
-        {
-            line.transform.localScale = new Vector3(scaleLineX, scaleLineY, scaleLineZ);
-
-            // Changing the Y position of the dashed line to the top Y coordinate of the "seq" node
-            line.transform.position = new Vector3(line.transform.position.x,
-                seqBoxY, line.transform.position.z);
-        }
-        // Scalling side line
-        parallelBox.GetChild(5).transform.localScale = new Vector3(scaleLineX, scaleLineY, 0.5f);
-        parallelBox.GetChild(11).transform.localScale = new Vector3(scaleLineX, scaleLineY, 0.5f);
     }
 
     /*
