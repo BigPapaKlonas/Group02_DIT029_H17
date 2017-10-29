@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,12 +16,28 @@ public class JsonBroker
             // Creates a JsonHelper for the parsing.
             JsonHelper JsonHelper = new JsonHelper(nJson);
 
+            // Creates a MqttClientDAVE for publishing the diagram.
+            MqttClientDAVE client = new MqttClientDAVE("127.0.0.1", 1883, "instructor/#");
             switch (JsonHelper.GetDiagramType())
             {
                 case "sequence_diagram":
-                    Debug.Log("Sequence");
-                    uplButton = GameObject.Find("UploadBtn").GetComponent<Button>();
-                    RenderSequence(JsonHelper.ParseSequence());
+                    JSONSequence SequenceDiagram = JsonHelper.ParseSequence();
+
+                    Debug.Log("Publishing processes");
+                    String List = "";
+                    foreach (var process in SequenceDiagram.Processes)
+                        List += "{" + process.Class + ":" + process.Name + "}";
+                    client.Publish("instructor/sequence1/processes", List);
+
+                    Debug.Log("Publishing diagram");
+                    List = "";
+                    foreach (var content in SequenceDiagram.Diagram.Content)
+                    {
+                        foreach (var names in content.SubContent)
+                            List += "{" + names.Node + ":" + names.From + ":" + names.To + ":" + ListToString(names.Message) + "}";
+                    }
+                    client.Publish("instructor/sequence1/messages", List);
+
                     break;
                 case "class_diagram":
                     Debug.Log("Class");
@@ -97,5 +114,16 @@ public class JsonBroker
         {
             return false;
         }
+    }
+
+    private string ListToString(List<string> List)
+    {
+        String ReturnString = "[";
+        foreach (var item in List)
+        {
+            ReturnString += item + ",";
+        }
+        ReturnString = ReturnString.Remove(ReturnString.Length - 1);  
+        return ReturnString += "]";
     }
 }
