@@ -12,31 +12,34 @@ public class ProcessAnimation : MonoBehaviour {
     public Queue destList;
     public GameObject current;
     private bool sent;
+    Vector3 thisPos;
     Vector3 nextPos;
     public GameObject messageText;
+    
 
     public float speed = 0.01f;
     float maxScale = 7f;
     float counter;
     Transform d;
-    int endInt;
+    public float endSize;
     
     void Start () {
 
-      
+        //Debug.Log("start" + transform.localScale);
         vector3 = transform.position;
         originalScale = transform.localScale.y;
         endScale = originalScale;
         counter = 0;
         sent = false;
-        endInt = Random.Range(50, 150);
+        Debug.Log(endSize);
      
 	}
 
 	
 	void Update () {
         
-        if (counter < endInt) {
+        if (transform.localScale.y < endSize) {
+           // Debug.Log(transform.localScale);
             current.GetComponent<SystemBox>().lightSwitch = true;
             counter++;
             place = transform.localScale;
@@ -62,14 +65,14 @@ public class ProcessAnimation : MonoBehaviour {
        
         float y = transform.position.y - transform.localScale.y / 2;
         y = y + 0.1f;
-        nextPos = new Vector3(
+        thisPos = new Vector3(
           this.transform.position.x,
           y,
           this.transform.position.z
         );
         GameObject empty = (GameObject)Instantiate(
           emptyTarget,
-          nextPos,
+          thisPos,
           this.transform.rotation
         );
         GameObject messageGO = (GameObject)Instantiate(
@@ -91,10 +94,11 @@ public class ProcessAnimation : MonoBehaviour {
         m.current = next;
         m.destList = destList;
 
-        GameObject messageTextGO = (GameObject)Instantiate(messageText, this.transform.position, this.transform.rotation);
+        GameObject messageTextGO = (GameObject)Instantiate(messageText, thisPos, this.transform.rotation);
         MessageText mT = messageTextGO.GetComponent<MessageText>();
-        mT.target = emptyGO.transform;
-        mT.method = "placeholder";
+        mT.target = emptyGO.transform.position;
+        mT.origin = empty.transform.position;
+        mT.method = "msg()";
       }
     }
     

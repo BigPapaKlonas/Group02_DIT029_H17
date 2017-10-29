@@ -103,8 +103,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd15e60bf1cf7d45acc20f55d952586, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ArrowOrigin: {x: 0, y: 0, z: 0}
-  ArrowTarget: {x: 0, y: 0, z: 0}
 --- !u!120 &120621664807174862
 LineRenderer:
   m_ObjectHideFlags: 1
@@ -112,8 +110,8 @@ LineRenderer:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1407313045017626}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_MotionVectors: 0
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
@@ -204,7 +202,7 @@ LineRenderer:
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 1d342bedfdd23754886db0909731dc1e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -275,5 +273,5 @@ LineRenderer:
     alignment: 0
     textureMode: 0
     generateLightingData: 0
-  m_UseWorldSpace: 0
+  m_UseWorldSpace: 1
   m_Loop: 0

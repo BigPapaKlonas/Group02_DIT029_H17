@@ -20,6 +20,7 @@ public class MessageAnimation : MonoBehaviour {
     public Vector3 currentPos;
     public Vector3 distThisFrame;
     GameObject arrowhead;
+    public bool left = false;
 
 
     // Use this for initialization
@@ -28,6 +29,8 @@ public class MessageAnimation : MonoBehaviour {
         arrowhead = this.transform.Find("Arrowhead").gameObject;
         messageLine = GetComponent<LineRenderer>();
         messageLine.SetPosition(0, origin.position);
+        messageLine.SetPosition(1, origin.position);
+        //TODO add end pos to avoid weird bug
         messageLine.SetWidth(.1f, .1f);
         
         dist = Vector3.Distance(origin.position, destination.position);
@@ -41,6 +44,11 @@ public class MessageAnimation : MonoBehaviour {
         destination.position.y + 0.1f,
         current.transform.position.z
         );
+        if(origin.position.z > v.z) {
+            
+            left = true;
+            Debug.Log(left);
+        }
 
     }
 
@@ -54,7 +62,8 @@ public class MessageAnimation : MonoBehaviour {
 
             distThisFrame = Vector3.Lerp(origin.position, destination.position, counter);
             messageLine.SetPosition(1, distThisFrame);
-            arrowhead.GetComponent<Arrowhead>().changePos(distThisFrame);
+            //Debug.Log(left);
+            arrowhead.GetComponent<Arrowhead>().changePos(left, distThisFrame);
            
 
         }else if(sent == false) {
@@ -77,6 +86,8 @@ public class MessageAnimation : MonoBehaviour {
         ProcessAnimation p = activationBoxGO.GetComponent<ProcessAnimation>();
         p.destList = destList;
         p.current = current;
+        p.endSize = GameObject.FindObjectOfType<Master>().actSizeList.Dequeue();
+        
 
 
         // ToDo: p.nextDest = nextnextd;
@@ -86,5 +97,6 @@ public class MessageAnimation : MonoBehaviour {
         //m.origin = this.transform;
 
         //m.destination = emptyGO.transform;
+        
     }
 }
