@@ -23,20 +23,7 @@ public class JsonBroker
                 case "sequence_diagram":
                     JSONSequence SequenceDiagram = JsonHelper.ParseSequence();
 
-                    Debug.Log("Publishing processes");
-                    String List = "";
-                    foreach (var process in SequenceDiagram.Processes)
-                        List += "{" + process.Class + ":" + process.Name + "}";
-                    client.Publish("instructor/sequence1/processes", List);
-
-                    Debug.Log("Publishing diagram");
-                    List = "";
-                    foreach (var content in SequenceDiagram.Diagram.Content)
-                    {
-                        foreach (var names in content.SubContent)
-                            List += "{" + names.Node + ":" + names.From + ":" + names.To + ":" + ListToString(names.Message) + "}";
-                    }
-                    client.Publish("instructor/sequence1/messages", List);
+                    Publish(client, SequenceDiagram);
 
                     break;
                 case "class_diagram":
@@ -125,5 +112,23 @@ public class JsonBroker
         }
         ReturnString = ReturnString.Remove(ReturnString.Length - 1);  
         return ReturnString += "]";
+    }
+
+    private void Publish(MqttClientDAVE client, JSONSequence SequenceDiagram)
+    {
+        Debug.Log("Publishing processes");
+        String List = "";
+        foreach (var process in SequenceDiagram.Processes)
+            List += "{" + process.Class + ":" + process.Name + "}";
+        client.Publish("instructor/sequence1/processes", List);
+
+        Debug.Log("Publishing diagram");
+        List = "";
+        foreach (var content in SequenceDiagram.Diagram.Content)
+        {
+            foreach (var names in content.SubContent)
+                List += "{" + names.Node + ":" + names.From + ":" + names.To + ":" + ListToString(names.Message) + "}";
+        }
+        client.Publish("instructor/sequence1/messages", List);
     }
 }

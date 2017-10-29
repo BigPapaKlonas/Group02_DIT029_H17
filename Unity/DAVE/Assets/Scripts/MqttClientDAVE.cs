@@ -23,7 +23,6 @@ public class MqttClientDAVE
 
         // subscribe to SubscribeTopic with QoS 2 (EXACTLY_ONCE)
         client.Subscribe(new string[] { SubscribeTopic }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
-
     }
 
     // Publishes PublicMsg to PublishTopic
