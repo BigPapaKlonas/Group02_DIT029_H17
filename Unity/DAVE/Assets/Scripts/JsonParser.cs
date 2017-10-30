@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-public class JsonHelper
+  public class JsonParser
 {
     //To serialize (to string) JsonConvert.SerializeObject(JSONSequence, Converter.Settings);
 
     private string JSONString;
     private string type;
 
-    public JsonHelper(string nJson)
+    // JsonParser constructor.
+    public JsonParser(string nJson)
     {
             JSONString = nJson;
             type = JsonConvert.DeserializeObject<JSON>(JSONString, Converter.Settings).Type;
