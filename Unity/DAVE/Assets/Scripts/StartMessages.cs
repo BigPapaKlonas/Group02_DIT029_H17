@@ -1,12 +1,15 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class StartMessages : MonoBehaviour {
 
   public GameObject activationBoxPrefab;
+  public static Queue<float> actSizeList;
+  float length;
 
   public void NewMessage (JSONSequence json) {
-
+    actSizeList = new Queue<float>();
     // Check for parallelism:
     if(json.Diagram.Content.Count > 1){
 
@@ -14,14 +17,27 @@ public class StartMessages : MonoBehaviour {
 
       foreach (var content in json.Diagram.Content) {
         Queue destList = new Queue();
+        
         foreach (var names in content.SubContent){
           GameObject tmpFrom = GameObject.Find(names.From);
           GameObject tmpTo = GameObject.Find(names.To);
           destList.Enqueue(tmpFrom);
           destList.Enqueue(tmpTo);
+          Debug.Log("here");
+          if (actSizeList.Count < length - 1) {
+            Debug.Log("there");
+                float rand = Random.Range(0.5f, 1.5f);
+                actSizeList.Enqueue(rand);
+                Debug.Log("rand" + rand);
+            } else {
+                
+                actSizeList.Enqueue(Sum(actSizeList));
+                Debug.Log("rand");
+            }
         }
+        
         StartMessageChain(destList, offset);
-        offset += json.Diagram.Content.Count + 0.5f;
+        //offset += json.Diagram.Content.Count + 0.5f;
 
       }
       // No parallelism:
@@ -33,6 +49,18 @@ public class StartMessages : MonoBehaviour {
             GameObject tmpTo = GameObject.Find(names.To);
             destList.Enqueue(tmpFrom);
             destList.Enqueue(tmpTo);
+            //if (actSizeList.Count < json.Diagram.Content.Count -1) {
+            //Debug.Log("there");
+            float rand = Random.Range(0.5f, 1.5f);
+            actSizeList.Enqueue(rand);
+            Debug.Log("rand" + rand);
+            rand = Random.Range(0.5f, 1.5f);
+            actSizeList.Enqueue(rand);
+            //} else {
+                
+              //  actSizeList.Enqueue(Sum(actSizeList));
+                
+            //s}
           }
           StartMessageChain(destList, 0f);
         }
@@ -49,7 +77,7 @@ public class StartMessages : MonoBehaviour {
 
     Vector3 positioning = new Vector3(
       first.transform.position.x,
-      first.transform.position.y - 1 - yOffset,
+      first.transform.position.y - 0.5f,
       first.transform.position.z
     );
 
@@ -61,8 +89,20 @@ public class StartMessages : MonoBehaviour {
 
     ProcessAnimation p = activationBoxGO.GetComponent<ProcessAnimation>();
     p.destList = queue;
+    p.current = first;
+    Debug.Log("panim");
+    p.endSize = actSizeList.Dequeue();
 
     }
   }
+  private float Sum(Queue<float> list) {
+        float sum = 0;
+        foreach(float a in list) {
+            sum = sum + a;
+        }
+
+        float lastFloat = length - sum;
+        return lastFloat;
+    }
 
 }
