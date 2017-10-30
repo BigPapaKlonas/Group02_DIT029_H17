@@ -62,9 +62,8 @@ public class StartMessages : MonoBehaviour {
             string MessageString = "";
           foreach(var msg in names.Message)
             MessageString += msg + ", ";
-
-          MessageString = MessageString.Remove(MessageString.Length - 1);
-          messageNameList.Enqueue(MessageString);
+            MessageString = MessageString.Remove(MessageString.Length - 2);
+            messageNameList.Enqueue(MessageString);
           messageNameList.Enqueue("Request()");
             //if (actSizeList.Count < json.Diagram.Content.Count -1) {
             //Debug.Log("there");
