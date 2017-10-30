@@ -6,6 +6,7 @@ public class StartMessages : MonoBehaviour
 
     public GameObject activationBoxPrefab;
     private float contentCount;
+    private float position;
 
     public void NewMessage(QuickType.JSON json)
     {
@@ -19,7 +20,8 @@ public class StartMessages : MonoBehaviour
 
             // Add parallel box
             GameObject parBox = (GameObject)Instantiate(Resources.Load("ParallelBox 1"));
-            float trinity = 3f;
+
+       
             foreach (var content in json.Diagram.Content)
             {
                 Queue destList = new Queue();
@@ -32,13 +34,15 @@ public class StartMessages : MonoBehaviour
                 }
                 StartMessageChain(destList, offset);
                 offset += json.Diagram.Content.Count + 0.5f;
+
+                
                 PlaceParLine(json, offset, parBox);
-                trinity += 3f;
             }
             // No parallelism:
-            print("child 1 position " + parBox.transform.GetChild(1).localPosition);
-            print("child 6 position " + parBox.transform.GetChild(6).localPosition);
-
+            print("offset " + offset);
+            print("child 1 position " + parBox.transform.GetChild(1).position);
+            print("child 1 local pos " + parBox.transform.GetChild(1).localPosition);
+          
         }
         else
         {
@@ -71,6 +75,8 @@ public class StartMessages : MonoBehaviour
               first.transform.position.z
             );
 
+            position = positioning.y;
+
             GameObject activationBoxGO = (GameObject)Instantiate(
               activationBoxPrefab,
               positioning,
@@ -93,14 +99,10 @@ public class StartMessages : MonoBehaviour
 
         if (json.Diagram.Node.Equals("par"))
         {
-            AddParallelLine line = new AddParallelLine
-            {
-                parallelBox = parBox.transform,
-                cube = parBox.GetComponent<MeshFilter>().mesh,
-                linePosition = positionY
-            };
+            AddParallelLine line = parBox.GetComponent<AddParallelLine>();
+            line.cube = parBox.GetComponent<MeshFilter>().mesh;
 
-            line.AddLine(positionY);
+            line.AddLine(positionY, parBox.transform);
             contentCount--;
         }
     }

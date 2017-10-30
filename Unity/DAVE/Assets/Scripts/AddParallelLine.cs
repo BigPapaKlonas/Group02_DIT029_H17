@@ -3,30 +3,27 @@ using System.Collections.Generic;
 
 public class AddParallelLine : MonoBehaviour {
 
-    public Transform parallelBox;
+    //public Transform parallelBox;
     public Mesh cube;
-    public float linePosition;
-
-    private List<float> positionList = new List<float>();
 
 	// Use this for initialization
 	void Start ()
     {
-        float linePositionY = this.linePosition;
-        parallelBox = this.transform;
+
     }
 
-    public void AddLine(float position)
+    public void AddLine(float position, Transform parallelBox)
     {
-        //linePosition = position;
-        print("addlinepos" + position);
+        Transform papaTransform = parallelBox;
+        parallelBox.position = new Vector3(0, 0, 0);
+
         float positionZ = -0.4f;
         for(int i = 0; i <= 4; i++)
         {
             GameObject line = new GameObject("Line");
-            line.transform.parent = parallelBox;
+            line.transform.SetParent(parallelBox, true);
             
-            // Gets cude mesh from parent
+            // Add cube mesh
             line.AddComponent<MeshFilter>().sharedMesh = this.cube;
             line.AddComponent<BoxCollider>();
 
@@ -35,15 +32,21 @@ public class AddParallelLine : MonoBehaviour {
             line.AddComponent<MeshRenderer>();
             line.GetComponent<Renderer>().material = newMat;
 
-            line.transform.localPosition = new Vector3(0.5f, 0, positionZ);
+            //parallelBox.localScale = new Vector3(1, 1, 1);
+            //parallelBox = papaTransform;
 
+            // Changing line scale
             line.transform.localScale = new Vector3(0.025f, 0.015f, 0.15f);
 
+            // Setting local position for X and Z axis
+            line.transform.localPosition = new Vector3(0.5f, 0, positionZ);
+
+            // Changing the global Y position
             line.transform.position = new Vector3(line.transform.position.x, 
                 position + 0.1f, line.transform.position.z);
 
             positionZ += 0.2f;
         }
+        parallelBox = papaTransform;
     }
-    
 }

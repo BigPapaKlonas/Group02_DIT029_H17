@@ -30,9 +30,6 @@ public class PlaceParallelism : MonoBehaviour
     {
         parallelBox = transform;
         myObjects = GameObject.FindGameObjectsWithTag("Activation_Box");
-
-        FindSeqBox();
-
     }
 
     // Update is called once per frame
@@ -64,29 +61,51 @@ public class PlaceParallelism : MonoBehaviour
             xMin = Mathf.Min(obj.transform.position.x, xMin);
             yMin = Mathf.Min(obj.transform.position.y, yMin);
             zMin = Mathf.Min(obj.transform.position.z, zMin);
-
-            // Finds the top of the seq activation box
-            /*
-             * Check if box is from "seq" node. If true then assign
-             * seqBoxPosition to be the y of the obj, which will then be used to set the
-             * offset of line texture
-            if (obj == isSeqBox)
-            {
-                seqBoxY = obj.transform.position.y
-                    + (obj.transform.localScale.y / 2);
-            }
-            **/
         }
         maxObject = new Vector3(xMax, yMax, zMax);
         minObject = new Vector3(xMin, yMin, zMin);
     }
 
     /*
-     * Used to find the sequential box's top y coordinate (and find the "seq" activation box in the future)
-     */
-    void FindSeqBox()
+    public void AddLine(float position, Transform parallelBox)
     {
-        // Getting the top y coordinate plus a little extra space to make the line appear above the box
-        //seqBoxY = myObjects[4].GetComponent<MeshRenderer>().bounds.max.y + 0.025f;
+        Transform papaTransform = parallelBox;
+        
+
+        float positionZ = -0.4f;
+        for (int i = 0; i <= 4; i++)
+        {
+            GameObject line = new GameObject("Line");
+            line.transform.SetParent(parallelBox, true);
+
+            // Add cube mesh
+            line.AddComponent<MeshFilter>().sharedMesh = parallelBox.GetComponent<MeshFilter>().mesh;
+            line.AddComponent<BoxCollider>();
+
+            // Adding material to game objects
+            Material newMat = Resources.Load("MessageArrow", typeof(Material)) as Material;
+            line.AddComponent<MeshRenderer>();
+            line.GetComponent<Renderer>().material = newMat;
+
+            //parallelBox.localScale = new Vector3(1, 1, 1);
+            //parallelBox = papaTransform;
+
+            // Changing line scale
+            line.transform.localScale = new Vector3(0.025f, 0.015f, 0.15f);
+
+            // Setting local position for X and Z axis
+            line.transform.localPosition = new Vector3(0.5f, 0, positionZ);
+
+            // Changing the global Y position
+            line.transform.position = new Vector3(line.transform.position.x,
+                position + 0.1f, line.transform.position.z);
+
+            positionZ += 0.2f;
+
+            parallelBox.position = new Vector3(0, 0, 0);
+            parallelBox.localScale = new Vector3(1, 1, 1);
+        }
+        parallelBox = papaTransform;
     }
+    */
 }
