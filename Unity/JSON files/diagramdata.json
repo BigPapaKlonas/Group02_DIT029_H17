@@ -37,20 +37,20 @@
  },
  {
  "node" : "send",
- "from" : "u2",
- "to" : "g",
- "message" : ["fwd", "u2", "msg1"]
- },
- {
- "node" : "send",
  "from" : "u3",
  "to" : "g",
  "message" : ["fwd", "u1", "msg2"]
  },
  {
  "node" : "send",
- "from" : "u1",
- "to" : "g",
+ "from" : "g",
+ "to" : "u2",
+ "message" : ["fwd", "u2", "msg1"]
+ },
+ {
+ "node" : "send",
+ "from" : "g",
+ "to" : "u1",
  "message" : ["fwd", "u1", "msg2"]
  }]
  },
@@ -65,7 +65,7 @@
  },
  {
  "node" : "send",
- "from" : "u3",
+ "from" : "g",
  "to" : "u3",
  "message" : ["ok"]
  }]
