@@ -98,7 +98,7 @@ public class ProcessAnimation : MonoBehaviour {
         MessageText mT = messageTextGO.GetComponent<MessageText>();
         mT.target = emptyGO.transform.position;
         mT.origin = empty.transform.position;
-        mT.method = "msg()";
+        mT.method = StartMessages.messageNameList.Dequeue();
       }
     }
     

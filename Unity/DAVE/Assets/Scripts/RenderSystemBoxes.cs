@@ -24,6 +24,7 @@ public class RenderSystemBoxes : MonoBehaviour {
 
       box.GetComponentInChildren<TextMesh>().text =
         process.Name + " : " + process.Class;
+        Debug.Log(process.Name + process.Class);
     }
 
   }

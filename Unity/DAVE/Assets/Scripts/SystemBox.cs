@@ -6,7 +6,7 @@ public class SystemBox : MonoBehaviour {
 
 	public GameObject lTarget;
 	public GameObject lineSegmentPrefab;
-	float cooldown = 0.3f;
+	float cooldown = 0.5f;
 	float cooldownRemaining = 0;
 	GameObject target;
 
@@ -30,7 +30,7 @@ public class SystemBox : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (lightSwitch == false && counter > 100) { pauseLifeline(); }
+        if (lightSwitch == false && counter > 200) { pauseLifeline(); }
         else
         {
             if (activeLifeLine == false) { startLifeline(); }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LineSegment : MonoBehaviour {
 
-	float speed = 5f;
+	float speed = 2.5f;
 	public Transform target;
     public bool pause;
     public GameObject parentSystem;

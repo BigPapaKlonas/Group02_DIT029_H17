@@ -6,10 +6,12 @@ public class StartMessages : MonoBehaviour {
 
   public GameObject activationBoxPrefab;
   public static Queue<float> actSizeList;
+  public static Queue<string> messageNameList;
   float length;
 
   public void NewMessage (JSONSequence json) {
     actSizeList = new Queue<float>();
+    messageNameList = new Queue<string>();
     // Check for parallelism:
     if(json.Diagram.Content.Count > 1){
 
@@ -23,6 +25,14 @@ public class StartMessages : MonoBehaviour {
           GameObject tmpTo = GameObject.Find(names.To);
           destList.Enqueue(tmpFrom);
           destList.Enqueue(tmpTo);
+
+          string MessageString = "";
+          foreach(var msg in names.Message)
+            MessageString += msg + ", ";
+
+          MessageString = MessageString.Remove(MessageString.Length - 1);
+          messageNameList.Enqueue(MessageString);
+
           Debug.Log("here");
           if (actSizeList.Count < length - 1) {
             Debug.Log("there");
@@ -49,6 +59,13 @@ public class StartMessages : MonoBehaviour {
             GameObject tmpTo = GameObject.Find(names.To);
             destList.Enqueue(tmpFrom);
             destList.Enqueue(tmpTo);
+            string MessageString = "";
+          foreach(var msg in names.Message)
+            MessageString += msg + ", ";
+
+          MessageString = MessageString.Remove(MessageString.Length - 1);
+          messageNameList.Enqueue(MessageString);
+          messageNameList.Enqueue("Request()");
             //if (actSizeList.Count < json.Diagram.Content.Count -1) {
             //Debug.Log("there");
             float rand = Random.Range(0.5f, 1.5f);
@@ -90,7 +107,6 @@ public class StartMessages : MonoBehaviour {
     ProcessAnimation p = activationBoxGO.GetComponent<ProcessAnimation>();
     p.destList = queue;
     p.current = first;
-    Debug.Log("panim");
     p.endSize = actSizeList.Dequeue();
 
     }
