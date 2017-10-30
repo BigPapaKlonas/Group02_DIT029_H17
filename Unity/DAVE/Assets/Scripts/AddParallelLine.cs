@@ -18,7 +18,8 @@ public class AddParallelLine : MonoBehaviour {
         parallelBox.position = new Vector3(0, 0, 0);
 
         float positionZ = -0.4f;
-        for(int i = 0; i <= 4; i++)
+        float positionZBack = -0.4f;
+        for (int i = 0; i <= 11; i++)
         {
             GameObject line = new GameObject("Line");
             line.transform.SetParent(parallelBox, true);
@@ -32,20 +33,40 @@ public class AddParallelLine : MonoBehaviour {
             line.AddComponent<MeshRenderer>();
             line.GetComponent<Renderer>().material = newMat;
 
-            //parallelBox.localScale = new Vector3(1, 1, 1);
-            //parallelBox = papaTransform;
+            if (i < 5)
+            {
+                // Setting local position for X and Z axis
+                line.transform.localPosition = new Vector3(-0.5f, 0, positionZBack);
+                positionZBack += 0.2f;
+            }
+            else
+            {
+                // Setting local position for X and Z axis
+                line.transform.localPosition = new Vector3(0.5f, 0, positionZ);
+                positionZ += 0.2f;
+            }
 
-            // Changing line scale
-            line.transform.localScale = new Vector3(0.025f, 0.015f, 0.15f);
-
-            // Setting local position for X and Z axis
-            line.transform.localPosition = new Vector3(0.5f, 0, positionZ);
+            if (i == 10)
+            {
+                line.transform.localScale = new Vector3(0.025f, 0.015f, 0.6f);
+                line.transform.localRotation = Quaternion.Euler(0, 90, 0);
+                line.transform.localPosition = new Vector3(0, 0, 0.5f);
+            }
+            else if (i == 11)
+            {
+                line.transform.localScale = new Vector3(0.025f, 0.015f, 0.6f);
+                line.transform.localRotation = Quaternion.Euler(0, 90, 0);
+                line.transform.localPosition = new Vector3(0, 0, -0.5f);
+            }
+            else
+            {
+                // Changing line scale
+                line.transform.localScale = new Vector3(0.025f, 0.015f, 0.15f);
+            }
 
             // Changing the global Y position
             line.transform.position = new Vector3(line.transform.position.x, 
                 position + 0.1f, line.transform.position.z);
-
-            positionZ += 0.2f;
         }
         parallelBox = papaTransform;
     }

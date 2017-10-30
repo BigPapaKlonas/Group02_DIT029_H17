@@ -24,7 +24,7 @@ public class StartMessages : MonoBehaviour
             contentCount = json.Diagram.Content.Count - 1;
 
             // Add parallel box
-            GameObject parBox = (GameObject)Instantiate(Resources.Load("ParallelBox 1"));
+            GameObject parBox = (GameObject)Instantiate(Resources.Load("ParallelBox"));
             
             foreach (var content in json.Diagram.Content)
             {
