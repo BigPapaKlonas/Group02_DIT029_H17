@@ -64,7 +64,7 @@ public class StartMessages : MonoBehaviour {
             MessageString += msg + ", ";
             MessageString = MessageString.Remove(MessageString.Length - 2);
             messageNameList.Enqueue(MessageString);
-          messageNameList.Enqueue("Request()");
+          messageNameList.Enqueue(MessageString);
             //if (actSizeList.Count < json.Diagram.Content.Count -1) {
             //Debug.Log("there");
             float rand = Random.Range(0.5f, 1.5f);

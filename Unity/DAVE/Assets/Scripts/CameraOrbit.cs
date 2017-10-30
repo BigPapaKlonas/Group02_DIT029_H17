@@ -20,8 +20,8 @@ public class CameraOrbit : MonoBehaviour
     // Initialization of transform objects
     void Start()
     {
-        this.cameraPosition = this.transform;
         this.cameraParent = this.transform.parent;
+        this.cameraPosition = this.transform;
     }
 
     // LateUpdate() is used to render camera last to avoid rotation/render issues
@@ -52,6 +52,8 @@ public class CameraOrbit : MonoBehaviour
             this.cameraPosition.localPosition = new Vector3(0f, 0f, Mathf.Lerp(this.cameraPosition.localPosition.z,
                 cameraDistance * -1f, Time.deltaTime * scrollDampening));
         }
+
+        
     }
 
     void RotateCamera()
@@ -132,4 +134,5 @@ public class CameraOrbit : MonoBehaviour
             cameraParent.position -= Vector3.up * movingSpeed * 2.5f * Time.deltaTime;
         }
     }
+
 }

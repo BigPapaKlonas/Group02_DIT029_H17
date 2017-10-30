@@ -41,6 +41,16 @@
           },
           {
             "node": "send",
+            "from": "u2",
+            "to": "g",
+            "message": [
+              "fwd",
+              "u2",
+              "msg1"
+            ]
+          },
+          {
+            "node": "send",
             "from": "u3",
             "to": "g",
             "message": [
@@ -52,11 +62,11 @@
           {
             "node": "send",
             "from": "u1",
-            "to": "u2",
+            "to": "g",
             "message": [
               "fwd",
-              "u2",
-              "msg1"
+              "u1",
+              "msg2"
             ]
           }
         ]
