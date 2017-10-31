@@ -10,6 +10,7 @@ public class StartMessages : MonoBehaviour
     public static Queue<string> messageNameList;
     float length;
     float contentCount;
+    float size;
 
     public void NewMessage(JSONSequence json)
     {
@@ -47,7 +48,7 @@ public class StartMessages : MonoBehaviour
                         MessageString = MessageString.Remove(MessageString.Length - 2);
                         messageNameList.Enqueue(MessageString);
                         messageNameList.Enqueue(MessageString);
-
+                        size++;
                     }
 
                     else 
@@ -78,7 +79,7 @@ public class StartMessages : MonoBehaviour
                 StartMessageChain(destList, offset);
                 StartParMessageChain(destListPar, offset);
                 //offset += json.Diagram.Content.Count + 0.5f;
-                PlaceParLine(json, -2f, parBox);
+                PlaceParLine(json, -(size / 2), parBox);
 
             }
             // No parallelism:
@@ -128,7 +129,7 @@ public class StartMessages : MonoBehaviour
 
             Vector3 positioning = new Vector3(
               first.transform.position.x,
-              first.transform.position.y - 0.5f,
+              first.transform.position.y - 1f,
               first.transform.position.z
             );
 
@@ -141,7 +142,7 @@ public class StartMessages : MonoBehaviour
             ProcessAnimation p = activationBoxGO.GetComponent<ProcessAnimation>();
             p.destList = queue;
             p.current = first;
-            p.endSize = actSizeList.Dequeue();
+            p.endSize = Sum(actSizeList);
 
         }
     }
@@ -156,7 +157,7 @@ public class StartMessages : MonoBehaviour
 
             Vector3 positioning = new Vector3(
               first.transform.position.x,
-              first.transform.position.y - 7.5f,
+              first.transform.position.y - (size * 2) - 1.5f,
               first.transform.position.z
             );
 
@@ -169,7 +170,7 @@ public class StartMessages : MonoBehaviour
             ProcessAnimation p = activationBoxGO.GetComponent<ProcessAnimation>();
             p.destList = queue;
             p.current = first;
-            p.endSize = actSizeList.Dequeue();
+            p.endSize = Sum(actSizeList);
 
         }
     }
@@ -181,9 +182,11 @@ public class StartMessages : MonoBehaviour
         {
             sum = sum + a;
         }
-
-        float lastFloat = length - sum;
-        return lastFloat;
+        if(sum > list.Count) {
+            return actSizeList.Dequeue() / 2;
+        } else {
+            return actSizeList.Dequeue();
+        }  
     }
 
     void PlaceParLine(JSONSequence json, float positionY,
