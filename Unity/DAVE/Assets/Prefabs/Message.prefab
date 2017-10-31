@@ -85,7 +85,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   origin: {fileID: 0}
   destination: {fileID: 0}
-  speed: 20
+  speed: 5
   activationBoxPrefab: {fileID: 1726380902892590, guid: ea0e9491cf6e8a14da7abe2c58da28ad,
     type: 2}
   current: {fileID: 0}
