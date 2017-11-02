@@ -3,30 +3,34 @@
 public class CameraOrbit : MonoBehaviour
 {
 
-    private Transform cameraPosition;   // The camera being rotated
-    private Transform cameraParent;     // The object the camera is being rotated about
+    private Transform cameraPosition;       // The camera being rotated
+    private Transform cameraParent;         // The object the camera is being rotated about
 
-    private Vector3 cameraRotation;     // Store camera rotation frames
-    private Vector3 oldPosition;        // CameraParent's position before draging
-    private Vector3 newPosition;        // Button click's position, used when draging cameraParent
+    private Vector3 cameraInitialPosition;  // Stores the camera's initial position
+    private Vector3 cameraRotation;         // Store camera rotation frames
+    private Vector3 oldPosition;            // CameraParent's position before draging
+    private Vector3 newPosition;            // Button click's position, used when draging cameraParent
 
-    private float cameraDistance = 10f; // Distance from Camera
-    private float movingSpeed = 4f;     // Camera Rotation speed
-    private float rotateDampening = 10f;// Used for a smoother rotation
-    private float scrollDampening = 6f; // USed for a smoother zoom
+    private float cameraDistance = 10f;     // Distance from Camera
+    private float movingSpeed = 4f;         // Camera Rotation speed
+    private float rotateDampening = 10f;    // Used for a smoother rotation
+    private float scrollDampening = 6f;     // USed for a smoother zoom
 
-    private bool rightClicked = false;   // Used to check if RMB has been pressed down
+    private bool rightClicked = false;      // Used to check if RMB has been pressed down
 
     // Initialization of transform objects
     void Start()
     {
         this.cameraParent = this.transform.parent;
         this.cameraPosition = this.transform;
+
+        cameraInitialPosition = new Vector3(10, 8, 8);  // = this.transform.position;
     }
 
     // LateUpdate() is used to render camera last to avoid rotation/render issues
     void LateUpdate()
     {
+
         // Call method to move camera
         MoveCameraKeyboard();
 
@@ -43,7 +47,7 @@ public class CameraOrbit : MonoBehaviour
         Quaternion QT = Quaternion.Euler(cameraRotation.y, cameraRotation.x, 0);
 
         // Animates the rotation
-        this.cameraParent.rotation = Quaternion.Lerp(this.cameraParent.rotation, QT, 
+        this.cameraParent.rotation = Quaternion.Lerp(this.cameraParent.rotation, QT,
             Time.deltaTime * rotateDampening);
 
         // Animates zooming in and out
@@ -53,7 +57,7 @@ public class CameraOrbit : MonoBehaviour
                 cameraDistance * -1f, Time.deltaTime * scrollDampening));
         }
 
-        
+
     }
 
     void RotateCamera()
@@ -92,12 +96,19 @@ public class CameraOrbit : MonoBehaviour
         // Calculate the distance to scroll, 0.5f just a multiplier, Scrollwhell
         float scrollLength = Input.GetAxis("Mouse ScrollWheel") * movingSpeed * 0.5f;
         // Smoother zoom, the further from the start the quicker the zoom 
-        scrollLength *= (this.cameraDistance * 0.3f);                   
+        scrollLength *= (this.cameraDistance * 0.3f);
 
         // Moves the camera when zooming
         this.cameraDistance += scrollLength * -1f;
         // Sets min and max bounds for zoom length
         this.cameraDistance = Mathf.Clamp(this.cameraDistance, 1.5f, 100f);
+    }
+
+    public void ResetCamera()
+    {
+        cameraParent.position = cameraInitialPosition;  // Sets current camera positon to initial
+        cameraRotation.x = -90f;                        // Resets rotation
+        cameraRotation.y = 0f;
     }
 
 
@@ -132,6 +143,11 @@ public class CameraOrbit : MonoBehaviour
         {
             // Move camera down along Y axis by inverting Vector3.up
             cameraParent.position -= Vector3.up * movingSpeed * 2.5f * Time.deltaTime;
+        }
+        if (Input.GetKey(KeyCode.R))
+        {
+            ResetCamera();
+
         }
     }
 
