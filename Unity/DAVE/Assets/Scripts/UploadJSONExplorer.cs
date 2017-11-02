@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -15,13 +16,30 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
     public bool Multiselect = false;
     private Button button;
 
-    public void OnPointerDown(PointerEventData eventData) { }
 
-    void Start()
-    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+    //
+    // WebGL
+    //
+    [DllImport("__Internal")]
+    private static extern void UploadFile(string id);
+
+    public void OnPointerDown(PointerEventData eventData) {
+        UploadFile(gameObject.name);
+    }
+
+    // Called from browser
+    public void OnFileUploaded(string url) {
+        StartCoroutine(OutputRoutine(url));
+}
+
+#else
+    void Start() {
         button = GetComponent<Button>();
         button.onClick.AddListener(OnClick);
     }
+
+    public void OnPointerDown(PointerEventData eventData) { }
 
     private void OnClick()
     {
@@ -33,6 +51,7 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
         }
     }
 
+#endif
     private IEnumerator OutputRoutine(string url)
     {
         // Debug: file's path
