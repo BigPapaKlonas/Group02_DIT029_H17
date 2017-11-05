@@ -3,9 +3,11 @@ using UnityEngine;
 
 /// <summary>
 /// Log to display what is going on in the diagram in-game.
+/// Calling Debug.log("logmsg" + "zzz") will add "zzz" as a message to the log
 /// Based on: https://gist.github.com/mminer/975374
 /// </summary>
 /// 
+
 public class EventLog : MonoBehaviour
 {
     // Structure used for each log item 
@@ -89,7 +91,7 @@ public class EventLog : MonoBehaviour
         {
             logs.Add(new Log()
             {
-                message = message.Remove(0, 7), // Removes logmsg
+                message = message.Remove(0, 6), // Removes logmsg
                 type = type,
             });
         }

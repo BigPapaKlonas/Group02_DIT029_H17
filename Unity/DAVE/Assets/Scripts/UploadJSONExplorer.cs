@@ -51,9 +51,9 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
         //For testing the EventLog script, remove when done
         for (int i = 0; i < 4; i++)
         {
-            Debug.Log("logmsg From: gateway \r\nTo: u1 \r\nMessage: [fwe, dwed d, sd]");
-            Debug.Log("logmsg From: u1 \r\nTo: u2 \r\nMessage: [yo, ui2, ere]");
-            Debug.Log("logmsg From: u5 \r\nTo: u9 \r\nMessage: [re, rer , re]");
+            Debug.Log("logmsg" + "From: gateway \r\nTo: u1 \r\nMessage: [fwe, dwed d, sd]");
+            Debug.Log("logmsg" + "From: u1 \r\nTo: u2 \r\nMessage: [yo, ui2, ere]");
+            Debug.Log("logmsg" + "From: u5 \r\nTo: u9 \r\nMessage: [re, rer , re]");
         }
       
 
