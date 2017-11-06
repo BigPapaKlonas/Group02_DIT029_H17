@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MessageText : MonoBehaviour {
 
@@ -8,6 +6,8 @@ public class MessageText : MonoBehaviour {
     float speed = 1f;
     public Vector3 target;
     public Vector3 origin;
+    public string to;
+    public string from;
     public string method;
     Vector3 midPoint;
     
@@ -19,7 +19,10 @@ public class MessageText : MonoBehaviour {
         
 
         midPoint = Vector3.Lerp(origin, target, 0.5f);
+
+        Debug.Log("logmsg" + "*"+ midPoint.y + "*" + midPoint.z + "*" + "To: " + to + "\r\nFrom: " + from + "\r\nMessage: " + method);
     }
+
     void Update()
     {
         transform.LookAt(transform.position + camera.transform.rotation * Vector3.forward,

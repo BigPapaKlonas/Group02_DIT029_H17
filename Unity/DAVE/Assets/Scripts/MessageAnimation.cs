@@ -47,7 +47,7 @@ public class MessageAnimation : MonoBehaviour {
         if(origin.position.z > v.z) {
             
             left = true;
-            Debug.Log(left);
+
         }
 
     }

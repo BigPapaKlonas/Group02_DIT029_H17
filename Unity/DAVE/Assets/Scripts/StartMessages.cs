@@ -5,9 +5,17 @@ using UnityEngine;
 public class StartMessages : MonoBehaviour
 {
 
+    public struct MessageData
+    {
+        public string to;
+        public string from;
+        public string message;
+    }
+
     public GameObject activationBoxPrefab;
     public static Queue<float> actSizeList;
-    public static Queue<string> messageNameList;
+    public static Queue<MessageData> messageDataList;
+    MessageData messageData;
     float length;
     float contentCount;
     float size;
@@ -15,7 +23,9 @@ public class StartMessages : MonoBehaviour
     public void NewMessage(JSONSequence json)
     {
         actSizeList = new Queue<float>();
-        messageNameList = new Queue<string>();
+        messageDataList = new Queue<MessageData>();
+        messageData = new MessageData();
+
         // Check for parallelism:
         if (json.Diagram.Content.Count > 1)
         {
@@ -46,14 +56,19 @@ public class StartMessages : MonoBehaviour
                         foreach (var msg in names.Message)
                             MessageString += msg + ", ";
                         MessageString = MessageString.Remove(MessageString.Length - 2);
-                        messageNameList.Enqueue(MessageString);
-                        messageNameList.Enqueue(MessageString);
+
+                        messageData.to = names.To;
+                        messageData.from = names.From;
+                        messageData.message = MessageString;
+
+                        messageDataList.Enqueue(messageData);
+                        messageDataList.Enqueue(messageData);
                         size++;
                     }
 
                     else 
                     {
-                        Debug.Log("more than 4");
+
 
                         GameObject tmpFrom = GameObject.Find(names.From);
                         GameObject tmpTo = GameObject.Find(names.To);
@@ -64,14 +79,17 @@ public class StartMessages : MonoBehaviour
                         foreach (var msg in names.Message)
                             MessageString += msg + ", ";
                         MessageString = MessageString.Remove(MessageString.Length - 2);
-                        messageNameList.Enqueue(MessageString);
-                        messageNameList.Enqueue(MessageString);
+                        messageData.to = names.To;
+                        messageData.from = names.From;
+                        messageData.message = MessageString;
+
+                        messageDataList.Enqueue(messageData);
+                        messageDataList.Enqueue(messageData);
                     }
 
 
                     float rand = Random.Range(0.5f, 1.5f);
                     actSizeList.Enqueue(rand);
-                    Debug.Log("rand" + rand);
                     rand = Random.Range(0.5f, 1.5f);
                     actSizeList.Enqueue(rand);
                 }
@@ -99,8 +117,12 @@ public class StartMessages : MonoBehaviour
                     foreach (var msg in names.Message)
                         MessageString += msg + ", ";
                     MessageString = MessageString.Remove(MessageString.Length - 2);
-                    messageNameList.Enqueue(MessageString);
-                    messageNameList.Enqueue(MessageString);
+                    messageData.to = names.To;
+                    messageData.from = names.From;
+                    messageData.message = MessageString;
+
+                    messageDataList.Enqueue(messageData);
+                    messageDataList.Enqueue(messageData);
                     //if (actSizeList.Count < json.Diagram.Content.Count -1) {
                     //Debug.Log("there");
                     float rand = Random.Range(0.5f, 1.5f);

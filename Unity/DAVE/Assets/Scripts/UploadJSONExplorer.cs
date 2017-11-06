@@ -66,6 +66,9 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
         // Debug: Json text
         Debug.Log("Raw JSON: " + output);
 
+
+        
+
         // Creates a broker for the parsing and rendering.
         new JsonBroker(output);
     }
