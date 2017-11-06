@@ -48,6 +48,18 @@ get_processes(X) -> case get_type(X) of
                       _Else -> 'Error, not a sequence diagram'
                     end.
 
+%% Returns the classes and names in process
+get_processes_contents(X) -> case get_type(X) of
+                      <<"processes">> -> maps:get({<<"class">>, <<"name">>}, X);
+                      _Else -> 'Error, no processes'
+                    end.
+
+%% Returns the messages in a list
+get_messages(X) -> case get_type(X) of
+                      <<"content">> -> maps:get(<<"message">>, X);
+                      _Else -> 'Error, no processes'
+                    end.                   
+
 %% Returns the diagram type
 get_classes(X) -> case get_type(X) of
                     <<"class_diagram">> -> maps:get(<<"classes">>, X);
