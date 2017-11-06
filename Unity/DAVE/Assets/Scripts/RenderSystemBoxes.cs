@@ -1,46 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RenderSystemBoxes : MonoBehaviour {
 
-  public string[] response = {"u1", "g", "u2"};
   public GameObject systemBoxPrefab;
-
   private float p = 0;
+    float size;
 
-  void Start () {
-    CreateSystemBoxes();
-  }
-  void Update () {
+  private Button button;
 
-  }
-
-
-  void CreateSystemBoxes () {
-    foreach(string boxName in response){
+  public void CreateSystemBoxes (JSONSequence json) {
+      foreach (var content in json.Diagram.Content) {
+            foreach (var names in content.SubContent)
+                size++;
+        }
+      foreach (var process in json.Processes){
       // Placing the Boxes
-      Vector3 position = new Vector3(0, 5, p);
+      
+      Vector3 position = new Vector3(0, (size * 2) + 1, p);
       GameObject box = (GameObject) Instantiate(
         systemBoxPrefab,
         position,
         this.transform.rotation
       );
+      box.name = process.Name;
       // Changes the Z position
       p = p + 3;
-      box.name = boxName;
-      //Check which kind of system box, might need to add more clauses.
-      if(boxName[0] == 'g'){
-        box.GetComponentInChildren<TextMesh>().text = boxName + ": Gateway";
-      } else if (boxName[0] == 'u') {
-        box.GetComponentInChildren<TextMesh>().text = boxName + ": User";
-      }
 
-      int i = 0;
-      while(i < 20){
-        i++;
-      }
-
+      box.GetComponentInChildren<TextMesh>().text =
+        process.Name + " : " + process.Class;
     }
+
   }
 }

@@ -25,4 +25,3 @@ public class ResetCameraBtn : MonoBehaviour, IPointerDownHandler
         cameraOrbitScript.ResetCamera();    // Calls if the button is clicked
     }
 }
-

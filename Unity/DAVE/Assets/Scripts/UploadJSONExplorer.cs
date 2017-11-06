@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
@@ -13,16 +14,32 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
     public string Directory = "";
     public string Extension = "json";
     public bool Multiselect = false;
+    private Button button;
 
-    public string output;
 
-    public void OnPointerDown(PointerEventData eventData) { }
+#if UNITY_WEBGL && !UNITY_EDITOR
+    //
+    // WebGL
+    //
+    [DllImport("__Internal")]
+    private static extern void UploadFile(string id);
 
-    void Start()
-    {
-        var button = GetComponent<Button>();
+    public void OnPointerDown(PointerEventData eventData) {
+        UploadFile(gameObject.name);
+    }
+
+    // Called from browser
+    public void OnFileUploaded(string url) {
+        StartCoroutine(OutputRoutine(url));
+}
+
+#else
+    void Start() {
+        button = GetComponent<Button>();
         button.onClick.AddListener(OnClick);
     }
+
+    public void OnPointerDown(PointerEventData eventData) { }
 
     private void OnClick()
     {
@@ -34,6 +51,7 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
         }
     }
 
+#endif
     private IEnumerator OutputRoutine(string url)
     {
         // Debug: file's path
@@ -43,30 +61,12 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
         yield return loader;
 
         // Read the json from the file into a string
-        output = loader.text;
+        string output = loader.text;
 
         // Debug: Json text
-        Debug.Log("JSON: " + output);
+        Debug.Log("Raw JSON: " + output);
 
-        /*
-        // Pass the json to JsonUtility, and tell it to create a GameData object from it
-               GameData loadedData = JsonUtility.FromJson<GameData>(dataAsJson);
-        public class PlayerInfo
-    {
-        public string name;
-        public int lives;
-        public float health;
-
-        public static PlayerInfo CreateFromJSON(string jsonString)
-        {
-            return JsonUtility.FromJson<PlayerInfo>(jsonString);
-        }
-
-        // Given JSON input:
-        // {"name":"Dr Charles","lives":3,"health":0.8}
-        // this example will return a PlayerInfo object with
-        // name == "Dr Charles", lives == 3, and health == 0.8f.
-    }**/
-
+        // Creates a broker for the parsing and rendering.
+        new JsonBroker(output);
     }
 }
