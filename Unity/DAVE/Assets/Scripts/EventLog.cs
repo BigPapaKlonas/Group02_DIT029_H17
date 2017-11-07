@@ -2,12 +2,11 @@
 using UnityEngine;
 
 /// <summary>
-/// Log to display what is going on in the diagram in-game.
+/// Log to display what is going on in the diagram 'in-game'.
 /// Calling Debug.log("logmsg" + "*"+ placeholder.y + "*" + placeholder.z + "*" + "zzz") 
 /// will add "zzz" as a button to the log and onClick will take camera to placeholder position
 /// Based on: https://gist.github.com/mminer/975374
 /// </summary>
-/// 
 
 public class EventLog : MonoBehaviour
 {
@@ -19,19 +18,19 @@ public class EventLog : MonoBehaviour
         public LogType type;
     }
 
-    public KeyCode toggleKey = KeyCode.L;    // The hotkey to show and hide the console window.
-    List<Log> logs = new List<Log>();
-    Vector2 scrollPosition;
-    public bool showLogs = true;                    // Show on start
+    public KeyCode toggleKey = KeyCode.L;   // The hotkey to show and hide the log window
+    List<Log> logs = new List<Log>();       // List of Log structures
+    Vector2 scrollPosition;                 // Used to place ScrollView
+    public bool showLogWindow = true;       // True on start
 
     Rect windowRect = new Rect(Screen.width * 4 / 5f, 0, Screen.width * 1 / 5f, Screen.height);     // Creates the rectangle for the log
-    GUIContent clearLabel = new GUIContent("Clear", "Clear the contents of the console.");          //Label for clear button
-    CameraOrbit cameraOrbitScript;
+    GUIContent clearLabel = new GUIContent("Clear", "Clear the contents of the console.");          // Label for clear button
+    CameraOrbit cameraOrbitScript;                                                                  // Allows for repositioning the camera
 
     void OnEnable()
     {
-        cameraOrbitScript = (CameraOrbit)Camera.main.GetComponent(typeof(CameraOrbit));    // Gets the cameraOrbit script
-        Application.logMessageReceived += HandleLog; // Assigned when EventLog object is enabled
+        Application.logMessageReceived += HandleLog;                                    // Assigned when EventLog object is enabled
+        cameraOrbitScript = (CameraOrbit)Camera.main.GetComponent(typeof(CameraOrbit)); // Gets the cameraOrbit script
     }
 
     void OnDisable()
@@ -43,46 +42,42 @@ public class EventLog : MonoBehaviour
     {
         if (Input.GetKeyDown(toggleKey))    //Disable the log if key pressed
         {
-            showLogs = !showLogs;
+            showLogWindow = !showLogWindow;
         }
     }
 
     void OnGUI()
     {
-        if (!showLogs)
+        if (!showLogWindow)
         {
             return;
         }
 
-        windowRect = GUILayout.Window(123456, windowRect, LogWindow, "Log"); //Creates window with the log in the windowRect
+        windowRect = GUILayout.Window(123456, windowRect, LogWindow, "Log"); //Creates a window with LogWindow and title
     }
-    
+
 
     /// <summary>
-    /// A window that displayss the recorded logs.
+    /// GUI window that displays the log items
     /// </summary>
     /// <param name="windowID">Window ID.</param>
     void LogWindow(int windowID)
     {
         scrollPosition = GUILayout.BeginScrollView(scrollPosition);
-        float y = 0;
-        float z = 0;
-        Vector3 messageTextPosition = new Vector3();
 
         // Iterate through the logs.
         for (int i = 0; i < logs.Count; i++)
         {
             var log = logs[i];
 
-            y = float.Parse(log.message.Split('*')[1]);
-            z = float.Parse(log.message.Split('*')[2]);
-            messageTextPosition = new Vector3(0, y, z);
-            log.message = log.message.Split('*')[3];
-
-
-            if (GUILayout.Button(log.message, new GUIStyle(GUI.skin.button){wordWrap = true, alignment = TextAnchor.UpperLeft}))
+            // Creates Vector3 from MessageText position to where the log item's corresponding MessageText is
+            var y = float.Parse(log.message.Split('*')[1]);
+            var z = float.Parse(log.message.Split('*')[2]);
+            Vector3 messageTextPosition = new Vector3(0, y, z);
+        
+            if (GUILayout.Button(log.message = log.message.Split('*')[3], new GUIStyle(GUI.skin.button) { wordWrap = true, alignment = TextAnchor.UpperLeft })) // Creates button
             {
-                cameraOrbitScript.SetPosition(messageTextPosition);
+                cameraOrbitScript.SetPosition(messageTextPosition); //OnClick the camera's position is set to where the messageText is
             }
         }
 
@@ -91,10 +86,9 @@ public class EventLog : MonoBehaviour
 
         GUILayout.BeginHorizontal();
 
-
-        if (GUILayout.Button(clearLabel, new GUIStyle(GUI.skin.button){alignment = TextAnchor.MiddleCenter}))
+        if (GUILayout.Button(clearLabel, new GUIStyle(GUI.skin.button) { alignment = TextAnchor.MiddleCenter }))
         {
-            logs.Clear();
+            logs.Clear();   //Clears the log OnClick
         }
 
         GUILayout.EndHorizontal();
@@ -110,7 +104,6 @@ public class EventLog : MonoBehaviour
             logs.Add(new Log()
             {
                 message = message.Remove(0, 6), // Removes logmsg
-                type = type,
             });
         }
     }
