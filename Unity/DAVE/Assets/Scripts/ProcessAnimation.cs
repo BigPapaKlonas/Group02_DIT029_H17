@@ -11,78 +11,68 @@ public class ProcessAnimation : MonoBehaviour {
     public GameObject emptyTarget;
     public Queue destList;
     public GameObject current;
-
     private bool sent;
+    Vector3 thisPos;
     Vector3 nextPos;
+    public GameObject messageText;
+    
 
     public float speed = 0.01f;
     float maxScale = 7f;
     float counter;
     Transform d;
-    private Renderer rend;
-
-    // Use this for initialization
+    public float endSize;
+    
     void Start () {
 
+        //Debug.Log("start" + transform.localScale);
         vector3 = transform.position;
         originalScale = transform.localScale.y;
         endScale = originalScale;
         counter = 0;
         sent = false;
-        rend = GetComponent<Renderer>();
-
-
+        Debug.Log(endSize);
+     
 	}
 
-	// Update is called once per frame
+	
 	void Update () {
-        //scl = scl + growFactor;
-        //if (scl < 5){
-        //    Vector3 temp = transform.localScale;
-
-        //    //We change the values for this saved variable (not actual transform scale)
-
-        //    temp.y = temp.y + growFactor;
-
-
-        //    //We assign temp variable back to transform scale
-        //    transform.localScale = temp;
-        //}
-        if (counter < 100) {
+        
+        if (transform.localScale.y < endSize) {
+           // Debug.Log(transform.localScale);
+            current.GetComponent<SystemBox>().lightSwitch = true;
             counter++;
             place = transform.localScale;
             place.y = Mathf.MoveTowards(transform.localScale.y, endScale, Time.deltaTime * speed);
             transform.localScale = place;
             transform.position = vector3 - transform.up * (transform.localScale.y / 2 + originalScale / 2);
             endScale = maxScale;
+            
         }
         else if(sent == false) {
+            current.GetComponent<SystemBox>().lightSwitch = false;
             sent = true;
             SendMessage();
 
         }
 	}
 
-    void Grow(){
-
-        transform.localScale += new Vector3(0, 0.1f, 0);
-
-    }
+    
     void SendMessage() {
-      Debug.Log("SendMessage: " + destList.Count);
+      
       if(destList.Count > 0){
         GameObject next = (GameObject)destList.Dequeue();
-        Debug.Log("next: " + next);
-        float y = this.transform.position.y - 0.3f;
-
-        nextPos = new Vector3(
+       
+        float y = transform.position.y - transform.localScale.y / 2;
+        y = y + 0.1f;
+        thisPos = new Vector3(
           this.transform.position.x,
           y,
           this.transform.position.z
         );
         GameObject empty = (GameObject)Instantiate(
           emptyTarget,
-          nextPos,
+          thisPos,
           this.transform.rotation
         );
         GameObject messageGO = (GameObject)Instantiate(
@@ -103,21 +93,13 @@ public class ProcessAnimation : MonoBehaviour {
 
         m.current = next;
         m.destList = destList;
+
+        GameObject messageTextGO = (GameObject)Instantiate(messageText, thisPos, this.transform.rotation);
+        MessageText mT = messageTextGO.GetComponent<MessageText>();
+        mT.target = emptyGO.transform.position;
+        mT.origin = empty.transform.position;
+        mT.method = StartMessages.messageNameList.Dequeue();
       }
     }
-    float BottomBox() {
-
-        Mesh mesh = GetComponent<MeshFilter>().mesh;
-        Vector3[] vertices = mesh.vertices;
-        float lowest = Mathf.Infinity;
-        int i = 0;
-        while (i < vertices.Length) {
-            if (vertices[i].y < lowest) lowest = vertices[i].y;
-            i++;
-        }
-
-        //Vector3 bottomBox = new Vector3(this.transform.position.x, lowest, this.transform.position.z);
-        return lowest;
-
-    }
+    
 }

@@ -1,0 +1,9 @@
+{
+"TOTAL_MEMORY": 268435456,
+"dataUrl": "DAVEWeb.data.unityweb",
+"asmCodeUrl": "DAVEWeb.asm.code.unityweb",
+"asmMemoryUrl": "DAVEWeb.asm.memory.unityweb",
+"asmFrameworkUrl": "DAVEWeb.asm.framework.unityweb",
+"splashScreenStyle": "Dark",
+"backgroundColor": "#231F20"
+}
