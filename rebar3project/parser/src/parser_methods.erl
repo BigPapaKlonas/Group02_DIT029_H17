@@ -6,9 +6,9 @@
 -author("Erik and Justinas").
 
 %% API
--export([encode/1, parse_to_map/1, get_SD/0, get_DD/0, get_CD/0, get_diagram/1,
-		get_ssd_processes/1, get_class_relationships/1, get_type/1, get_diagram_contents/1,
-		get_messages/1, get_classes/1, get_mapping/1, get_Val2/1]).
+-export([encode/1, parse_to_map/1, get_SD/0, get_DD/0, get_CD/0,
+  get_diagram/1, get_processes/1, get_relationships/1, get_type/1,
+  get_classes/1, get_mapping/1, get_messages/1, decode_list/1, parse_to_list/1]).
 
 %% Returns the JSON as an Erlang map without the meta data
 parse_to_map(X) -> Z = remove_meta(decode_map(X)), Z.
@@ -18,6 +18,17 @@ parse_to_map(X) -> Z = remove_meta(decode_map(X)), Z.
 decode_map(X) ->
   case jsx:is_json(X) of
     true  -> jsx:decode(X, [return_maps]);
+    false -> 'not a valid JSON'
+  end.
+
+%% Returns the JSON as an Erlang map without the meta data
+parse_to_list(X) ->decode_list(X).
+%%io:format("The ~p map has the following keys: ~p~n~n", [get_type(Z), maps:keys(Z)])
+
+%% Decodes the JSON file into an Erlang map
+decode_list(X) ->
+  case jsx:is_json(X) of
+    true  -> jsx:decode(X);
     false -> 'not a valid JSON'
   end.
 
@@ -33,24 +44,21 @@ get_diagram(X) -> case get_type(X) of
                     _Else -> 'Error, not a sequence diagram'
                   end.
 
-get_Val2(X) -> {ok, Content} = maps:find(<<"content">>, get_diagram(X)),
-  get_Val2_r(Content).
+get_messages(X) -> {ok, Content} = maps:find(<<"content">>, get_diagram(X)),
+  parse_content(Content).
 
-get_Val2_r([]) -> [];
-get_Val2_r([X | Y]) -> {ok, Messages} = maps:find(<<"content">>, X),
-  [parse_content_list(all_maps_to_list(Messages)) | get_Val2_r(Y)].
+parse_content([]) -> [];
+parse_content([X | Y]) -> {ok, Messages} = maps:find(<<"content">>, X),
+  [parse_list(all_maps_to_list(Messages)) | parse_content(Y)].
 
-parse_content_list([]) -> [];
-parse_content_list([H | T]) -> [remove_utf8_encoding(H) | parse_content_list(T)].
+parse_classes([]) -> [];
+parse_classes([H | T]) -> [parse_fields(H) | parse_classes(T)].
+
+parse_list([]) -> [];
+parse_list([H | T]) -> [remove_utf8_encoding(H) | parse_list(T)].
 
 all_maps_to_list([]) -> [];
 all_maps_to_list([H | T]) -> [maps:to_list(H) | all_maps_to_list(T)].
-
-%% Returns the diagram contents in a list
-get_diagram_contents(X) -> case get_type(X) of
-                             <<"sequence_diagram">> -> maps:get(<<"content">>, get_diagram(X));
-                             _Else -> 'Error, not a sequence diagram'
-                           end.
 
 remove_utf8_encoding([]) -> [];
 remove_utf8_encoding([{F, S} | T]) when is_list(S) ->
@@ -63,35 +71,43 @@ remove_utf8_encoding([{F, S} | T]) ->
     remove_utf8_encoding(T)];
 remove_utf8_encoding([H | T]) ->
   [unicode:characters_to_list(H, utf8) |
-    remove_utf8_encoding(T)].
+    remove_utf8_encoding(T)];
+remove_utf8_encoding({H, T}) ->
+  [{unicode:characters_to_list(H, utf8),
+    unicode:characters_to_list(T, utf8)}].
+
+remove_utf8_class([]) -> [];
+remove_utf8_class([L]) -> remove_utf8_class(L);
+remove_utf8_class([H | T]) ->
+  [remove_utf8_class(H),
+    remove_utf8_class(T)];
+remove_utf8_class({H, T}) ->
+  {unicode:characters_to_list(H, utf8),
+    unicode:characters_to_list(T, utf8)}.
 
 %% Returns the processes in a list
-get_ssd_processes(X) -> case get_type(X) of
-                      <<"diagram">> -> maps:get(<<"processes">>, X);
+get_processes(X) -> case get_type(X) of
+                      <<"sequence_diagram">> -> parse_list(
+                        all_maps_to_list(maps:get(<<"processes">>, X)));
                       _Else -> 'Error, not a sequence diagram'
                     end.
 
-%% Returns the messages in a list
-get_messages(X) -> case get_type(X) of
-                     <<"content">> -> maps:get(<<"message">>, X);
-                     _Else -> 'Error, message'
-                    end. 
+parse_fields([{NameKey, Name}, {Field, List}]) ->
+  [{unicode:characters_to_list(NameKey),
+    unicode:characters_to_list(Name)}, {unicode:characters_to_list(Field),
+    remove_utf8_class(List)}].
 
 %% Returns the classes from CD
-get_classes(X) -> case get_type(X) of
-                    <<"class_diagram">> -> maps:get(<<"classes">>, X);
-                    _Else -> 'Error, not a class diagram'
-                  end.
+get_classes(X) -> parse_classes(proplists:get_value(<<"classes">>, X)).
 
 %% Returns the relationships in a list
-get_class_relationships(X) -> case get_type(X) of
-                          <<"class_diagram">> -> maps:get(<<"relationships">>, X);
-                          _Else -> 'Error, not a class diagram'
-                        end.
+get_relationships(X) -> parse_list(proplists:get_value(<<"relationships">>, X)).
+
 
 %% Returns the diagram type
 get_mapping(X) -> case get_type(X) of
-                    <<"deployment_diagram">> -> maps:get(<<"mapping">>, X);
+                    <<"deployment_diagram">> -> parse_list(
+                      all_maps_to_list(maps:get(<<"mapping">>, X)));
                     _Else -> 'Error, not a deployment diagram'
                   end.
 
@@ -106,7 +122,7 @@ get_SD() ->
 
 %% Returns a JSON class diagram
 get_CD() ->
-  {ok, File} = file:read_file("CD.json"), parse_to_map(File).
+  {ok, File} = file:read_file("CD.json"), parse_to_list(File).
 
 %% Returns a JSON deployment diagram
 get_DD() ->
