@@ -6,13 +6,9 @@
 -author("Erik and Justinas").
 
 %% API
--export([encode/1, parse_to_map/1, parse_to_list/1, get_SD/0, get_DD/0,
-  get_CD/0, get_type/1, get_diagram/1, get_processes/1, get_relationships/1,
-  get_classes/1, get_mapping/1, get_messages/1, get_parsed_diagram/1]).
-
-%% Returns the JSON as an Erlang map
-parse_to_map(X) -> decode_map(X).
-%%io:format("The ~p map has the following keys: ~p~n~n", [get_type(Z), maps:keys(Z)])
+-export([encode/1, get_SD/0, get_DD/0, get_CD/0, get_type/1,
+  get_diagram/1, get_parsed_diagram/1, get_processes/1,
+  get_relationships/1, get_classes/1, get_mapping/1, get_messages/1]).
 
 %% Decodes the JSON file into an Erlang map
 decode_map(X) ->
@@ -20,9 +16,6 @@ decode_map(X) ->
     true  -> jsx:decode(X, [return_maps]);
     false -> 'not a valid JSON'
   end.
-
-%% Returns the JSON as an Erlang list
-parse_to_list(X) -> decode_list(X).
 
 %% Decodes the JSON file into an Erlang list
 decode_list(X) ->
@@ -43,12 +36,13 @@ get_diagram(X) -> case get_type(X) of
 % Returns parsed data from binary JSON
 get_parsed_diagram(X) ->
   % Parse binary JSON to map in order to check for what kind of diagram it is
-  Z = parse_to_map(X),
+  Z = decode_map(X),
   % Check the type of diagram in JSON
   case get_type(Z) of
     <<"sequence_diagram">> -> [get_messages(Z) | [get_processes(Z)]];
     <<"deployment_diagram">> -> get_mapping(Z);
-    <<"class_diagram">> -> Y = parse_to_list(X), % Parse CD to list, because it's easier to work with it that way
+    % Parse CD to list, because it's easier to work with it that way
+    <<"class_diagram">> -> Y = decode_list(X),
       [get_classes(Y) | [get_relationships(Y)]];
     _Else -> 'Diagram type not supported'
   end.
