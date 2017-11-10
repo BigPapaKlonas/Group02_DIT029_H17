@@ -21,10 +21,12 @@ public class CameraOrbit : MonoBehaviour
     // Initialization of transform objects
     void Start()
     {
-        this.cameraParent = this.transform.parent;
-        this.cameraPosition = this.transform;
+        cameraParent = transform.parent;
+        cameraPosition = transform;
+        cameraRotation.x = -90f;                        // Rotates camera on start to face the diagram
 
-        cameraInitialPosition = new Vector3(10, 8, 8);  // = this.transform.position;
+        cameraParent.position = new Vector3(10, 8, 8);  // Positions camera on start
+        cameraInitialPosition = cameraParent.position;  // Saves initial camera position
     }
 
     // LateUpdate() is used to render camera last to avoid rotation/render issues
