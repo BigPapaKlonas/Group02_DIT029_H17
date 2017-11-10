@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4650253279243368}
   - component: {fileID: 23958116688674502}
   - component: {fileID: 102994678157208200}
-  - component: {fileID: 114294878699828010}
   - component: {fileID: 114003861065116190}
   m_Layer: 0
   m_Name: SystemName
@@ -42,6 +41,7 @@ GameObject:
   - component: {fileID: 65257707512476282}
   - component: {fileID: 23034493832792184}
   - component: {fileID: 114154033795682180}
+  - component: {fileID: 108931119544727320}
   m_Layer: 0
   m_Name: SystemBox 1
   m_TagString: Untagged
@@ -56,7 +56,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1550830525836188}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -2.17, y: 3.39, z: -1.39}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4650253279243368}
@@ -83,8 +83,8 @@ MeshRenderer:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1550830525836188}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -180,6 +180,42 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4278190080
+--- !u!108 &108931119544727320
+Light:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1550830525836188}
+  m_Enabled: 1
+  serializedVersion: 8
+  m_Type: 2
+  m_Color: {r: 0.0054065795, g: 0.7352941, b: 0.010440245, a: 1}
+  m_Intensity: 10
+  m_Range: 3
+  m_SpotAngle: 30
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 1
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_Lightmapping: 4
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
 --- !u!114 &114003861065116190
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -203,18 +239,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91134ed94d3f941598fb35a9a5bc2110, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lTarget: {fileID: 0}
+  lTarget: {fileID: 1248533151736012, guid: 288663dd66643d84db0aad19ab827f01, type: 2}
   lineSegmentPrefab: {fileID: 1393219438810050, guid: 7418bc302e9684e3498a8fb9b168d0bb,
     type: 2}
---- !u!114 &114294878699828010
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1180844058875850}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6dcb5f9f8bf782d4bbb9fd801c27012d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  className: 
+  lightSwitch: 0
+  lifeLine: []
+  activeLifeLine: 0

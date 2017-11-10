@@ -22,9 +22,10 @@ GameObject:
   - component: {fileID: 33638839688925668}
   - component: {fileID: 65140024854285198}
   - component: {fileID: 23760460800808094}
+  - component: {fileID: 114138985637070884}
   m_Layer: 0
   m_Name: ActivationBox
-  m_TagString: Untagged
+  m_TagString: Activation_Box
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -36,8 +37,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1726380902892590}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.266, y: 1, z: 0.266}
+  m_LocalPosition: {x: 1.872, y: 0.445, z: -7}
+  m_LocalScale: {x: 0.25, y: 0.1, z: 0.25}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -55,7 +56,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 58ced43bed3d74d88b0eea74dbf0f5f9, type: 2}
+  - {fileID: 2100000, guid: af0b09429aea24e089b94dff2444be22, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -93,3 +94,23 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114138985637070884
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1726380902892590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 520313abe12ea2943b9673d90f9a5410, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  messagePrefab: {fileID: 1407313045017626, guid: 3a79c4399fcae6c47921e9e11c4a70b7,
+    type: 2}
+  emptyTarget: {fileID: 1248533151736012, guid: 288663dd66643d84db0aad19ab827f01,
+    type: 2}
+  current: {fileID: 0}
+  messageText: {fileID: 1437364483429642, guid: adf0234177d97b24aa23c4dc7a80ac74,
+    type: 2}
+  speed: 0.5
+  endSize: 0
