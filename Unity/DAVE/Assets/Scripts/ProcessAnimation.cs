@@ -31,7 +31,6 @@ public class ProcessAnimation : MonoBehaviour {
         endScale = originalScale;
         counter = 0;
         sent = false;
-        Debug.Log(endSize);
      
 	}
 
@@ -98,8 +97,10 @@ public class ProcessAnimation : MonoBehaviour {
         MessageText mT = messageTextGO.GetComponent<MessageText>();
         mT.target = emptyGO.transform.position;
         mT.origin = empty.transform.position;
-        mT.method = StartMessages.messageNameList.Dequeue();
-      }
+        mT.method = StartMessages.messageDataList.Peek().message;
+        mT.to = StartMessages.messageDataList.Peek().to;
+        mT.from = StartMessages.messageDataList.Dequeue().from;
+        }
     }
     
 }

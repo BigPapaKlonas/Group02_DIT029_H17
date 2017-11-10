@@ -111,6 +111,12 @@ public class CameraOrbit : MonoBehaviour
         cameraRotation.y = 0f;
     }
 
+    public void SetPosition(Vector3 targetPosition)
+    {
+        cameraParent.position = targetPosition;
+        cameraRotation.x = -90f;                        // Resets rotation
+        cameraRotation.y = 0f;
+    }
 
     void MoveCameraKeyboard()
     {
