@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 /*
@@ -7,6 +7,7 @@ using UnityEngine;
  * will add "zzz" as a button to the log and onClick will take camera to placeholder position
  * Based on: https://gist.github.com/mminer/975374
  **/
+
 public class EventLog : MonoBehaviour
 {
     // Structure used for each log item 
