@@ -12,6 +12,11 @@ TagManager:
   - u2
   - u3
   - SystemBox
+  - Door
+  - EntranceWall
+  - BackTextWall
+  - HouseWall
+  - Ceiling
   layers:
   - Default
   - TransparentFX
