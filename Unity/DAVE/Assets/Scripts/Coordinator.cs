@@ -27,9 +27,10 @@ public class Coordinator : MonoBehaviour
 	private string student;
 
 
-    void Start(){
-      	//EstablishConnection ();
+    void Start()
+    {
 		DatabaseConnection ();
+        EstablishConnection();
     }
 
     void DatabaseConnection ()
@@ -63,27 +64,27 @@ public class Coordinator : MonoBehaviour
 	}
 
 	// get/set methods added: 
-	public void setInstructor (string instructor)
+	public void SetInstructor (string instructor)
 	{
 		this.instructor = instructor;
 	}
-	public string getInstructor ()
+	public string GetInstructor ()
 	{
 		return this.instructor;
 	}
-	public void setDiagram (string diagram)
+	public void SetDiagram (string diagram)
 	{
 		this.diagram = diagram;
 	}
-	public string getDiagram ()
+	public string GetDiagram ()
 	{
 		return this.diagram;
 	}
-	public void setStudent (string student)
+	public void SetStudent (string student)
 	{
 		this.student = student;
 	}
-	public string getStudent ()
+	public string GetStudent ()
 	{
 		return this.student;
 	}

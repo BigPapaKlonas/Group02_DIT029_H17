@@ -17,3 +17,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DiagramChoice.unity
     guid: 2e8130f0324574c8d844174e0ff070c2
+  - enabled: 1
+    path: Assets/Scenes/Diagram.unity
+    guid: b88806a6703547743a59fd0b6c0016f9

@@ -19,12 +19,10 @@ public class RenderButtonsFromDb : MonoBehaviour {
 	float y = 90f;
 	float x = -160f;
 
-	private string name;
-
 	void Start () {
 
 		RenderButtons (table, row);
-		ObserveChange (table, row);
+		//ObserveChange (table, row);
 		
 	}
 	
@@ -62,9 +60,28 @@ public class RenderButtonsFromDb : MonoBehaviour {
 	//This method renders buttons according to our database, use on Start ().
 	void RenderButtons (string table, string selectedRow)
 	{
-		Cursor<string> result = Coordinator.R
-			.Db("root").Table(table).GetField(selectedRow)
-			.RunCursor<string>(Coordinator.conn);
+        Cursor<string> result;
+        switch (table)
+        { 
+            case "instructors":
+                Debug.Log("Case instructors");
+                result = Coordinator.R
+                .Db("root").Table(table).GetField(selectedRow)
+                .RunCursor<string>(Coordinator.conn);
+                break;
+            case "diagrams":
+                Debug.Log("Case diagrams");
+                result = Coordinator.R
+               .Db("root").Table(table).Filter(row => row.G("instructor").Eq(Coordinator.coordinator.GetInstructor())).GetField(selectedRow)
+               .RunCursor<string>(Coordinator.conn);
+                break;
+            default:
+                result = Coordinator.R
+                .Db("root").Table(table).GetField(selectedRow)
+                .RunCursor<string>(Coordinator.conn);
+                break;
+        }
+		
 
 		foreach(var i in result){
 			Debug.Log("Result: " + i);
@@ -73,8 +90,7 @@ public class RenderButtonsFromDb : MonoBehaviour {
 			var rectTransform = btn.GetComponent<RectTransform>();
 			rectTransform.SetParent (canvas.transform, false);
 			btn.GetComponentInChildren<Text>().text = i;
-			this.name = i;
-			btn.onClick.AddListener (OnClick);
+			btn.onClick.AddListener(() => ButtonCallBack(btn));
 			// Todo: This is a naive solution that needs some work.  
 			y -= 30;
 			PositionCheck ();
@@ -82,19 +98,22 @@ public class RenderButtonsFromDb : MonoBehaviour {
 		}
 	}
 
-	void OnClick ()
+	private void ButtonCallBack (Button buttonPressed)
 	{
-		switch (this.table) 
+
+        string name = buttonPressed.GetComponentInChildren<Text>().text;
+
+        switch (this.table) 
 		{
 		case "instructors":
 			Debug.Log ("table: " + table + " name: " + name);
-			Coordinator.coordinator.setInstructor (name);
+			Coordinator.coordinator.SetInstructor (name);
 			SceneManager.LoadScene ("DiagramChoice");
 			break;
 		case "diagrams":
 			Debug.Log ("table: " + table + " name: " + name);
-			Coordinator.coordinator.setDiagram (name);
-			//SceneManager.LoadScene ("InstructorChoice");
+			Coordinator.coordinator.SetDiagram (name);
+            SceneManager.LoadScene ("Diagram");
 			break;
 		default:
 			Debug.Log ("Error in table name OnClick");
