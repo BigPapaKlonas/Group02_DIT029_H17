@@ -5,6 +5,15 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/StaticSSD.unity
     guid: 48d9f234aea954b4aa0d8aaecc8539e0
+  - enabled: 1
+    path: Assets/Scenes/Start.unity
+    guid: 5200afad6f3af4d73a22fc913a2deb98
+  - enabled: 1
+    path: Assets/Scenes/InstructorChoice.unity
+    guid: adb426104d5f94a4cb12c9edb98b1269
+  - enabled: 1
+    path: Assets/Scenes/DiagramChoice.unity
+    guid: 2e8130f0324574c8d844174e0ff070c2

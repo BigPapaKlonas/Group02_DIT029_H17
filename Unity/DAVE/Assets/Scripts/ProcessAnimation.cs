@@ -48,7 +48,7 @@ public class ProcessAnimation : MonoBehaviour {
         //    //We assign temp variable back to transform scale
         //    transform.localScale = temp;
         //}
-        if (counter < 100) {
+        if (counter < 40) {
             counter++;
             place = transform.localScale;
             place.y = Mathf.MoveTowards(transform.localScale.y, endScale, Time.deltaTime * speed);
@@ -69,10 +69,8 @@ public class ProcessAnimation : MonoBehaviour {
 
     }
     void SendMessage() {
-      Debug.Log("SendMessage: " + destList.Count);
       if(destList.Count > 0){
         GameObject next = (GameObject)destList.Dequeue();
-        Debug.Log("next: " + next);
         float y = this.transform.position.y - 0.3f;
 
         nextPos = new Vector3(
