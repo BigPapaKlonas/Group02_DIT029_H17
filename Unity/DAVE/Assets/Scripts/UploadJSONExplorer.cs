@@ -47,7 +47,5 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
         // Debug: Json text
         // Debug.Log("Raw JSON: " + output);
 
-        // Creates a coordinator
-        new Coordinator(output, "erik", "lecture34");
     }
 }
