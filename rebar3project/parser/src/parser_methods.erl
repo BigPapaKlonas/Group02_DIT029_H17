@@ -6,7 +6,7 @@
 -author("Erik and Justinas").
 
 %% API
--export([encode/1, get_SD/0, get_DD/0, get_CD/0, get_type/1,
+-export([encode/1, get_SD/0, get_DD/0, get_CD/0, get_SDM/0, get_type/1,
   get_diagram/1, get_parsed_diagram/1, get_processes/1,
   get_relationships/1, get_classes/1, get_mapping/1, get_messages/1]).
 
@@ -152,7 +152,15 @@ encode(X) ->
 
 %% Returns a JSON sequence diagram
 get_SD() ->
-  {ok, File} = file:read_file("triparallel.json"), File.
+  {ok, File} = file:read_file("SD.json"), File.
+
+get_SDM() ->
+  {ok, File} = file:read_file("SD.json"), X = jsx:encode(maps:get(<<"processes">>, decode_map(File))),
+
+  {ok, C} = emqttc:start_link([{host, "localhost"}, {client_id, <<"simpleClient">>}]),
+
+  %% publish
+  emqttc:publish(C, <<"processes">>, X).
 
 %% Returns a JSON class diagram
 get_CD() ->
