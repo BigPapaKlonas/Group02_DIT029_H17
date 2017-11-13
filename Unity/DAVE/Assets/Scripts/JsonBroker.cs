@@ -14,17 +14,17 @@ public class JsonBroker
         {
             // Creates a JsonHelper for the parsing.
             JsonHelper JsonHelper = new JsonHelper(nJson);
+            uplButton = GameObject.Find("UploadBtn").GetComponent<Button>();
 
             switch (JsonHelper.GetDiagramType())
             {
                 case "sequence_diagram":
                     Debug.Log("Sequence");
-                    uplButton = GameObject.Find("UploadBtn").GetComponent<Button>();
                     RenderSequence(JsonHelper.ParseSequence());
                     break;
                 case "class_diagram":
                     Debug.Log("Class");
-                    RenderClass(JsonHelper.ParseClass());
+                    RenderClassDiagram(JsonHelper.ParseClass());
                     break;
                 case "deployment_diagram":
                     Debug.Log("deployment");
@@ -48,16 +48,16 @@ public class JsonBroker
         RenderMessages(JSONSequence);
     }
 
-    public void RenderClass(JSONClass JSONClass)
+    public void RenderClassDiagram(JSONClass JSONClass)
     {
-        //Placeholder
+        RenderClasses(JSONClass);
+        RenderRelationships(JSONClass);
     }
 
     public void RenderDeployment(JSONDeployment JSONDeployment)
     {
         //Placeholder
     }
-
 
     private void RenderSystemBoxes(JSONSequence JSONSequence)
     {
@@ -67,6 +67,16 @@ public class JsonBroker
     private void RenderMessages(JSONSequence JSONSequence)
     {
         uplButton.GetComponent<StartMessages>().NewMessage(JSONSequence);
+    }
+
+    public void RenderClasses(JSONClass JSONClass)
+    {
+        uplButton.GetComponent<ScaleClassHouse>().AddHouse(JSONClass);
+    }
+
+    public void RenderRelationships(JSONClass JSONClass)
+    {
+        uplButton.GetComponent<RenderClassRelationship>().AddRelationship(JSONClass);
     }
 
     private bool IsValidJson(string strInput)

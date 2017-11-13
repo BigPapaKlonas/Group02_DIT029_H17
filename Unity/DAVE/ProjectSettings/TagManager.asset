@@ -15,8 +15,6 @@ TagManager:
   - Door
   - EntranceWall
   - BackTextWall
-  - HouseWall
-  - Ceiling
   layers:
   - Default
   - TransparentFX
