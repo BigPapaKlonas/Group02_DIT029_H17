@@ -154,13 +154,17 @@ encode(X) ->
 get_SD() ->
   {ok, File} = file:read_file("SD.json"), File.
 
-get_SDM() ->
-  {ok, File} = file:read_file("SD.json"), X = jsx:encode(maps:get(<<"processes">>, decode_map(File))),
+publish_processes() ->
+  %% Creates a JSON with the processes from the sequence diagram JSON 
+  {ok, File} = file:read_file("SD.json"),
+  ProcessesMap = maps:get(<<"processes">>, decode_map(File)),
+  ProcessesJSON = jsx:encode(Processes),
 
+  %% Creates connection
   {ok, C} = emqttc:start_link([{host, "localhost"}, {client_id, <<"simpleClient">>}]),
 
-  %% publish
-  emqttc:publish(C, <<"processes">>, X).
+  %% Publish
+  emqttc:publish(C, <<"processes">>, ProcessesJSON).
 
 %% Returns a JSON class diagram
 get_CD() ->
