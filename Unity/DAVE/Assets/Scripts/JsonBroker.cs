@@ -71,7 +71,7 @@ public class JsonBroker
 
     public void RenderClasses(JSONClass JSONClass)
     {
-        uplButton.GetComponent<ScaleClassHouse>().AddHouse(JSONClass);
+        uplButton.GetComponent<RenderClasses>().AddHouse(JSONClass);
     }
 
     public void RenderRelationships(JSONClass JSONClass)
