@@ -43,7 +43,7 @@ public class Coordinator : MonoBehaviour
 	  // Setup of variables for database connection.
 	  R = RethinkDb.Driver.RethinkDB.R;
 	  // Change IP when deployed to AWS.
-      conn = R.Connection ().Hostname ("127.0.0.1").Port (28015).Timeout (60).Connect ();
+		conn = R.Connection ().Hostname ("54.93.235.175").Port (28015).Timeout (60).Connect ();
 
       var result = R.Now().Run<DateTimeOffset>(conn);
 
@@ -52,7 +52,7 @@ public class Coordinator : MonoBehaviour
     }
 
 	void Update () {
-		Coordinator.coordinator.GetMqttClient().MqttMsgPublishReceived += Client_MqttMsgPublishReceived;
+		
 	}
 
 	void Awake(){
@@ -116,12 +116,12 @@ public class Coordinator : MonoBehaviour
 	}
 
 
-	private void EstablishConnection()
+	public void EstablishConnection()
 	{
 
 		// Creates a MqttClientDAVE with the following credentials
 		// Change IP when deployed to AWS.
-		this.daveClient = new MqttClientDAVE("127.0.0.1", 1883, "Unity2");
+		this.daveClient = new MqttClientDAVE("18.194.249.129", 1883, System.Guid.NewGuid().ToString());
 
 		this.client = this.daveClient.GetMqttClient();
 		// Assign handler for handling the receiving messages

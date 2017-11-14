@@ -42,7 +42,7 @@ public class RenderButtonsFromDb : MonoBehaviour {
 			.Filter (row => 
 				row.G ("new_val").G (selectedRow)
 				.Gt (row.G ("old_val").G (selectedRow))
-			).G ("new_val").RunCursorAsync<string>(Coordinator.conn);
+			).G ("new_val").RunCursor<string>(Coordinator.conn);
 		
 		foreach (var i in cursor) {
 			Debug.Log("Changes: " + i);
