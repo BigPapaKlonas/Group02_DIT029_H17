@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using RethinkDb.Driver.Net;
+using RethinkDb.Driver.Model;
 using UnityEngine.SceneManagement;
 
 public class RenderButtonsFromDb : MonoBehaviour {
 
 	public Button buttonPrefab;
-	public Canvas canvas;
+	public ScrollRect scroll;
+	public RectTransform parentPanel;
 
 	// Add string from unity
 	public string table;
@@ -36,24 +38,19 @@ public class RenderButtonsFromDb : MonoBehaviour {
 	void ObserveChange (string table, string selectedRow)
 	{
 		Cursor<string> cursor = Coordinator.R.Db ("root")
-			.Table(table).Changes()
-			.Filter(row => 
-				row.G("new_val").G(selectedRow)
-				.Gt(row.G("old_val").G(selectedRow))
-			).G("new_val").RunCursor<string>(Coordinator.conn);
+			.Table (table)
+			.Filter (row => 
+				row.G ("new_val").G (selectedRow)
+				.Gt (row.G ("old_val").G (selectedRow))
+			).G ("new_val").RunCursorAsync<string>(Coordinator.conn);
 		
 		foreach (var i in cursor) {
 			Debug.Log("Changes: " + i);
-
-			position = new Vector3 (x, y, 0f);
-			var btn = Instantiate (buttonPrefab, position, Quaternion.identity) as Button;
-			var rectTransform = btn.GetComponent<RectTransform>();
-			rectTransform.SetParent (canvas.transform, false);
+			var btn = Instantiate (buttonPrefab) as Button;
+			btn.transform.SetParent (parentPanel, false);
+			btn.transform.localScale = new Vector3 (1, 1, 1);
 			btn.GetComponentInChildren<Text>().text = i;
-
-			// Todo: This is a naive solution that needs some work.  
-			y -= 30;
-			PositionCheck ();
+			btn.onClick.AddListener(() => ButtonCallBack(btn));
 		}
 	}
 
@@ -81,20 +78,16 @@ public class RenderButtonsFromDb : MonoBehaviour {
                 .RunCursor<string>(Coordinator.conn);
                 break;
         }
-		
+			
 
 		foreach(var i in result){
 			Debug.Log("Result: " + i);
-			position = new Vector3 (x, y, 0f);
-			var btn = Instantiate (buttonPrefab, position, Quaternion.identity) as Button;
-			var rectTransform = btn.GetComponent<RectTransform>();
-			rectTransform.SetParent (canvas.transform, false);
+			var btn = Instantiate (buttonPrefab) as Button;
+
+			btn.transform.SetParent (parentPanel, false);
+			btn.transform.localScale = new Vector3 (1, 1, 1);
 			btn.GetComponentInChildren<Text>().text = i;
 			btn.onClick.AddListener(() => ButtonCallBack(btn));
-			// Todo: This is a naive solution that needs some work.  
-			y -= 30;
-			PositionCheck ();
-
 		}
 	}
 
@@ -113,6 +106,10 @@ public class RenderButtonsFromDb : MonoBehaviour {
 		case "diagrams":
 			Debug.Log ("table: " + table + " name: " + name);
 			Coordinator.coordinator.SetDiagram (name);
+			Coordinator.coordinator.Subscribe (
+				"root/" + Coordinator.coordinator.GetInstructor() + "/" + 
+				Coordinator.coordinator.GetDiagram()
+			);
             SceneManager.LoadScene ("Diagram");
 			break;
 		default:
@@ -120,12 +117,5 @@ public class RenderButtonsFromDb : MonoBehaviour {
 			break;
 		}
 	}
-
-	void PositionCheck()
-	{
-		if (y < -90f) {
-			y = 90;
-			x += 160;
-		} 
-	}
+		
 }

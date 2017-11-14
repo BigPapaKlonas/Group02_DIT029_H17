@@ -22,6 +22,7 @@ public class Coordinator : MonoBehaviour
 	public static RethinkDB R;
 	public static Connection conn;
 
+	// Private variables to hold onto data during the lifecycle of teh application.
 	private string instructor;
 	private string diagram;
 	private string student;
@@ -29,7 +30,9 @@ public class Coordinator : MonoBehaviour
 
     void Start()
     {
+		// RethinkDB
 		DatabaseConnection ();
+		// Mqtt
         EstablishConnection();
     }
 
@@ -37,7 +40,9 @@ public class Coordinator : MonoBehaviour
     {
       Debug.Log ("--- Starting Connection ---");
 
-		R = RethinkDb.Driver.RethinkDB.R;
+	  // Setup of variables for database connection.
+	  R = RethinkDb.Driver.RethinkDB.R;
+	  // Change IP when deployed to AWS.
       conn = R.Connection ().Hostname ("127.0.0.1").Port (28015).Timeout (60).Connect ();
 
       var result = R.Now().Run<DateTimeOffset>(conn);
@@ -47,7 +52,7 @@ public class Coordinator : MonoBehaviour
     }
 
 	void Update () {
-		//Coordinator.coordinator.GetMqttClient().MqttMsgPublishReceived += Client_MqttMsgPublishReceived;
+		Coordinator.coordinator.GetMqttClient().MqttMsgPublishReceived += Client_MqttMsgPublishReceived;
 	}
 
 	void Awake(){
@@ -89,12 +94,17 @@ public class Coordinator : MonoBehaviour
 		return this.student;
 	}
 
+
+	// Publish to broker
 	public void Publish(string PublishTopic, string PublishMsg, Boolean retainMsg){
-		daveClient.Publish(PublishTopic, PublishMsg, retainMsg);
+		Debug.Log ("Publishing to: " + PublishTopic.Replace (" ", "").ToLower ());
+		daveClient.Publish(PublishTopic.Replace(" ", "").ToLower(), PublishMsg, retainMsg);
 	}
 
+	// Subscribing to broker
 	public void Subscribe(string SubscribeTopic){
-		daveClient.Subscribe(SubscribeTopic);
+		Debug.Log ("Suscribing to: " + SubscribeTopic.Replace (" ", "").ToLower ());
+		daveClient.Subscribe(SubscribeTopic.Replace(" ", "").ToLower());
 	}
 
 	public MqttClient GetMqttClient(){
@@ -105,10 +115,12 @@ public class Coordinator : MonoBehaviour
 		return this.daveClient;
 	}
 
+
 	private void EstablishConnection()
 	{
 
 		// Creates a MqttClientDAVE with the following credentials
+		// Change IP when deployed to AWS.
 		this.daveClient = new MqttClientDAVE("127.0.0.1", 1883, "Unity2");
 
 		this.client = this.daveClient.GetMqttClient();
