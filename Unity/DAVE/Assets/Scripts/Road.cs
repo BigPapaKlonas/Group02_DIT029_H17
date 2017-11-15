@@ -11,13 +11,12 @@ public class Road : Pathfinding
     public Vector3 end;
     public string relationshipType;
 
+    public Material aggregation;
+    public Material association;
+    public Material directedAssociation;
     public Material composition;
-    public Material inheritance;
-    public Material street;
-
-
-    public string subclass;
-
+    public Material generalization;
+    public Material realization;
 
     private void Update()
     {
@@ -28,7 +27,7 @@ public class Road : Pathfinding
             if (!pathMade)
             {
                 Debug.Log(Path.Count);
-                for (int i = 0; i < Path.Count - 1; i++)
+                for (int i = 0; i < Path.Count; i++)
                 {
                     GameObject roadObject = (GameObject)Instantiate(
                         roadPiecePrefab,
@@ -36,7 +35,6 @@ public class Road : Pathfinding
                         transform.rotation
                     );
 
-                    roadObject.SetActive(true);
                     roadPieces.Add(roadObject);
                 }
                 pathMade = true;
@@ -63,25 +61,25 @@ public class Road : Pathfinding
         }
         else if (relationshipType.Equals("aggregation"))
         {
-            // Texture making in progress
+            roadPiece.GetComponent<Renderer>().material = aggregation;
         }
         else if (relationshipType.Equals("inheritance") ||
             relationshipType.Equals("generalization"))
         {
-            roadPiece.GetComponent<Renderer>().material = inheritance;
-            
+            roadPiece.GetComponent<Renderer>().material = generalization;
         }
-        else if (relationshipType.Equals("association"))
+        else if (relationshipType.Equals("directed_association"))
         {
-            // Texture making in progress
+            roadPiece.GetComponent<Renderer>().material = directedAssociation;
         }
         else if (relationshipType.Equals("realization"))
         {
-            // Texture making in progress
+            roadPiece.GetComponent<Renderer>().material = realization;
+
         }
         else
         {
-            roadPiece.GetComponent<Renderer>().material = street;
+            roadPiece.GetComponent<Renderer>().material = association;
         }
     }
 }
