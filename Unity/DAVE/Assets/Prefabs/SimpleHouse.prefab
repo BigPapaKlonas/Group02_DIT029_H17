@@ -1324,3 +1324,7 @@ MonoBehaviour:
     type: 2}
   start: {x: 0, y: 0, z: 0}
   end: {x: 0, y: 0, z: 0}
+  relationshipType: 
+  composition: {fileID: 2100000, guid: 12445784048e28f41a0bb063248cee54, type: 2}
+  inheritance: {fileID: 2100000, guid: e68a5282aee7e0e4cbc3c979d80588ed, type: 2}
+  street: {fileID: 2100000, guid: e3cfed23da61c604eb8d0c63eafa378f, type: 2}
