@@ -26,14 +26,15 @@ public class RenderClasses : MonoBehaviour
             0,
             zOffset
         );
+
         GameObject classHouse = (GameObject)Instantiate(
             classHousePrefab,
             positioning,
             this.transform.rotation
         );
+
         classHouse.name = className;
         classHouse.GetComponentInChildren<TextMesh>().text = className;
-
 
         ShapeTopWalls(classHouse.transform, classFields.Length);
         RenderFields(classHouse.transform, classFields);

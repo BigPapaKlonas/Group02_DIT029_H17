@@ -15,6 +15,10 @@ public class Road : Pathfinding
     public Material inheritance;
     public Material street;
 
+
+    public string subclass;
+
+
     private void Update()
     {
         FindPath(start, end);
@@ -23,6 +27,7 @@ public class Road : Pathfinding
         {
             if (!pathMade)
             {
+                Debug.Log(Path.Count);
                 for (int i = 0; i < Path.Count - 1; i++)
                 {
                     GameObject roadObject = (GameObject)Instantiate(
@@ -30,6 +35,8 @@ public class Road : Pathfinding
                         Path[i],
                         transform.rotation
                     );
+
+                    roadObject.SetActive(true);
                     roadPieces.Add(roadObject);
                 }
                 pathMade = true;

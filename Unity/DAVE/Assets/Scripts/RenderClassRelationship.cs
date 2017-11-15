@@ -14,9 +14,10 @@ public class RenderClassRelationship : Pathfinding {
             Vector3 supDoor = sup.transform.Find("BottomFrontDoor").transform.position;
 
             Road road = sub.GetComponentInChildren<Road>();
-            road.start = supDoor;
-            road.end = subDoor;
+            road.start = subDoor;
+            road.end = supDoor;
             road.relationshipType = relationship.Type;
+            road.subclass = relationship.Subclass;
         }
     }
 }
