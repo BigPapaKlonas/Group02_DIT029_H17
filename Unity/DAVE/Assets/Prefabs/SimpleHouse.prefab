@@ -1320,5 +1320,7 @@ MonoBehaviour:
   Path: []
   PathType: 0
   JS: 0
-  roadPiecePrefab: {fileID: 1471273250194994, guid: dd03d222133dade43bfe9fbb40c10d9e,
+  roadPiecePrefab: {fileID: 1255568479505122, guid: dd03d222133dade43bfe9fbb40c10d9e,
     type: 2}
+  start: {x: 0, y: 0, z: 0}
+  end: {x: 0, y: 0, z: 0}

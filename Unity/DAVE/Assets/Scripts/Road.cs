@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class Road : Pathfinding
 {
@@ -6,6 +7,7 @@ public class Road : Pathfinding
     public Vector3 start;
     public Vector3 end;
     private bool pathMade = false;
+    List<GameObject> roadPieces = new List<GameObject>();
 
     private void Update()
     {
@@ -17,15 +19,16 @@ public class Road : Pathfinding
             {
                 for (int i = 0; i < Path.Count - 1; i++)
                 {
-                    GameObject classHouse = (GameObject)Instantiate(
+                    GameObject roadObject = (GameObject)Instantiate(
                         roadPiecePrefab,
                         Path[i],
-                        this.transform.rotation
+                        transform.rotation
                     );
-                    RotateRoadPiece(Path[i], Path[i + 1], classHouse);
+                    roadPieces.Add(roadObject);
                 }
                 pathMade = true;
             }
+            RotateRoadPieces(roadPieces);
         }
     }
 
@@ -35,24 +38,11 @@ public class Road : Pathfinding
     }
 
 
-    void RotateRoadPiece(Vector3 currentPiece, Vector3 nextPiece, GameObject roadPiece)
+    void RotateRoadPieces(List<GameObject> roadPieces)
     {
-        if(currentPiece == start)
+        for (int i = 0; i < roadPieces.Count - 1; i++)
         {
-            roadPiece.transform.rotation = Quaternion.Euler(0, 0, 0);
-        }
-        else if (currentPiece == end)
-        {
-            roadPiece.transform.rotation = Quaternion.Euler(0, 180, 0);
-
-        }
-        else if(currentPiece.x < nextPiece.x)
-        {
-            roadPiece.transform.rotation = Quaternion.Euler(0, 180, 0);
-        }
-        else if(currentPiece.z < nextPiece.z)
-        {
-            roadPiece.transform.rotation = Quaternion.Euler(0, 90, 0);
+            roadPieces[i].transform.LookAt(roadPieces[i + 1].transform);
         }
     }
 }

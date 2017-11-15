@@ -14,14 +14,14 @@ public class RenderClassRelationship : Pathfinding {
             GameObject sup = GameObject.Find(relationship.Superclass);
 
             Vector3 subDoor = new Vector3(
-                sub.transform.Find("Door").position.x,
+                sub.transform.Find("BottomFrontDoor").position.x,
                 0,
-                sub.transform.Find("Door").position.z);
+                sub.transform.Find("BottomFrontDoor").position.z);
 
             Vector3 supDoor = new Vector3(
-                sup.transform.Find("Door").position.x,
+                sup.transform.Find("BottomFrontDoor").position.x,
                 0,
-                sup.transform.Find("Door").position.z);
+                sup.transform.Find("BottomFrontDoor").position.z);
 
             Vector3 infrontSub = new Vector3(
                 subDoor.x - 2,
@@ -34,8 +34,8 @@ public class RenderClassRelationship : Pathfinding {
                supDoor.z);
 
             Road road = sub.GetComponentInChildren<Road>();
-            road.start = infrontSub;
-            road.end = infrontSup;
+            road.start = supDoor;
+            road.end = subDoor;
         }
     }
 
