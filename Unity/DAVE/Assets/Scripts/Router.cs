@@ -22,10 +22,6 @@ public class Router : MonoBehaviour {
 	public InputField instructorName;
 	public InputField diagramName;
 
-	Coordinator coordinator = Coordinator.coordinator;
-	RethinkDB R = Coordinator.R;
-	Connection conn = Coordinator.conn;
-
 	void OnEnable()
 	{
 		student.onClick.AddListener(()    => buttonCallBack(student));
@@ -52,10 +48,10 @@ public class Router : MonoBehaviour {
         if (buttonPressed == studentNameBtn)
         {
             Debug.Log("Clicked: " + studentNameBtn.name);
-            coordinator.SetStudent(studentName.text);
-            coordinator.Publish(
+            Coordinator.coordinator.SetStudent(studentName.text);
+            Coordinator.coordinator.Publish(
                 "root/students",
-				coordinator.GetStudent(),
+				Coordinator.coordinator.GetStudent(),
                 true
             );
         }
@@ -70,21 +66,21 @@ public class Router : MonoBehaviour {
 		if (buttonPressed == insNameBtn)
 		{
 			Debug.Log("Clicked: " + insNameBtn.name);
-            coordinator.SetInstructor(instructorName.text);
+            Coordinator.coordinator.SetInstructor(instructorName.text);
             buttonPressed.gameObject.SetActive(false);
 			instructorName.gameObject.SetActive(false);
 		}
 		if (buttonPressed == diaNameBtn)
 		{
 			Debug.Log("Clicked: " + diaNameBtn.name);
-            coordinator.SetDiagram(diagramName.text);
+            Coordinator.coordinator.SetDiagram(diagramName.text);
             Insert();
             SceneManager.LoadScene("Diagram");
 
 			// Publish to the broker.
-            coordinator.Publish(
-				"root/" + coordinator.GetInstructor() + "/" + 
-				coordinator.GetDiagram(), 
+            Coordinator.coordinator.Publish(
+				"root/" + Coordinator.coordinator.GetInstructor() + "/" + 
+				Coordinator.coordinator.GetDiagram(), 
                 "Init diagram", 
                 true    
             );
@@ -105,7 +101,7 @@ public class Router : MonoBehaviour {
     void Insert()
     {
 
-        string instructor = coordinator.GetInstructor();
+        string instructor = Coordinator.coordinator.GetInstructor();
 
 		/* 
 		 * If database contains the instructor name: 
@@ -114,42 +110,42 @@ public class Router : MonoBehaviour {
 		 * Else:
 		 * Add both to instructors and diagrams tables.
 		*/
-		if (R.Db ("root").Table ("instructors").GetField ("name")
-			.Contains (instructor).Run (conn)) 
+		if (Coordinator.R.Db ("root").Table ("instructors").GetField ("name")
+			.Contains (instructor).Run (Coordinator.conn)) 
 		{
-			R.Db("root")
-				.Table("diagrams").Insert(R.Array(
-					R.HashMap("name", coordinator.GetDiagram())
+			Coordinator.R.Db("root")
+				.Table("diagrams").Insert(Coordinator.R.Array(
+					Coordinator.R.HashMap("name", Coordinator.coordinator.GetDiagram())
 					// TODO: Handle different types of diagrams.
 					.With("type", "sequence_diagram")
 					.With("instructor", instructor)
 				))
-				.Run(conn);
+				.Run(Coordinator.conn);
 			
-			R.Db ("root")
+			Coordinator.R.Db ("root")
 				.Table ("instructors")
 				.Filter (row => row.G ("name").Eq (instructor))
-				.Update (R.HashMap("diagrams", R.Array(coordinator.GetDiagram())))
-				.Run(conn);
+				.Update (Coordinator.R.HashMap("diagrams", Coordinator.R.Array(Coordinator.coordinator.GetDiagram())))
+				.Run(Coordinator.conn);
 			
 		} else {
 			
-	       R.Db("root")
-				.Table("diagrams").Insert(R.Array(
-	            R.HashMap("name", coordinator.GetDiagram())
+	       Coordinator.R.Db("root")
+				.Table("diagrams").Insert(Coordinator.R.Array(
+	            Coordinator.R.HashMap("name", Coordinator.coordinator.GetDiagram())
 				 // TODO: Handle different types of diagrams.
 	            .With("type", "sequence_diagram")
 	            .With("instructor", instructor)
 	            ))
-	        .Run(conn);
+	        .Run(Coordinator.conn);
 
-	        R.Db("root")
-				.Table("instructors").Insert(R.Array(
-	            R.HashMap("name", instructor)
-	            .With("diagrams", R.Array())
+	        Coordinator.R.Db("root")
+				.Table("instructors").Insert(Coordinator.R.Array(
+	            Coordinator.R.HashMap("name", instructor)
+	            .With("diagrams", Coordinator.R.Array())
 	              )
 	            )
-	        .Run(conn);
+	        .Run(Coordinator.conn);
 		}
     }
 }

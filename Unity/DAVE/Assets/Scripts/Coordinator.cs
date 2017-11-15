@@ -27,7 +27,6 @@ public class Coordinator : MonoBehaviour
 	private string diagram;
 	private string student;
 
-
     void Start()
     {
 		// RethinkDB
@@ -39,16 +38,15 @@ public class Coordinator : MonoBehaviour
     void DatabaseConnection ()
     {
       Debug.Log ("--- Starting Connection ---");
-
 	  // Setup of variables for database connection.
-	  R = RethinkDb.Driver.RethinkDB.R;
+	  R = RethinkDB.R;
 	  // Change IP when deployed to AWS.
 		conn = R.Connection ().Hostname ("54.93.235.175").Port (28015).Timeout (60).Connect ();
 
       var result = R.Now().Run<DateTimeOffset>(conn);
 
       Debug.Log ("--- Connection with result: " + result + " ---");
-      
+
     }
 
 	void Update () {
