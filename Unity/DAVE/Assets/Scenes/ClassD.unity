@@ -919,7 +919,6 @@ GameObject:
   - component: {fileID: 790149653}
   - component: {fileID: 790149652}
   - component: {fileID: 790149651}
-  - component: {fileID: 790149650}
   m_Layer: 0
   m_Name: BottomFrontDoor
   m_TagString: Wall
@@ -942,23 +941,6 @@ Transform:
   m_Father: {fileID: 1926864562}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &790149650
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114008899352739054, guid: e73110f17d6ba9048b4150553d1cb54a,
-    type: 2}
-  m_PrefabInternal: {fileID: 479647076}
-  m_GameObject: {fileID: 790149648}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 398d3c66fe892ea439190a47d5f87ac7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Path: []
-  PathType: 0
-  JS: 0
-  roadPiecePrefab: {fileID: 1234390648787342, guid: c8d7e1a7c738e9e41be59553b0a706ec,
-    type: 2}
 --- !u!23 &790149651
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1505,7 +1487,7 @@ Prefab:
     - target: {fileID: 224797727552978508, guid: 29d3d3bcf8ed2984b9f7d076602fc14d,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 450
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114329709858418346, guid: 29d3d3bcf8ed2984b9f7d076602fc14d,
         type: 2}

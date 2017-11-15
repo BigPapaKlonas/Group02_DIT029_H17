@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 
-public class RenderClassRelationship : MonoBehaviour {
+public class RenderClassRelationship : Pathfinding {
 
+    public GameObject roadPiecePrefab;
     public Material mat1, mat2, mat3;
 
     public void AddRelationship(JSONClass json)
     {
+
         foreach (var relationship in json.Relationships)
         {
             GameObject sub = GameObject.Find(relationship.Subclass);
             GameObject sup = GameObject.Find(relationship.Superclass);
 
-           
             Vector3 subDoor = new Vector3(
                 sub.transform.Find("Door").position.x,
                 0,
@@ -32,16 +32,10 @@ public class RenderClassRelationship : MonoBehaviour {
                supDoor.x - 2,
                0,
                supDoor.z);
-            
 
-            sub.GetComponentInChildren<Road>().SetStartPosition(infrontSub);
-            sub.GetComponentInChildren<Road>().SetEndPosition(infrontSup);
-            //sub.GetComponentInChildren<Road>().SetDevice(relationship.Subclass);
-            //sub.GetComponentInChildren<Road>().FindPath(infrontSup, infrontSub);
-            //sub.GetComponentInChildren<Road>().RenderRoad(); ;
-            sub.GetComponentInChildren<Road>().Update();
-            List<Vector3> path = sub.GetComponentInChildren<Road>().GetPaths();
-            Debug.Log(path.Count);
+            Road road = sub.GetComponentInChildren<Road>();
+            road.start = infrontSub;
+            road.end = infrontSup;
         }
     }
 

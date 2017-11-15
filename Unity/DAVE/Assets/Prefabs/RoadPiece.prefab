@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 33976039418402600}
   - component: {fileID: 65694364161848740}
   - component: {fileID: 23770823805566988}
+  - component: {fileID: 114537194739901414}
   m_Layer: 0
   m_Name: RoadPiece
   m_TagString: Road
@@ -93,3 +94,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114537194739901414
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1471273250194994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19ca023ff5a647449857c3b7d31ac1ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UpdateTimer: 0
