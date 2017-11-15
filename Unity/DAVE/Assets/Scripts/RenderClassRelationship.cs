@@ -1,16 +1,67 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class RenderClassRelationship : MonoBehaviour {
+
+    public Material mat1, mat2, mat3;
 
     public void AddRelationship(JSONClass json)
     {
         foreach (var relationship in json.Relationships)
         {
             GameObject sub = GameObject.Find(relationship.Subclass);
-            GameObject dom = GameObject.Find(relationship.Superclass);
+            GameObject sup = GameObject.Find(relationship.Superclass);
 
-          
+           
+            Vector3 subDoor = new Vector3(
+                sub.transform.Find("Door").position.x,
+                0,
+                sub.transform.Find("Door").position.z);
+
+            Vector3 supDoor = new Vector3(
+                sup.transform.Find("Door").position.x,
+                0,
+                sup.transform.Find("Door").position.z);
+
+            Vector3 infrontSub = new Vector3(
+                subDoor.x - 2,
+                0,
+                subDoor.z);
+
+            Vector3 infrontSup = new Vector3(
+               supDoor.x - 2,
+               0,
+               supDoor.z);
             
+
+            sub.GetComponentInChildren<Road>().SetStartPosition(infrontSub);
+            sub.GetComponentInChildren<Road>().SetEndPosition(infrontSup);
+            //sub.GetComponentInChildren<Road>().SetDevice(relationship.Subclass);
+            //sub.GetComponentInChildren<Road>().FindPath(infrontSup, infrontSub);
+            //sub.GetComponentInChildren<Road>().RenderRoad(); ;
+            sub.GetComponentInChildren<Road>().Update();
+            List<Vector3> path = sub.GetComponentInChildren<Road>().GetPaths();
+            Debug.Log(path.Count);
         }
     }
+
+    void SetRelationshipType(LineRenderer road, string type)
+    {
+        if (type.Equals("composition"))
+        {
+            road.material = mat1;
+        }
+
+        else if (type.Equals("inheritance") | type.Equals("generalization"))
+        {
+            road.material = mat2;
+        }
+        else
+        {
+            road.material = mat3;
+        }
+        road.textureMode = LineTextureMode.Stretch;
+        road.material.SetTextureScale("_MainTex", new Vector2(1.0f, 1.0f));
+    }
 }
+

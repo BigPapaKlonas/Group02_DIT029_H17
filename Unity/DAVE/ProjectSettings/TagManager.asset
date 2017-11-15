@@ -14,7 +14,9 @@ TagManager:
   - SystemBox
   - Door
   - EntranceWall
-  - BackTextWall
+  - Wall
+  - House
+  - Road
   layers:
   - Default
   - TransparentFX

@@ -22,7 +22,7 @@ public class RenderClasses : MonoBehaviour
     void InstantiateHouses(string className, float zOffset, Field[] classFields)
     {
         Vector3 positioning = new Vector3(
-            1,
+            zOffset,
             0,
             zOffset
         );
