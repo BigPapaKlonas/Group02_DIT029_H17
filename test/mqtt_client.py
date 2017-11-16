@@ -19,9 +19,17 @@ def on_message(client, userdata, msg):
     if(msg.topic == "processes"):
         container.start_containers(msg.payload.decode("utf-8"))
 
+# 'client.loop_forever()' automatically handles reconnecting as long as the initial connection does not fails
+# this function makes sure that the code does not crash in case initial connection does fail
+def connect():
+    try:
+	client.connect("18.216.88.162", 1883, 60)
+    except ConnectionRefusedError:
+        print("The broker is probably down.. I'll try again")
+        connect()
 
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
-client.connect("52.14.146.195", 1883, 60)
+connect()
 client.loop_forever();
