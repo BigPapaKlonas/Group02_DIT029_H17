@@ -9,18 +9,19 @@ def on_connect(client, userdata, flags, rc):
 
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
-    client.subscribe("processes/#")
+    client.publish("processes", "python has started!", qos=2)
+    client.subscribe("processes/#", qos=2)
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
+    print("Received: "+str(msg.payload))
+
     if(msg.topic == "processes"):
         container.start_containers(msg.payload.decode("utf-8"))
+
 
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
 client.connect("52.14.146.195", 1883, 60)
 client.loop_forever();
-
-
-

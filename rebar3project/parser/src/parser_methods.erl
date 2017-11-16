@@ -161,7 +161,7 @@ publish_processes() ->
   ProcessesJSON = jsx:encode(ProcessesMap),
 
   %% Creates connection
-  {ok, C} = emqttc:start_link([{host, "52.14.194.65"}, {client_id, <<"ErlangParser">>}]),
+  {ok, C} = emqttc:start_link([{host, "52.14.146.195"}, {client_id, <<"ErlangParser">>}]),
 
   %% Publish
   emqttc:publish(C, <<"processes">>, ProcessesJSON).
