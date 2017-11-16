@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using SFB;
 
 [RequireComponent(typeof(Button))]
@@ -46,6 +47,8 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
 
         // Debug: Json text
         // Debug.Log("Raw JSON: " + output);
+
+		SceneManager.LoadScene("Diagram");
 
     }
 }

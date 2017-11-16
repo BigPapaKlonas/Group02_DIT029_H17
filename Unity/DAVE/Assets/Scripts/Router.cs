@@ -75,8 +75,9 @@ public class Router : MonoBehaviour {
 			Debug.Log("Clicked: " + diaNameBtn.name);
             Coordinator.coordinator.SetDiagram(diagramName.text);
             Insert();
-            SceneManager.LoadScene("Diagram");
-
+			buttonPressed.gameObject.SetActive(false);
+			diagramName.gameObject.SetActive(false);
+            
 			// Publish to the broker.
             Coordinator.coordinator.Publish(
 				"root/" + Coordinator.coordinator.GetInstructor() + "/" + 
