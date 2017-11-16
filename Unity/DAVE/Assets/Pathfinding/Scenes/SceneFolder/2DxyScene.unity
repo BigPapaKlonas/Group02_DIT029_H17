@@ -620,7 +620,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: []
   JS: 0
-  SearchPerSecond: 5
   Player: {fileID: 225608067}
   SearchDistance: 20
   Speed: 5

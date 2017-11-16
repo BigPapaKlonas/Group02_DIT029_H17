@@ -120,7 +120,7 @@ Skybox:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 21947997}
   m_Enabled: 1
-  m_CustomSkybox: {fileID: 2100000, guid: e7471c7bc3e48f8408ba34ff15fec1e5, type: 2}
+  m_CustomSkybox: {fileID: 2100000, guid: 697dcc1a69e1a2c4ea5db483875ede85, type: 2}
 --- !u!1 &90127740
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,7 +255,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &745209882
 Prefab:
@@ -724,7 +724,7 @@ Prefab:
     - target: {fileID: 224797727552978508, guid: 29d3d3bcf8ed2984b9f7d076602fc14d,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 450
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114329709858418346, guid: 29d3d3bcf8ed2984b9f7d076602fc14d,
         type: 2}
@@ -756,7 +756,7 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 29d3d3bcf8ed2984b9f7d076602fc14d, type: 2}
   m_IsPrefabParent: 0
---- !u!1001 &1413964902
+--- !u!1001 &878117347
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -769,15 +769,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 297.08154
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 22.121094
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 293.3286
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: m_LocalRotation.x
@@ -797,7 +797,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: Tilesize
@@ -820,58 +820,41 @@ Prefab:
       value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
-      propertyPath: MaxFalldownHeight
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
-      propertyPath: ClimbLimit
-      value: 1
+      propertyPath: DisallowedTags.Array.data[0]
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: HeuristicAggression
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
-      propertyPath: DisallowedTags.Array.data[0]
-      value: Wall
+      propertyPath: ClimbLimit
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
+      propertyPath: MaxFalldownHeight
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: DrawMapInEditor
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
+      propertyPath: MoveDiagonal
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: HighestPoint
-      value: 50
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: LowestPoint
-      value: -10
-      objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
-      propertyPath: MoveDiagonal
-      value: 0
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: DisallowedTags.Array.data[1]
       value: Road
       objectReference: {fileID: 0}
-    - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
-      propertyPath: CheckFullTileSize
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: efdf155e29b063e48a1a315326175481, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &1645120501 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1431700228509862, guid: 64e321d3fdc93af4186fae5eace9a0f0,
-    type: 2}
-  m_PrefabInternal: {fileID: 745209882}
---- !u!45 &1645120502
-Skybox:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1645120501}
-  m_Enabled: 1
-  m_CustomSkybox: {fileID: 2100000, guid: 697dcc1a69e1a2c4ea5db483875ede85, type: 2}

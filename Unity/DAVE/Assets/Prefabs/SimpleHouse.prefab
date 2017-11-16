@@ -1322,8 +1322,8 @@ MonoBehaviour:
   JS: 0
   roadPiecePrefab: {fileID: 1255568479505122, guid: dd03d222133dade43bfe9fbb40c10d9e,
     type: 2}
-  start: {x: 0, y: 0, z: 0}
-  end: {x: 0, y: 0, z: 0}
+  startPos: {x: 0, y: 0, z: 0}
+  endPos: {x: 0, y: 0, z: 0}
   relationshipType: 
   aggregation: {fileID: 2100000, guid: 02f9e6f359dd6f9439724c395915ad03, type: 2}
   association: {fileID: 2100000, guid: 44a27e220d68a6f46896a7219cd468ce, type: 2}
@@ -1331,4 +1331,3 @@ MonoBehaviour:
   composition: {fileID: 2100000, guid: 12445784048e28f41a0bb063248cee54, type: 2}
   generalization: {fileID: 2100000, guid: e68a5282aee7e0e4cbc3c979d80588ed, type: 2}
   realization: {fileID: 2100000, guid: 5c95bd06cb6741c45a6a4bf8b47efa50, type: 2}
-  subclass: 

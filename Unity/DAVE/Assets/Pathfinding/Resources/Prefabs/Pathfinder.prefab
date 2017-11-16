@@ -41,18 +41,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Tilesize: 0
-  MaxFalldownHeight: 0
-  ClimbLimit: 0
-  HeuristicAggression: 0
-  HighestPoint: 100
-  LowestPoint: -50
   MapStartPosition: {x: 0, y: 0}
   MapEndPosition: {x: 0, y: 0}
   DisallowedTags: []
-  IgnoreTags: []
-  MoveDiagonal: 1
   DrawMapInEditor: 0
-  CheckFullTileSize: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
