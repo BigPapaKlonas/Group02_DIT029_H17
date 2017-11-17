@@ -8,7 +8,7 @@
 %% API
 -export([encode/1, get_SD/0, get_DD/0, get_CD/0, get_type/1,
   get_diagram/1, get_parsed_diagram/1, get_processes/1,
-  get_relationships/1, get_classes/1, get_mapping/1, get_messages/1]).
+  get_relationships/1, get_classes/1, get_mapping/1, get_messages/1, get_format/1]).
 
 %% Decodes the JSON file into an Erlang map
 decode_map(X) ->
@@ -23,6 +23,9 @@ decode_list(X) ->
     true  -> jsx:decode(X);
     false -> 'not a valid JSON'
   end.
+
+%% Returns the JSON format
+get_format(X) -> Meta = maps:get(<<"meta">>, decode_map(X)), maps:get(<<"format">>, Meta). %element(1, Meta).
 
 %% Returns the diagram type
 get_type(X) -> maps:get(<<"type">>, X).
