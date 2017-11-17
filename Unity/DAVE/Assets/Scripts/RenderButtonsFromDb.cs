@@ -80,16 +80,25 @@ public class RenderButtonsFromDb : MonoBehaviour {
 			Debug.Log ("table: " + table + " name: " + name);
 			Coordinator.coordinator.SetDiagram (name);
 			Coordinator.coordinator.Publish (
-				"root/" + Coordinator.coordinator.GetInstructor() + "/" + 
-				Coordinator.coordinator.GetDiagram() + "/students/", 
-				Coordinator.coordinator.GetStudent(),
+				"root/" + Coordinator.coordinator.GetInstructor () + "/" +
+				Coordinator.coordinator.GetDiagram () + "/students/", 
+				Coordinator.coordinator.GetStudent (),
 				true
 			);
 			Coordinator.coordinator.Subscribe (
-				"root/" + Coordinator.coordinator.GetInstructor() + "/" + 
-				Coordinator.coordinator.GetDiagram()
+				"root/" + Coordinator.coordinator.GetInstructor () + "/" +
+				Coordinator.coordinator.GetDiagram ()
 			);
 
+			Cursor<string> result = Coordinator.R.Db ("root").Table ("diagrams")
+				.Filter (Coordinator.R.HashMap ("name", Coordinator.coordinator.GetDiagram ()))
+				.GetField ("type")
+				.RunCursor<string> (Coordinator.conn);
+					
+			foreach (var type in result){
+				Coordinator.coordinator.SetDiagramType(type);
+			}
+				
 			SceneManager.LoadScene (Coordinator.coordinator.GetDiagramType ());
 
 			break;
