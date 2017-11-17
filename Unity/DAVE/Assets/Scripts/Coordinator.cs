@@ -26,6 +26,9 @@ public class Coordinator : MonoBehaviour
 	private string instructor;
 	private string diagram;
 	private string student;
+	private string sessionJSON;
+	private string diagramType;
+	private bool instructorBool;
 
     void Start()
     {
@@ -66,33 +69,6 @@ public class Coordinator : MonoBehaviour
 		}
 	}
 
-	// get/set methods added: 
-	public void SetInstructor (string instructor)
-	{
-		this.instructor = instructor;
-	}
-	public string GetInstructor ()
-	{
-		return this.instructor;
-	}
-	public void SetDiagram (string diagram)
-	{
-		this.diagram = diagram;
-	}
-	public string GetDiagram ()
-	{
-		return this.diagram;
-	}
-	public void SetStudent (string student)
-	{
-		this.student = student;
-	}
-	public string GetStudent ()
-	{
-		return this.student;
-	}
-
-
 	// Publish to broker
 	public void Publish(string PublishTopic, string PublishMsg, Boolean retainMsg){
 		Debug.Log ("Publishing to: " + PublishTopic.Replace (" ", "").ToLower ());
@@ -119,7 +95,7 @@ public class Coordinator : MonoBehaviour
 
 		// Creates a MqttClientDAVE with the following credentials
 		// Change IP when deployed to AWS.
-		this.daveClient = new MqttClientDAVE("18.194.249.129", 1883, System.Guid.NewGuid().ToString());
+		this.daveClient = new MqttClientDAVE("18.216.88.162", 1883, System.Guid.NewGuid().ToString());
 
 		this.client = this.daveClient.GetMqttClient();
 		// Assign handler for handling the receiving messages
@@ -199,6 +175,56 @@ public class Coordinator : MonoBehaviour
 	private void RenderMessages(JSONSequence JSONSequence)
 	{
 		uplButton.GetComponent<StartMessages>().NewMessage(JSONSequence);
+	}
+
+	// get/set methods added: 
+	public void SetInstructor (string instructor)
+	{
+		this.instructor = instructor;
+	}
+	public string GetInstructor ()
+	{
+		return this.instructor;
+	}
+	public void SetDiagram (string diagram)
+	{
+		this.diagram = diagram;
+	}
+	public string GetDiagram ()
+	{
+		return this.diagram;
+	}
+	public void SetStudent (string student)
+	{
+		this.student = student;
+	}
+	public string GetStudent ()
+	{
+		return this.student;
+	}
+	public void SetSessionJson (string json)
+	{
+		this.sessionJSON = json;
+	}
+	public string GetSessionJson ()
+	{
+		return this.sessionJSON;
+	}
+	public void SetDiagramType (string type)
+	{
+		this.diagramType = type;
+	}
+	public string GetDiagramType ()
+	{
+		return this.diagramType;
+	}
+	public void SetInstructorBool (bool instructorBool) 
+	{
+		this.instructorBool = instructorBool;
+	}
+	public bool GetInstructorBool ()
+	{
+		return this.instructorBool;
 	}
 
 }

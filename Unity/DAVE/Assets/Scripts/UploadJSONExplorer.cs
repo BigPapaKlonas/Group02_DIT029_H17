@@ -48,7 +48,14 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
         // Debug: Json text
         // Debug.Log("Raw JSON: " + output);
 
-		SceneManager.LoadScene("Diagram");
+		JsonParser parser = new JsonParser (output);
+
+		Debug.Log ("Diagram type: " + parser.GetDiagramType ());
+
+		Coordinator.coordinator.SetDiagramType (parser.GetDiagramType ());
+		Coordinator.coordinator.SetSessionJson (output);
+
+		SceneManager.LoadScene ("Diagram");
 
     }
 }

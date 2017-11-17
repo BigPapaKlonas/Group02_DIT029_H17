@@ -73,17 +73,23 @@ public class RenderButtonsFromDb : MonoBehaviour {
 		{
 		case "instructors":
 			Debug.Log ("table: " + table + " name: " + name);
-			coordinator.SetInstructor (name);
+			Coordinator.coordinator.SetInstructor (name);
 			SceneManager.LoadScene ("DiagramChoice");
 			break;
 		case "diagrams":
 			Debug.Log ("table: " + table + " name: " + name);
-			coordinator.SetDiagram (name);
-			coordinator.Subscribe (
-				"root/" + coordinator.GetInstructor() + "/" + 
-				coordinator.GetDiagram()
+			Coordinator.coordinator.SetDiagram (name);
+			Coordinator.coordinator.Publish (
+				"root/" + Coordinator.coordinator.GetInstructor() + "/" + 
+				Coordinator.coordinator.GetDiagram() + "/students/", 
+				Coordinator.coordinator.GetStudent(),
+				true
 			);
-            SceneManager.LoadScene ("Diagram");
+			Coordinator.coordinator.Subscribe (
+				"root/" + Coordinator.coordinator.GetInstructor() + "/" + 
+				Coordinator.coordinator.GetDiagram()
+			);
+			SceneManager.LoadScene (Coordinator.coordinator.GetDiagramType ());
 			break;
 		default:
 			Debug.Log ("Error in table name OnClick");

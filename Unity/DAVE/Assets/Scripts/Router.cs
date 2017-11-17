@@ -40,6 +40,7 @@ public class Router : MonoBehaviour {
 		
 		if (buttonPressed == student)
 		{
+			Coordinator.coordinator.SetInstructorBool(false);
 			Debug.Log("Clicked: " + student.name);
 			buttonPressed.gameObject.SetActive(false);
 			instructor.enabled = false;
@@ -49,15 +50,11 @@ public class Router : MonoBehaviour {
         {
             Debug.Log("Clicked: " + studentNameBtn.name);
             Coordinator.coordinator.SetStudent(studentName.text);
-            Coordinator.coordinator.Publish(
-                "root/students",
-				Coordinator.coordinator.GetStudent(),
-                true
-            );
         }
 
 		if (buttonPressed == instructor)
 		{
+			Coordinator.coordinator.SetInstructorBool(true);
 			Debug.Log("Clicked: " + instructor.name);
 			buttonPressed.gameObject.SetActive(false);
 			student.enabled = false;
