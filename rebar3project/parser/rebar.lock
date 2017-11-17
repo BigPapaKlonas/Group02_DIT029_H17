@@ -1,4 +1,8 @@
-[{<<"gen_logger">>,
+[{<<"emqttc">>,
+  {git,"https://github.com/emqtt/emqttc",
+       {ref,"d43c110f7f39a8faa3d38f781638639f01fc6cb0"}},
+  0},
+ {<<"gen_logger">>,
   {git,"https://github.com/emqtt/gen_logger.git",
        {ref,"f6e9f2f373d99f41ffe0579ab5a5f3b19472c9c5"}},
   1},
@@ -13,8 +17,4 @@
  {<<"lager">>,
   {git,"https://github.com/basho/lager.git",
        {ref,"81eaef0ce98fdbf64ab95665e3bc2ec4b24c7dac"}},
-  2},
- {<<"mqttc">>,
-  {git,"https://github.com/emqtt/emqttc",
-       {ref,"d43c110f7f39a8faa3d38f781638639f01fc6cb0"}},
-  0}].
+  2}].

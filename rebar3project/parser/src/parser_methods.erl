@@ -25,7 +25,12 @@ decode_list(X) ->
   end.
 
 %% Returns the JSON format
-get_format(X) -> Meta = maps:get(<<"meta">>, decode_map(X)), maps:get(<<"format">>, Meta). %element(1, Meta).
+get_format(X) ->  Meta = maps:get(<<"meta">>, decode_map(X)),
+                  Format = unicode:characters_to_list(maps:get(<<"format">>, Meta), utf8),
+                  case Format of
+                    "DIT029 format" -> true;
+                    _Else -> false
+                  end.
 
 %% Returns the diagram type
 get_type(X) -> maps:get(<<"type">>, X).

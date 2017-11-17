@@ -17,8 +17,6 @@
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
          terminate/2, code_change/3]).
 
--record(state, {mqttc, seq}).
-
 %% ------------------------------------------------------------------
 %% API Function Definitions
 %% ------------------------------------------------------------------
@@ -39,8 +37,7 @@ init(_Args) ->
                                  {reconnect, 3},
                                  {logger, {console, info}}]),
     %% The pending subscribe
-    emqttc:subscribe(C, <<"TopicA">>, qos2),%%subscribe with qos2
-    {ok, #state{mqttc = C, seq = 1}}.
+    {ok, C}.
 
 handle_call(stop, _From, State) ->
     {stop, normal, ok, State};
@@ -52,33 +49,37 @@ handle_cast(_Msg, State) ->
     {noreply, State}.
 
 %% Publish Messages
-handle_info(publish, State = #state{mqttc = C, seq = I}) ->
-    Payload = list_to_binary(["hello...", integer_to_list(I)]),
+handle_info(publish, C) ->
+    Payload = parser_methods:get_CD(),
     emqttc:publish(C, <<"TopicA">>, Payload, [{qos, 1}]),
-    emqttc:publish(C, <<"TopicB">>, Payload, [{qos, 2}]),
     erlang:send_after(3000, self(), publish),
-    {noreply, State#state{seq = I+1}};
+    {noreply, C};
 
 %% Receive Messages
-handle_info({publish, Topic, JSON}, State) ->
+handle_info({publish, Topic, JSON}, C) ->
     %%forward it to parser.
-    %%forward it to Shaun.
-    % s = parser_methods:get_parsed_diagram(JSON),
-    io:format("Message forward to parser from ~s: ~p~n", [Topic, JSON]),
-    {noreply, State};
+    case jsx:is_json(JSON) of
+      true  -> jsx:decode(JSON),
+               case parser_methods:get_format(JSON) of
+               true ->io:format("Message forward to parser from ~s: ~p~n", [Topic, JSON]);
+                                         % get parsed and send to Shaun
+               false ->io:format("JSON ERROR: Not DIT029 format\n")
+             end;
+      false ->io:format("JSON ERROR: Not a valid JSON\n")
+    end,
+    {noreply, C};
 
 %% Client connected
-handle_info({mqttc, C, connected}, State = #state{mqttc = C}) ->
+handle_info({mqttc, C, connected}, C) ->
     io:format("Client ~p is connected~n", [C]),
     emqttc:subscribe(C, <<"TopicA">>, 1),
-    emqttc:subscribe(C, <<"TopicB">>, 2),
     self() ! publish,
-    {noreply, State};
+    {noreply, C};
 
 %% Client disconnected
-handle_info({mqttc, C,  disconnected}, State = #state{mqttc = C}) ->
+handle_info({mqttc, C,  disconnected}, C) ->
     io:format("Client ~p is disconnected~n", [C]),
-    {noreply, State};
+    {noreply, C};
 
 handle_info(_Info, State) ->
     {noreply, State}.
