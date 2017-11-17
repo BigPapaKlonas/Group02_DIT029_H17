@@ -17,6 +17,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DiagramChoice.unity
     guid: 2e8130f0324574c8d844174e0ff070c2
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Diagram.unity
     guid: b88806a6703547743a59fd0b6c0016f9
+  - enabled: 1
+    path: Assets/Scenes/class_diagram.unity
+    guid: b1bb653ca87af4281a02d452e8c022cb
+  - enabled: 1
+    path: Assets/Scenes/deployment_diagram.unity
+    guid: 5c8e873bebe4a4b22904f78a547b2506
+  - enabled: 1
+    path: Assets/Scenes/sequence_diagram.unity
+    guid: 9eecabee9ec9440148ee9d4ced93515d

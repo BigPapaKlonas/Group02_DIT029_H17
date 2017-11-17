@@ -41,6 +41,7 @@ public class Router : MonoBehaviour {
 		if (buttonPressed == student)
 		{
 			Coordinator.coordinator.SetInstructorBool(false);
+			Debug.Log ("ins bool: " + Coordinator.coordinator.GetInstructorBool());
 			Debug.Log("Clicked: " + student.name);
 			buttonPressed.gameObject.SetActive(false);
 			instructor.enabled = false;
@@ -55,6 +56,7 @@ public class Router : MonoBehaviour {
 		if (buttonPressed == instructor)
 		{
 			Coordinator.coordinator.SetInstructorBool(true);
+			Debug.Log ("ins bool: " + Coordinator.coordinator.GetInstructorBool());
 			Debug.Log("Clicked: " + instructor.name);
 			buttonPressed.gameObject.SetActive(false);
 			student.enabled = false;
@@ -71,7 +73,6 @@ public class Router : MonoBehaviour {
 		{
 			Debug.Log("Clicked: " + diaNameBtn.name);
             Coordinator.coordinator.SetDiagram(diagramName.text);
-            Insert();
 			buttonPressed.gameObject.SetActive(false);
 			diagramName.gameObject.SetActive(false);
             
@@ -95,55 +96,5 @@ public class Router : MonoBehaviour {
         studentNameBtn.onClick.RemoveAllListeners();
 	}
 
-	// Insert to the Database.
-    void Insert()
-    {
 
-        string instructor = Coordinator.coordinator.GetInstructor();
-
-		/* 
-		 * If database contains the instructor name: 
-		 * Update instructors.diagrams
-		 * and add the diagram to diagrams table.
-		 * Else:
-		 * Add both to instructors and diagrams tables.
-		*/
-		if (Coordinator.R.Db ("root").Table ("instructors").GetField ("name")
-			.Contains (instructor).Run (Coordinator.conn)) 
-		{
-			Coordinator.R.Db("root")
-				.Table("diagrams").Insert(Coordinator.R.Array(
-					Coordinator.R.HashMap("name", Coordinator.coordinator.GetDiagram())
-					// TODO: Handle different types of diagrams.
-					.With("type", "sequence_diagram")
-					.With("instructor", instructor)
-				))
-				.Run(Coordinator.conn);
-			
-			Coordinator.R.Db ("root")
-				.Table ("instructors")
-				.Filter (row => row.G ("name").Eq (instructor))
-				.Update (Coordinator.R.HashMap("diagrams", Coordinator.R.Array(Coordinator.coordinator.GetDiagram())))
-				.Run(Coordinator.conn);
-			
-		} else {
-			
-	       Coordinator.R.Db("root")
-				.Table("diagrams").Insert(Coordinator.R.Array(
-	            Coordinator.R.HashMap("name", Coordinator.coordinator.GetDiagram())
-				 // TODO: Handle different types of diagrams.
-	            .With("type", "sequence_diagram")
-	            .With("instructor", instructor)
-	            ))
-	        .Run(Coordinator.conn);
-
-	        Coordinator.R.Db("root")
-				.Table("instructors").Insert(Coordinator.R.Array(
-	            Coordinator.R.HashMap("name", instructor)
-	            .With("diagrams", Coordinator.R.Array())
-	              )
-	            )
-	        .Run(Coordinator.conn);
-		}
-    }
 }

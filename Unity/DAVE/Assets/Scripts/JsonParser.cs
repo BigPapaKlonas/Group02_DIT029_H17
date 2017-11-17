@@ -36,6 +36,14 @@ using Newtonsoft.Json;
 
     }
 
+	public string AddMetaToSequence (string addition)
+	{
+		JSONSequence seq = JsonConvert.DeserializeObject<JSONSequence>(JSONString, Converter.Settings);
+		seq.Meta.Extensions.Add (addition);
+
+		return JsonConvert.SerializeObject(seq, Converter.Settings);
+	}
+
 }
 
 

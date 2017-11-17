@@ -89,7 +89,9 @@ public class RenderButtonsFromDb : MonoBehaviour {
 				"root/" + Coordinator.coordinator.GetInstructor() + "/" + 
 				Coordinator.coordinator.GetDiagram()
 			);
+
 			SceneManager.LoadScene (Coordinator.coordinator.GetDiagramType ());
+
 			break;
 		default:
 			Debug.Log ("Error in table name OnClick");

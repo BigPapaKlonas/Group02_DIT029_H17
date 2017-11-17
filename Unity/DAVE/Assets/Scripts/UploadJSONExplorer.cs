@@ -4,6 +4,9 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using SFB;
+using RethinkDb.Driver;
+using RethinkDb.Driver.Net;
+
 
 [RequireComponent(typeof(Button))]
 public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
@@ -53,9 +56,71 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
 		Debug.Log ("Diagram type: " + parser.GetDiagramType ());
 
 		Coordinator.coordinator.SetDiagramType (parser.GetDiagramType ());
-		Coordinator.coordinator.SetSessionJson (output);
 
-		SceneManager.LoadScene ("Diagram");
+		output = parser.AddMetaToSequence ("root/" + 
+			Coordinator.coordinator.GetInstructor ().Replace (" ", "").ToLower () + "/" + 
+			Coordinator.coordinator.GetDiagram ().Replace (" ", "").ToLower ()
+		);
+
+		Debug.Log (output);
+
+		Coordinator.coordinator.SetSessionJson (output);
+	
+		Insert ();
+
+		SceneManager.LoadScene (Coordinator.coordinator.GetDiagramType ());
 
     }
+
+	// Insert to the Database.
+	void Insert()
+	{
+
+		string instructor = Coordinator.coordinator.GetInstructor ();
+		string diagram = Coordinator.coordinator.GetDiagram ();
+		string diagramType = Coordinator.coordinator.GetDiagramType ();
+
+		/* 
+		 * If database contains the instructor name: 
+		 * Update instructors.diagrams
+		 * and add the diagram to diagrams table.
+		 * Else:
+		 * Add both to instructors and diagrams tables.
+		*/
+		if (Coordinator.R.Db ("root").Table ("instructors").GetField ("name")
+			.Contains (instructor).Run (Coordinator.conn)) 
+		{
+			Coordinator.R.Db("root")
+				.Table("diagrams").Insert(Coordinator.R.Array(
+					Coordinator.R.HashMap("name", diagram)
+					.With("type", diagramType)
+					.With("instructor", instructor)
+				))
+				.Run(Coordinator.conn);
+
+			Coordinator.R.Db ("root")
+				.Table ("instructors")
+				.Filter (row => row.G ("name").Eq (instructor))
+				.Update (Coordinator.R.HashMap("diagrams", Coordinator.R.Array(diagram)))
+				.Run(Coordinator.conn);
+
+		} else {
+
+			Coordinator.R.Db("root")
+				.Table("diagrams").Insert(Coordinator.R.Array(
+					Coordinator.R.HashMap("name", diagram)
+					.With("type", diagramType)
+					.With("instructor", instructor)
+				))
+				.Run(Coordinator.conn);
+
+			Coordinator.R.Db("root")
+				.Table("instructors").Insert(Coordinator.R.Array(
+					Coordinator.R.HashMap("name", instructor)
+					.With("diagrams", Coordinator.R.Array())
+				)
+				)
+				.Run(Coordinator.conn);
+		}
+	}
 }

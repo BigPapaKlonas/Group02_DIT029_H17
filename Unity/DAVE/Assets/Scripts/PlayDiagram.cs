@@ -15,7 +15,9 @@ public class PlayDiagram : MonoBehaviour {
 		button = GetComponent<Button>();
 		button.onClick.AddListener(OnClick);
 
-		if (Coordinator.coordinator.GetInstructorBool ()) {
+		Debug.Log ("PLAY DIAGRAM BOOL: " + Coordinator.coordinator.GetInstructorBool());
+
+		if (Coordinator.coordinator.GetInstructorBool () == false) {
 			button.gameObject.SetActive (false);
 		}
 	}
