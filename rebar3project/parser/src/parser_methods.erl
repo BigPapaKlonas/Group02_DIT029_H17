@@ -8,7 +8,7 @@
 %% API
 -export([encode/1, get_SD/0, get_DD/0, get_CD/0, get_type/1,
   get_diagram/1, get_parsed_diagram/1, get_processes/1,
-  get_relationships/1, get_classes/1, get_mapping/1, get_messages/1]).
+  get_relationships/1, get_classes/1, get_mapping/1, get_messages/1, publish_processes/0]).
 
 %% Decodes the JSON file into an Erlang map
 decode_map(X) ->
@@ -92,6 +92,18 @@ get_mapping(X) -> case get_type(X) of
                           maps:get(<<"mapping">>, X)));
                     _Else -> 'Error, not a deployment diagram'
                   end.
+
+publish_processes() ->
+%% Creates a JSON with the processes from the sequence diagram JSON
+{ok, File} = file:read_file("SD.json"),
+ProcessesMap = maps:get(<<"processes">>, decode_map(File)),
+ProcessesJSON = jsx:encode(ProcessesMap),
+
+%% Creates connection
+{ok, C} = emqttc:start_link([{host, "18.216.88.162"}, {client_id, <<"ErlangParserProcesses">>}]),
+
+%% Publish
+emqttc:publish(C, <<"root/processes">>, ProcessesJSON).
 
 % Traverses all the different sub-contents of SDD while parsing them
 % Reason for the method to being separate is to find the sub-contents
