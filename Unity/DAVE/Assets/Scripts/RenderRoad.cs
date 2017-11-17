@@ -37,17 +37,20 @@ public class RenderRoad : Pathfinding
                 // Create a new RoadPiece object for every Vector3 point in the Path
                 foreach(var pathPoint in Path)
                 {
-                    GameObject roadObject = (GameObject)Instantiate(
+                    GameObject roadObject = Instantiate(
                         roadPiecePrefab,
                         pathPoint,
                         transform.rotation
                     );
+                   
                     // Add game object to List
                     roadPieces.Add(roadObject);
                 }
+
                 // Set to true, to stop from foreach loop executing againg
                 roadMade = true;
             }
+
             // Call function to rotate all the GameObject in list towards each other
             RotateRoadPieces(roadPieces);
         }
@@ -67,6 +70,9 @@ public class RenderRoad : Pathfinding
             // Call function to change the material for the current RoadPiece
             SetRelationshipType(roadPieces[i]);
         }
+
+        // Setting  relationship type for the last road piece
+        SetRelationshipType(roadPieces[roadPieces.Count - 1]);
     }
 
     /*

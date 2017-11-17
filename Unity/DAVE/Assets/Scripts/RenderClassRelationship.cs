@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class RenderClassRelationship : Pathfinding {
+public class RenderClassRelationship : MonoBehaviour {
 
     public void AddRelationship(JSONClass json)
     {
@@ -19,8 +19,8 @@ public class RenderClassRelationship : Pathfinding {
 
             // Getting an instance of the script responsible for making Road
             RenderRoad road = sub.GetComponentInChildren<RenderRoad>();
-            road.startPos = supDoor.position;
-            road.endPos = subDoor.position;
+            road.startPos = subDoor.position;
+            road.endPos = supDoor.position;
             road.relationshipType = relationship.Type;
         }
     }
