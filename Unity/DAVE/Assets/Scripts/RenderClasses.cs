@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 /*
@@ -9,27 +9,39 @@ public class RenderClasses : MonoBehaviour
     // House Prefab
     public GameObject classHousePrefab;
 
+    // List use to keep track of where the houses are located
+    private List<Vector3> houseRotation = new List<Vector3>();
+    private List<Vector3> housePositions = new List<Vector3>();
+    private List<GameObject> houses = new List<GameObject>();
+    private Vector3 positioning = new Vector3(0, 0, 0);
+
+    private void Start()
+    {
+        houseRotation.Add(new Vector3(0, 90, 0));
+        houseRotation.Add(new Vector3(0, 180, 0));
+        houseRotation.Add(new Vector3(0, 270, 0));
+        houseRotation.Add(new Vector3(0, 360, 0));
+
+    }
     /*
      * Makes houses by looping trhough JSON
-     **/ 
+     **/
     public void AddHouse(JSONClass json)
     {
         float offset = 0;   // Value used in Vector3 for house positioning
         foreach (var classes in json.Classes)
         {
-            // Make Vector3 to specify the houses position
-            Vector3 positioning = new Vector3(
-                offset,
-                0,
-                offset
-            );
+            Vector3 positioning = FindPosition(houses);
 
             // Create House
-            GameObject classHouse = (GameObject)Instantiate(
+            GameObject classHouse = Instantiate(
                 classHousePrefab,
                 positioning,
-                transform.rotation
+                transform.rotation = Quaternion.Euler(
+                    houseRotation[Random.Range(0, houseRotation.Count)])
             );
+
+            houses.Add(classHouse);
 
             // Change the name of the house in Hierarchy
             classHouse.name = classes.Name;
@@ -51,9 +63,39 @@ public class RenderClasses : MonoBehaviour
         }
     }
 
+    Vector3 FindPosition(List<GameObject> houseList)
+    {
+        // Make Vector3 to specify the houses position
+        Vector3 housePosition = new Vector3(
+            Random.Range(-45, 45),
+            0,
+            Random.Range(-45, 45)
+        );
+
+        bool overlap = false;
+
+        foreach (GameObject house in houseList)
+        {
+            if(house.transform.position == housePosition)
+            {
+                overlap = true;
+            }
+
+            while(house.transform.position == housePosition)
+            {
+                housePosition = new Vector3(
+                    Random.Range(-45, 45),
+                    0,
+                    Random.Range(-45, 45)
+                );
+            }
+        }
+        return housePosition;
+    }
+
     /*
      * Resizes houses' top walls based on the amount of fields each class has
-     **/ 
+     **/
     void ResizeTopWalls(Transform houseParent, int fieldCount)
     {
         // Getting the children Transform of the top walls

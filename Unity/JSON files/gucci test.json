@@ -1,0 +1,60 @@
+{
+ "meta" : {
+ "format" : "DIT029 format",
+ "version" : "1.0",
+ "extensions" : []
+ },
+ "type" : "class_diagram",
+ "classes" : [
+ {
+ "name" : "Device",
+ "fields" : [{ "name":"network_interface", "type":"string"}]
+ },
+ {
+ "name" : "Lil Pump",
+ "fields" : [{ "name":"Id rather fuck a bitch", "type":"from the project"}]
+ },
+ {
+ "name" : "Houses Testy",
+ "fields" : [{ "name":"network_interface", "type":"string"}, { "name":"network_interface", "type":"string"}, { "name":"network_interface", "type":"string"}, { "name":"network_interface", "type":"string"}]
+ },
+ {
+ "name" : "Banana",
+ "fields" : [{ "name":"network_interface", "type":"string"}, { "name":"space", "type":"test"}, { "name":"network", "type":"boolean"}]
+ },
+  {
+ "name" : "Gucci Gang",
+ "fields" : [{ "name":"Gucci", "type":"gang"}, { "name":"Spread", "type":"That"}, { "name":"Rack", "type":"On new Chain"},  { "name":"I fuck", "type":"a bitch"},  { "name":"Gucci", "type":"gang"}]
+ },
+ {
+ "name" : "Gateway",
+ "fields" : []
+ },
+ {
+ "name" : "User",
+ "fields" : [{"name":"name", "type":"string"}, {"name":"email", "type":"string"}]
+ }
+ ],
+ "relationships" : [
+ {
+ "type" : "inheritance",
+ "superclass" : "Device",
+ "subclass" : "Gateway"
+ },
+ {
+ "type" : "aggregation",
+ "superclass" : "Banana",
+ "subclass" : "Houses Testy"
+ },
+ {
+ "type" : "realization",
+ "superclass" : "Lil Pump",
+ "subclass" : "Gucci Gang"
+ },
+ {
+ "type" : "inheritance",
+ "superclass" : "Device",
+ "subclass" : "User"
+ }
+ ]
+}

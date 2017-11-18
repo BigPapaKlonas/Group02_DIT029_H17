@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 124232105667396412}
   - component: {fileID: 92770598800514926}
   - component: {fileID: 81095563883268360}
-  - component: {fileID: 114387476472361588}
+  - component: {fileID: 114891165467241780}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -72,7 +72,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1428399042898486}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -204,23 +204,6 @@ MonoBehaviour:
   CrosshairPrefabInstance: {fileID: 0}
   DebugRayColor: {r: 0.5777592, g: 0.9117647, b: 0.046929054, a: 0}
   Opacity: 1
---- !u!114 &114387476472361588
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1428399042898486}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfe93f190a5ab4240a3adae7dc812dbc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sensitivity: {x: 2, y: 2}
-  Smoothing: {x: 2, y: 2}
-  clampInDegrees: {x: 360, y: 180}
-  targetDirection: {x: 0, y: 0}
-  targetCharacterDirection: {x: 0, y: 0}
-  characterBody: {fileID: 0}
 --- !u!114 &114445737760071516
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -240,6 +223,23 @@ MonoBehaviour:
   AirControl: 0.2
   JumpVelocity: 5
   GroundHeight: 1.1
+--- !u!114 &114891165467241780
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1428399042898486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfe93f190a5ab4240a3adae7dc812dbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sensitivity: {x: 2, y: 2}
+  Smoothing: {x: 2, y: 2}
+  clampInDegrees: {x: 360, y: 180}
+  targetDirection: {x: 0, y: 0}
+  targetCharacterDirection: {x: 0, y: 0}
+  characterBody: {fileID: 0}
 --- !u!124 &124232105667396412
 Behaviour:
   m_ObjectHideFlags: 1
