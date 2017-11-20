@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -36,7 +36,7 @@ public class StartMessages : MonoBehaviour
 
             // Add parallel box
             GameObject parBox = (GameObject)Instantiate(Resources.Load("ParallelBox"));
-            
+
             foreach (var content in json.Diagram.Content)
             {
                 Queue destList = new Queue();
@@ -66,7 +66,7 @@ public class StartMessages : MonoBehaviour
                         size++;
                     }
 
-                    else 
+                    else
                     {
 
 
@@ -141,6 +141,7 @@ public class StartMessages : MonoBehaviour
         }
     }
 
+
     void StartMessageChain(Queue queue, float yOffset)
     {
 
@@ -204,11 +205,14 @@ public class StartMessages : MonoBehaviour
         {
             sum = sum + a;
         }
-        if(sum > list.Count) {
+        if (sum > list.Count)
+        {
             return actSizeList.Dequeue() / 2;
-        } else {
+        }
+        else
+        {
             return actSizeList.Dequeue();
-        }  
+        }
     }
 
     void PlaceParLine(JSONSequence json, float positionY,
