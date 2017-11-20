@@ -1,6 +1,5 @@
-import sys
-sys.path.append('/usr/local/lib/python3.5/dist-packages/')
 import paho.mqtt.client as mqtt
+import socket
 import container
 
 # The callback for when the client receives a CONNACK response from the server.
@@ -23,9 +22,10 @@ def on_message(client, userdata, msg):
 # this function makes sure that the code does not crash in case initial connection does fail
 def connect():
     try:
-	client.connect("18.216.88.162", 1883, 60)
-    except ConnectionRefusedError:
-        print("The broker is probably down.. I'll try again")
+	client.connect("localhost", 1883, 60)
+    except socket.error as error:
+        print(error)
+        print("I'll try again...")
         connect()
 
 client = mqtt.Client()
