@@ -28,6 +28,7 @@ public class JsonBroker
                     break;
                 case "deployment_diagram":
                     Debug.Log("deployment");
+                    uplButton = GameObject.Find("UploadBtn").GetComponent<Button>();
                     RenderDeployment(JsonHelper.ParseDeployment());
                     break;
                 default:
@@ -55,7 +56,7 @@ public class JsonBroker
 
     public void RenderDeployment(JSONDeployment JSONDeployment)
     {
-        //Placeholder
+        RenderDevices(JSONDeployment);
     }
 
 
@@ -67,6 +68,11 @@ public class JsonBroker
     private void RenderMessages(JSONSequence JSONSequence)
     {
         uplButton.GetComponent<StartMessages>().NewMessage(JSONSequence);
+    }
+
+    private void RenderDevices(JSONDeployment JSONDeployment)
+    {
+        uplButton.GetComponent<RenderDevices>().CreateDevices(JSONDeployment);
     }
 
     private bool IsValidJson(string strInput)

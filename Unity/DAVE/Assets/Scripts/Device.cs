@@ -6,10 +6,6 @@ public class Device
 
     private string name;
     private ArrayList processes = new ArrayList();
-    public int CompareTo(object obj)
-    {
-        return name.CompareTo(obj);
-    }
 
     public Device(string n)
 	{
@@ -32,6 +28,10 @@ public class Device
         return processes;
     }
 
+    public string GetName()
+    {
+        return name;
+    }
     public Boolean Contains(string from, string to)
     {
         return processes.Contains(from) || processes.Contains(to);
