@@ -586,7 +586,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49dac438fd636814181963399535686e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  classHousePrefab: {fileID: 1202210708790518, guid: 757593c4cfe28e64e89605e3059ca341,
+  classHousePrefab: {fileID: 1965477269194642, guid: 757593c4cfe28e64e89605e3059ca341,
     type: 2}
 --- !u!114 &114332993960827088
 MonoBehaviour:
