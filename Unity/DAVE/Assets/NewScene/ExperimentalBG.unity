@@ -1953,11 +1953,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a3e6ca8fd892ce4e915c707b3cd215b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  devicePrefab: {fileID: 1744717146517442, guid: 53fa243905ae88d43a76b88cc7fe261d,
+  devicePrefab: {fileID: 1135203695327022, guid: 53fa243905ae88d43a76b88cc7fe261d,
     type: 2}
   processPrefab: {fileID: 1151557668614888, guid: 105c6ea6d196e764f8932cc23c763f37,
     type: 2}
   communicationPrefab: {fileID: 1494611448182904, guid: 48744fc10d38b1c4bb8a15a5de565b65,
+    type: 2}
+  namePrefab: {fileID: 102473622126086610, guid: e8b44497dfa987b478270f18da6938d2,
     type: 2}
 --- !u!4 &2010806097 stripped
 Transform:

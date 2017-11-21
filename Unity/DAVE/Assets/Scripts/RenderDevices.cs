@@ -9,6 +9,7 @@ public class RenderDevices : MonoBehaviour
     public GameObject devicePrefab;
     public GameObject processPrefab;
     public GameObject communicationPrefab;
+    public TextMesh namePrefab;
     ArrayList Devices = new ArrayList();
     ArrayList DeviceNames = new ArrayList();
 
@@ -51,18 +52,32 @@ public class RenderDevices : MonoBehaviour
                 pos,
                 this.transform.rotation);
 
-            if (device.GetProcesses().Count > 1)
+            Vector3 nPos = pos;
+            int length = device.GetProcesses().Count;
+            
+            if (length > 1)
             {
-                int length = device.GetProcesses().Count - 1;
-                newDevice.transform.localScale += new Vector3(0, (float)(0.8 * length), 0);
-                newDevice.transform.localPosition += new Vector3(0, (float)(0.8 * length / 2), 0);
-                newDevice.GetComponentInChildren<TextMesh>().transform.localScale += new Vector3(0, 0, 0);
+                newDevice.transform.localScale += new Vector3(0, (float)(0.8 * (length -1)), 0);
+                newDevice.transform.localPosition += new Vector3(0, (float)(0.8 * (length -1)/ 2), 0);
+                nPos += new Vector3(0.5F, 0.8F * (2 * length - 1) / 2 - 0.1F, 0);
             }
+            else
+                nPos += new Vector3(0.5F, 0.8F * (length) / 2 - 0.1F, 0);
+
             newDevice.name = device.GetName();
 
-            newDevice.GetComponentInChildren<TextMesh>().text = "<<Device>>\n" + device.GetName();
+            Debug.Log(newDevice.name + "");
 
-            pos += new Vector3(0.1F, -0.1F, 0);
+            Quaternion rot = Quaternion.Euler(0, 270, 0);
+           
+            TextMesh name = (TextMesh)Instantiate(
+                namePrefab,
+                nPos,
+                rot);
+
+            name.text = "<<Device>>\n" + device.GetName();
+
+            pos += new Vector3(0.1F, -0.25F, 0);
             foreach (string process in device.GetProcesses())
             {
 
