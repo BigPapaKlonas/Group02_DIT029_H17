@@ -15,27 +15,25 @@ public class PlayDiagram : MonoBehaviour {
 		button = GetComponent<Button>();
 		button.onClick.AddListener(OnClick);
 
-		Debug.Log ("PLAY DIAGRAM BOOL: " + Coordinator.coordinator.GetInstructorBool());
-
-		if (Coordinator.coordinator.GetInstructorBool () == false) {
+		if (ConnectionManager.coordinator.GetInstructorBool () == false) {
 			button.gameObject.SetActive (false);
 		}
 	}
 
 	void OnClick() 
 	{
-		Coordinator.coordinator.Publish (
+		ConnectionManager.coordinator.Publish (
 			"root/" + 
-			Coordinator.coordinator.GetInstructor () + "/" + 
-			Coordinator.coordinator.GetDiagram (),
-			Coordinator.coordinator.GetSessionJson (),
+			ConnectionManager.coordinator.GetInstructor () + "/" + 
+			ConnectionManager.coordinator.GetDiagram (),
+			ConnectionManager.coordinator.GetSessionJson (),
 			true
 		);
 
-		Coordinator.coordinator.Publish (
+		ConnectionManager.coordinator.Publish (
 			"root/" + 
-			Coordinator.coordinator.GetInstructor () + "/" + 
-			Coordinator.coordinator.GetDiagram () + "/nodes",
+			ConnectionManager.coordinator.GetInstructor () + "/" + 
+			ConnectionManager.coordinator.GetDiagram () + "/nodes",
 			"init_diagram",
 			true
 		);

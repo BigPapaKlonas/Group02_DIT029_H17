@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class LoadScene : MonoBehaviour {
@@ -18,6 +15,11 @@ public class LoadScene : MonoBehaviour {
 	}
 	
 	void OnClick(){
-		SceneManager.LoadScene (sceneName);
+		if (!ConnectionManager.coordinator.GetInstructorBool()) {
+			SceneManager.LoadScene (sceneName);
+		} else {
+			SceneManager.LoadScene ("Start");
+		}
+
 	}
 }

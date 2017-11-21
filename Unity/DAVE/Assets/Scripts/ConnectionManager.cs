@@ -3,26 +3,30 @@ using UnityEngine.UI;
 using uPLibrary.Networking.M2Mqtt.Messages;
 using uPLibrary.Networking.M2Mqtt;
 using System;
-using System.Runtime.InteropServices;
-using System.Collections.Generic;
-using System.Collections;
 using RethinkDb.Driver;
 using RethinkDb.Driver.Net;
 
-public class Coordinator : MonoBehaviour
+public class ConnectionManager : MonoBehaviour
 {
     private Button uplButton;
     private string parentTopic;
 
     private MqttClient client;
     private MqttClientDAVE daveClient;
-    public static Coordinator coordinator;
+	public static ConnectionManager coordinator;
 
-	// Creation of a instance of our database and the connection to it to be used in our classes.
+	/* 
+	 * Creation of a instance of our database and the connection to it to be used in our classes.
+	 * The reason behind calling the RethinkDb R is that it is a convention for the RethinkDb database. 
+	 * makes it easier for us to follow along in tutorials and documentation.
+	 */
 	public static RethinkDB R;
 	public static Connection conn;
 
-	// Private variables to hold onto data during the lifecycle of teh application.
+	/* 
+	 * Private variables to hold onto data 
+	 * during the lifecycle of the application.
+	 */
 	private string instructor;
 	private string diagram;
 	private string student;
@@ -52,10 +56,6 @@ public class Coordinator : MonoBehaviour
 
     }
 
-	void Update () {
-		
-	}
-
 	void Awake(){
 		MakeThisTheOnlyCoordinator();
 	}
@@ -69,13 +69,17 @@ public class Coordinator : MonoBehaviour
 		}
 	}
 
-	// Publish to broker
+	/*
+	 * Publish to broker
+	 */
 	public void Publish(string PublishTopic, string PublishMsg, Boolean retainMsg){
 		Debug.Log ("Publishing to: " + PublishTopic.Replace (" ", "").ToLower ());
 		daveClient.Publish(PublishTopic.Replace(" ", "").ToLower(), PublishMsg, retainMsg);
 	}
 
-	// Subscribing to broker
+	/*
+	 * Subscribe to broker
+	 */
 	public void Subscribe(string SubscribeTopic){
 		Debug.Log ("Suscribing to: " + SubscribeTopic.Replace (" ", "").ToLower ());
 		daveClient.Subscribe(SubscribeTopic.Replace(" ", "").ToLower());
@@ -111,28 +115,27 @@ public class Coordinator : MonoBehaviour
 		CheckReceived(e);
 	}
 
-	// Calls helper methods to check the received message
+	/* 
+	 * Calls helper methods to check the received message
+	 */
 	private void CheckReceived(MqttMsgPublishEventArgs e)
 	{
 		State(e);
 		Processes(e);
 		Diagram(e);
 		Students(e);
-		Instructors(e);
 	}
-
 	void State(MqttMsgPublishEventArgs e)
 	{
 		if (e.Topic == parentTopic + "/state" && System.Text.Encoding.UTF8.GetString(e.Message) == "start")
 			Debug.Log("State: " + System.Text.Encoding.UTF8.GetString(e.Message));
-		//Pause animation and simulation
+		//Start animation and simulation
 
 		else if (e.Topic == parentTopic + "/state" && System.Text.Encoding.UTF8.GetString(e.Message) == "pause")
 			Debug.Log("State: " + System.Text.Encoding.UTF8.GetString(e.Message));
 		//Pause animation and simulation
 
 	}
-
 	void Processes(MqttMsgPublishEventArgs e)
 	{
 		if (e.Topic == parentTopic + "/processes")
@@ -141,7 +144,6 @@ public class Coordinator : MonoBehaviour
 			//Render systemboxes
 		}
 	}
-
 	void Diagram(MqttMsgPublishEventArgs e)
 	{
 		if (e.Topic == parentTopic + "/diagram")
@@ -150,7 +152,6 @@ public class Coordinator : MonoBehaviour
 			//Render message
 		}
 	}
-
 	void Students(MqttMsgPublishEventArgs e)
 	{
 		if (e.Topic == parentTopic + "/students")
@@ -159,25 +160,10 @@ public class Coordinator : MonoBehaviour
 			//Add student name to scene
 		}
 	}
-
-	void Instructors(MqttMsgPublishEventArgs e){
-		//if(e.topic == "instructors"){
-		//  Debug.Log("Instructors: " + System.Text.Encoding.UTF8.GetString(e.Message));
-		// Add instructors to Scene.
-		//}
-	}
-
-	private void RenderSystemBoxes(JSONSequence JSONSequence)
-	{
-		uplButton.GetComponent<RenderSystemBoxes>().CreateSystemBoxes(JSONSequence);
-	}
-
-	private void RenderMessages(JSONSequence JSONSequence)
-	{
-		uplButton.GetComponent<StartMessages>().NewMessage(JSONSequence);
-	}
-
-	// get/set methods added: 
+		
+	/* 
+	 * get/set methods 
+	 */
 	public void SetInstructor (string instructor)
 	{
 		this.instructor = instructor;

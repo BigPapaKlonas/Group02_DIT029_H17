@@ -55,30 +55,33 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
 
 		Debug.Log ("Diagram type: " + parser.GetDiagramType ());
 
-		Coordinator.coordinator.SetDiagramType (parser.GetDiagramType ());
+		ConnectionManager.coordinator.SetDiagramType (parser.GetDiagramType ());
 
 		output = parser.AddMetaToSequence ("root/" + 
-			Coordinator.coordinator.GetInstructor ().Replace (" ", "").ToLower () + "/" + 
-			Coordinator.coordinator.GetDiagram ().Replace (" ", "").ToLower ()
+			ConnectionManager.coordinator.GetInstructor ().Replace (" ", "").ToLower () + "/" + 
+			ConnectionManager.coordinator.GetDiagram ().Replace (" ", "").ToLower ()
 		);
 
 		Debug.Log (output);
 
-		Coordinator.coordinator.SetSessionJson (output);
+		ConnectionManager.coordinator.SetSessionJson (output);
 	
 		Insert ();
 
-		SceneManager.LoadScene (Coordinator.coordinator.GetDiagramType ());
+		SceneManager.LoadScene (ConnectionManager.coordinator.GetDiagramType ());
 
     }
 
-	// Insert to the Database.
+	/* 
+	 * Insert to the Database.
+	 * when ran in a Coroutine The full ConnectionManager.<variable> needs to be present.
+	 */
 	void Insert()
 	{
 
-		string instructor = Coordinator.coordinator.GetInstructor ();
-		string diagram = Coordinator.coordinator.GetDiagram ();
-		string diagramType = Coordinator.coordinator.GetDiagramType ();
+		string instructor = ConnectionManager.coordinator.GetInstructor ();
+		string diagram = ConnectionManager.coordinator.GetDiagram ();
+		string diagramType = ConnectionManager.coordinator.GetDiagramType ();
 
 		/* 
 		 * If database contains the instructor name: 
@@ -87,40 +90,40 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
 		 * Else:
 		 * Add both to instructors and diagrams tables.
 		*/
-		if (Coordinator.R.Db ("root").Table ("instructors").GetField ("name")
-			.Contains (instructor).Run (Coordinator.conn)) 
+		if (ConnectionManager.R.Db ("root").Table ("instructors").GetField ("name")
+			.Contains (instructor).Run (ConnectionManager.conn)) 
 		{
-			Coordinator.R.Db("root")
-				.Table("diagrams").Insert(Coordinator.R.Array(
-					Coordinator.R.HashMap("name", diagram)
+			ConnectionManager.R.Db("root")
+				.Table("diagrams").Insert(ConnectionManager.R.Array(
+					ConnectionManager.R.HashMap("name", diagram)
 					.With("type", diagramType)
 					.With("instructor", instructor)
 				))
-				.Run(Coordinator.conn);
+				.Run(ConnectionManager.conn);
 
-			Coordinator.R.Db ("root")
+			ConnectionManager.R.Db ("root")
 				.Table ("instructors")
 				.Filter (row => row.G ("name").Eq (instructor))
-				.Update (Coordinator.R.HashMap("diagrams", Coordinator.R.Array(diagram)))
-				.Run(Coordinator.conn);
+				.Update (ConnectionManager.R.HashMap("diagrams", ConnectionManager.R.Array(diagram)))
+				.Run(ConnectionManager.conn);
 
 		} else {
 
-			Coordinator.R.Db("root")
-				.Table("diagrams").Insert(Coordinator.R.Array(
-					Coordinator.R.HashMap("name", diagram)
+			ConnectionManager.R.Db("root")
+				.Table("diagrams").Insert(ConnectionManager.R.Array(
+					ConnectionManager.R.HashMap("name", diagram)
 					.With("type", diagramType)
 					.With("instructor", instructor)
 				))
-				.Run(Coordinator.conn);
+				.Run(ConnectionManager.conn);
 
-			Coordinator.R.Db("root")
-				.Table("instructors").Insert(Coordinator.R.Array(
-					Coordinator.R.HashMap("name", instructor)
-					.With("diagrams", Coordinator.R.Array())
+			ConnectionManager.R.Db("root")
+				.Table("instructors").Insert(ConnectionManager.R.Array(
+					ConnectionManager.R.HashMap("name", instructor)
+					.With("diagrams", ConnectionManager.R.Array())
 				)
 				)
-				.Run(Coordinator.conn);
+				.Run(ConnectionManager.conn);
 		}
 	}
 }
