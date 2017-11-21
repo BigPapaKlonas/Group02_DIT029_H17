@@ -1,0 +1,54 @@
+{
+ "meta" : {
+ "format" : "DIT029 format",
+ "version" : "1.0",
+ "extensions" : []
+ },
+ "type" : "deployment_diagram",
+ "mapping" : [
+ {
+ "process" : "g",
+ "device" : "server"
+ },
+ {
+ "process" : "u1",
+ "device" : "smartphone1"
+ },
+ {
+ "process" : "u2",
+ "device" : "desktop_computer1"
+ },
+ {
+ "process" : "u3",
+ "device" : "desktop_computer1"
+ },
+ {
+ "process" : "u4",
+ "device" : "desktop_computer2"
+ },
+ {
+  "process" : "u5",
+  "device" : "desktop_computer2"
+},
+{
+"process" : "u6",
+"device" : "desktop_computer2"
+},
+{
+"process" : "u9",
+"device" : "desktop_computer2"
+},
+{
+"process" : "u10",
+"device" : "desktop_computer2"
+},
+{
+"process" : "u7",
+"device" : "desktop_computer3"
+},
+{
+"process" : "u8",
+"device" : "desktop_computer3"
+}
+ ]
+}
