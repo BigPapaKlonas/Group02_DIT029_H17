@@ -26,12 +26,30 @@
  "name" : "Gucci Gang",
  "fields" : [{ "name":"Gucci", "type":"gang"}, { "name":"Spread", "type":"That"}, { "name":"Rack", "type":"On new Chain"},  { "name":"I fuck", "type":"a bitch"},  { "name":"Gucci", "type":"gang"}]
  },
+ ,
+ {
+ "name" : "Beny",
+ "fields" : [{ "name":"network_interface", "type":"string"}, { "name":"space", "type":"test"}, { "name":"network", "type":"boolean"}]
+ },
+ ,
+ {
+ "name" : "Hanas",
+ "fields" : [{ "name":"network_interface", "type":"string"}, { "name":"space", "type":"test"}, { "name":"network", "type":"boolean"}]
+ },
  {
  "name" : "Gateway",
  "fields" : []
  },
  {
  "name" : "User",
+ "fields" : [{"name":"name", "type":"string"}, {"name":"email", "type":"string"}]
+ },
+ {
+ "name" : "Al",
+ "fields" : []
+ },
+ {
+ "name" : "Jazzera",
  "fields" : [{"name":"name", "type":"string"}, {"name":"email", "type":"string"}]
  }
  ],
@@ -45,6 +63,16 @@
  "type" : "aggregation",
  "superclass" : "Banana",
  "subclass" : "Houses Testy"
+ },
+ {
+ "type" : "aggregation",
+ "superclass" : "Beny",
+ "subclass" : "Hanas"
+ },
+ {
+ "type" : "aggregation",
+ "superclass" : "Al",
+ "subclass" : "Jazzera"
  },
  {
  "type" : "realization",

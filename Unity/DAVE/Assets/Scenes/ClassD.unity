@@ -337,6 +337,16 @@ Prefab:
       propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 54874102436260604, guid: 64e321d3fdc93af4186fae5eace9a0f0,
+        type: 2}
+      propertyPath: m_Interpolate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 54874102436260604, guid: 64e321d3fdc93af4186fae5eace9a0f0,
+        type: 2}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114445737760071516, guid: 64e321d3fdc93af4186fae5eace9a0f0, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 64e321d3fdc93af4186fae5eace9a0f0, type: 2}
@@ -752,7 +762,7 @@ Prefab:
         type: 2}
       propertyPath: classHousePrefab
       value: 
-      objectReference: {fileID: 1579684621864848, guid: 757593c4cfe28e64e89605e3059ca341,
+      objectReference: {fileID: 1073419922515716, guid: 757593c4cfe28e64e89605e3059ca341,
         type: 2}
     - target: {fileID: 114506336975722700, guid: 29d3d3bcf8ed2984b9f7d076602fc14d,
         type: 2}
@@ -827,19 +837,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: MapStartPosition.x
-      value: -75
+      value: -60
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: MapStartPosition.y
-      value: -75
+      value: -60
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: MapEndPosition.y
-      value: 75
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: MapEndPosition.x
-      value: 75
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: DisallowedTags.Array.data[0]
@@ -925,4 +935,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerObject: {fileID: 1345750445}
-  smoothTime: 0.3

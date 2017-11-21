@@ -12,6 +12,26 @@
         {
           "name": "network_interface",
           "type": "string"
+        },
+        {
+          "name": "network_interface",
+          "type": "string"
+        },
+        {
+          "name": "network_interface",
+          "type": "string"
+        },
+        {
+          "name": "network_interface",
+          "type": "string"
+        },
+        {
+          "name": "network_interface",
+          "type": "string"
+        },
+        {
+          "name": "network_interface",
+          "type": "string"
         }
       ]
     },
