@@ -1,0 +1,159 @@
+{
+  "meta": {
+    "format": "DIT029 format",
+    "version": "1.0",
+    "extensions": []
+  },
+  "type": "class_diagram",
+  "classes": [
+    {
+      "name": "Device",
+      "fields": [
+        {
+          "name": "network_interface",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Gateway",
+      "fields": []
+    },
+    {
+      "name": "User",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Beny",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Hanas",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Minne",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Apolis",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Al",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Jazz",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Era",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "inheritance",
+      "superclass": "Device",
+      "subclass": "Gateway"
+    },
+    {
+      "type": "inheritance",
+      "superclass": "Device",
+      "subclass": "User"
+    },
+    {
+      "type": "inheritance",
+      "superclass": "Al",
+      "subclass": "Jazz"
+    },
+    {
+      "type": "inheritance",
+      "superclass": "Jazz",
+      "subclass": "Era"
+    },
+    {
+      "type": "inheritance",
+      "superclass": "Minne",
+      "subclass": "Apolis"
+    },
+    {
+      "type": "inheritance",
+      "superclass": "Beny",
+      "subclass": "Hanas"
+    }
+  ]
+}

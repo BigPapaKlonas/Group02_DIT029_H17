@@ -77,15 +77,17 @@ LightmapSettings:
     m_PVRDirectSampleCount: 32
     m_PVRSampleCount: 500
     m_PVRBounces: 2
-    m_PVRFiltering: 0
+    m_PVRFilterTypeDirect: 0
+    m_PVRFilterTypeIndirect: 0
+    m_PVRFilterTypeAO: 0
     m_PVRFilteringMode: 1
     m_PVRCulling: 1
     m_PVRFilteringGaussRadiusDirect: 1
     m_PVRFilteringGaussRadiusIndirect: 5
     m_PVRFilteringGaussRadiusAO: 2
-    m_PVRFilteringAtrousColorSigma: 1
-    m_PVRFilteringAtrousNormalSigma: 1
-    m_PVRFilteringAtrousPositionSigma: 1
+    m_PVRFilteringAtrousPositionSigmaDirect: 0.5
+    m_PVRFilteringAtrousPositionSigmaIndirect: 2
+    m_PVRFilteringAtrousPositionSigmaAO: 1
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -107,6 +109,8 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
+    debug:
+      m_Flags: 0
   m_NavMeshData: {fileID: 0}
 --- !u!1 &90127740
 GameObject:
@@ -327,6 +331,11 @@ Prefab:
     - target: {fileID: 1431700228509862, guid: 64e321d3fdc93af4186fae5eace9a0f0, type: 2}
       propertyPath: m_Name
       value: PlayerObject
+      objectReference: {fileID: 0}
+    - target: {fileID: 136942654511529142, guid: 64e321d3fdc93af4186fae5eace9a0f0,
+        type: 2}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114445737760071516, guid: 64e321d3fdc93af4186fae5eace9a0f0, type: 2}
@@ -778,19 +787,19 @@ Prefab:
     m_Modifications:
     - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: DisallowedTags.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 297.08154
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 22.121094
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 293.3286
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: m_LocalRotation.x
@@ -818,19 +827,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: MapStartPosition.x
-      value: -50
+      value: -75
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: MapStartPosition.y
-      value: -50
+      value: -75
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: MapEndPosition.y
-      value: 50
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: MapEndPosition.x
-      value: 50
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: DisallowedTags.Array.data[0]
@@ -858,15 +867,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: HighestPoint
-      value: 100
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: LowestPoint
-      value: -50
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
       propertyPath: DisallowedTags.Array.data[1]
       value: Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: efdf155e29b063e48a1a315326175481, type: 2}
+      propertyPath: DisallowedTags.Array.data[2]
+      value: House
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: efdf155e29b063e48a1a315326175481, type: 2}

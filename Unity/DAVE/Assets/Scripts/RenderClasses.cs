@@ -9,29 +9,37 @@ public class RenderClasses : MonoBehaviour
     // House Prefab
     public GameObject classHousePrefab;
 
-    // List use to keep track of where the houses are located
+    // List used to assigne house angle
     private List<Vector3> houseRotation = new List<Vector3>();
-    private List<Vector3> housePositions = new List<Vector3>();
-    private List<GameObject> houses = new List<GameObject>();
-    private Vector3 positioning = new Vector3(0, 0, 0);
+
+    // List use to keep track of where the houses are located
+    private List<GameObject> houseList = new List<GameObject>();
 
     private void Start()
     {
+        // Adding 90 degree angles to rotation list
+        // 90 degrees are used so the door would be aligned with path
         houseRotation.Add(new Vector3(0, 90, 0));
         houseRotation.Add(new Vector3(0, 180, 0));
         houseRotation.Add(new Vector3(0, 270, 0));
         houseRotation.Add(new Vector3(0, 360, 0));
-
     }
+
     /*
-     * Makes houses by looping trhough JSON
+     * Makes houses by looping through JSON
      **/
     public void AddHouse(JSONClass json)
     {
         float offset = 0;   // Value used in Vector3 for house positioning
         foreach (var classes in json.Classes)
         {
-            Vector3 positioning = FindPosition(houses);
+
+            // Initial position for each new house object
+            Vector3 positioning = new Vector3(
+                Random.Range(-45, 45),
+                0,
+                Random.Range(-45, 45)    
+            );
 
             // Create House
             GameObject classHouse = Instantiate(
@@ -41,7 +49,11 @@ public class RenderClasses : MonoBehaviour
                     houseRotation[Random.Range(0, houseRotation.Count)])
             );
 
-            houses.Add(classHouse);
+            //Find if new house object collides with an existing one
+            FindNewHousePosition(houseList, classHouse);
+
+            // Add house to existing house list
+            houseList.Add(classHouse);
 
             // Change the name of the house in Hierarchy
             classHouse.name = classes.Name;
@@ -63,34 +75,37 @@ public class RenderClasses : MonoBehaviour
         }
     }
 
-    Vector3 FindPosition(List<GameObject> houseList)
+    /*
+     * Reposition the house in case of collisions
+     **/ 
+    void FindNewHousePosition(List<GameObject> housesList, GameObject newHouse)
     {
-        // Make Vector3 to specify the houses position
-        Vector3 housePosition = new Vector3(
-            Random.Range(-45, 45),
-            0,
-            Random.Range(-45, 45)
-        );
 
-        bool overlap = false;
-
-        foreach (GameObject house in houseList)
+        // Collider for the newly created house
+        Collider newHouseCollider = newHouse.GetComponent<Collider>();
+        
+        // Loop through all houses inside list
+        foreach (GameObject house in housesList)
         {
-            if(house.transform.position == housePosition)
+            // Colliders for house already added to the map
+            Collider existingHouse = house.GetComponent<Collider>();
+            
+            // Checking if houses collide
+            if (newHouseCollider.bounds.Intersects(
+                existingHouse.bounds))
             {
-                overlap = true;
-            }
+                // Finding the walls (max position) of the collision house 
+                Vector3 collidePosition = existingHouse.bounds.max;
 
-            while(house.transform.position == housePosition)
-            {
-                housePosition = new Vector3(
-                    Random.Range(-45, 45),
+                // Adding 6 (house wall length) to collision Vector3, 
+                // so the house don't intersect
+                newHouse.transform.position = new Vector3(
+                    collidePosition.x + 6,  
                     0,
-                    Random.Range(-45, 45)
+                    collidePosition.z + 6
                 );
             }
         }
-        return housePosition;
     }
 
     /*
