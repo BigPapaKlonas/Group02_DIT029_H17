@@ -5,10 +5,6 @@ public class FaceCamera : MonoBehaviour
     // Camera you want to face
     public new Camera camera;
 
-    void Start()
-    {
-        camera = Camera.main;
-    }
     void Update()
     {
         // Makes the attached object's transform look at the camera

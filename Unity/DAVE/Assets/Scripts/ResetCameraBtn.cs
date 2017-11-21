@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public class ResetCameraBtn : MonoBehaviour, IPointerDownHandler
 {
+    public Camera mainCamera;
     private Button resetCameraBtn;
     private CameraOrbit cameraOrbitScript;
 
@@ -13,7 +14,6 @@ public class ResetCameraBtn : MonoBehaviour, IPointerDownHandler
     {
         resetCameraBtn = GetComponent<Button>();
         resetCameraBtn.onClick.AddListener(OnClick);
-        Camera mainCamera = Camera.main;                                                // Gets main camera
         cameraOrbitScript = (CameraOrbit)mainCamera.GetComponent(typeof(CameraOrbit));  // Gets the cameraOrbit script
 
     }
@@ -25,3 +25,4 @@ public class ResetCameraBtn : MonoBehaviour, IPointerDownHandler
         cameraOrbitScript.ResetCamera();    // Calls if the button is clicked
     }
 }
+

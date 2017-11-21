@@ -21,12 +21,10 @@ public class CameraOrbit : MonoBehaviour
     // Initialization of transform objects
     void Start()
     {
-        cameraParent = transform.parent;
-        cameraPosition = transform;
-        cameraRotation.x = -90f;                        // Rotates camera on start to face the diagram
+        this.cameraParent = this.transform.parent;
+        this.cameraPosition = this.transform;
 
-        cameraParent.position = new Vector3(10, 8, 8);  // Positions camera on start
-        cameraInitialPosition = cameraParent.position;  // Saves initial camera position
+        cameraInitialPosition = new Vector3(10, 8, 8);  // = this.transform.position;
     }
 
     // LateUpdate() is used to render camera last to avoid rotation/render issues
@@ -113,12 +111,6 @@ public class CameraOrbit : MonoBehaviour
         cameraRotation.y = 0f;
     }
 
-    public void SetPosition(Vector3 targetPosition)
-    {
-        cameraParent.position = targetPosition;
-        cameraRotation.x = -90f;                        // Resets rotation
-        cameraRotation.y = 0f;
-    }
 
     void MoveCameraKeyboard()
     {
@@ -158,4 +150,5 @@ public class CameraOrbit : MonoBehaviour
 
         }
     }
+
 }
