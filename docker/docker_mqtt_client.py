@@ -1,6 +1,6 @@
 import paho.mqtt.client as mqtt
 import socket
-import container
+import docker_container
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
@@ -13,7 +13,7 @@ def on_message(client, userdata, msg):
 
     # In case received message is of specified topic, the message is past into the start_containers function
     if(msg.topic == "processes"):
-        container.start_containers(msg.payload.decode("utf-8"))
+        docker_container.start_containers(msg.payload.decode("utf-8"))
 
 # 'loop_forever' automatically handles reconnecting as long as the initial connection succeeds (crashes otherwise)
 # The 'connect' function retries to establish the initial connection in case it fails, thus prevents a potential crash

@@ -7,4 +7,4 @@
 touch /var/lock/subsys/local
 mosquitto -d
 sleep 2
-python /home/ec2-user/Group02_DIT029_H17/test/mqtt_client.py
+python /home/ec2-user/Group02_DIT029_H17/docker/docker_mqtt_client.py

@@ -3,13 +3,13 @@ import json
 import uuid
 
 
-docker_client = docker.from_env()   # getting the default socket and configuration in our environment
+docker_client = docker.from_env()   # Gets the default socket and configuration in the environment
 
 # Start docker containers according to JSON string (processes)
 def start_containers(processes):
     try:
         decoded = json.loads(processes)             # Decodes JSON
-        processes_id = uuid.uuid4().hex             # Generates unique ID for containers created from this JSON string
+        processes_id = uuid.uuid4().hex             # Generates unique ID for containers created from each JSON string
 
         for x in decoded:                                       # Iterates over the decoded JSON
             container_name = x['name'] + "_" + processes_id     # Adds processes_id to the container name
