@@ -2,6 +2,8 @@
 
 public class CameraOrbit : MonoBehaviour
 {
+    public Vector3 initialPosition;
+    public float cameraDistance;            // Distance from Camera
 
     private Transform cameraPosition;       // The camera being rotated
     private Transform cameraParent;         // The object the camera is being rotated about
@@ -9,12 +11,11 @@ public class CameraOrbit : MonoBehaviour
     private Vector3 cameraInitialPosition;  // Stores the camera's initial position
     private Vector3 cameraRotation;         // Store camera rotation frames
     private Vector3 oldPosition;            // CameraParent's position before draging
-    private Vector3 newPosition;            // Button click's position, used when draging cameraParent
+    private Vector3 newPosition;            // Used when draging cameraParent
 
-    private float cameraDistance = 10f;     // Distance from Camera
     private float movingSpeed = 4f;         // Camera Rotation speed
     private float rotateDampening = 10f;    // Used for a smoother rotation
-    private float scrollDampening = 6f;     // USed for a smoother zoom
+    private float scrollDampening = 6f;     // Used for a smoother zoom
 
     private bool rightClicked = false;      // Used to check if RMB has been pressed down
 
@@ -23,9 +24,9 @@ public class CameraOrbit : MonoBehaviour
     {
         cameraParent = transform.parent;
         cameraPosition = transform;
-        cameraRotation.x = -90f;                        // Rotates camera on start to face the diagram
+        cameraRotation.x = -90f;            // Rotates camera on start to face the diagram
 
-        cameraParent.position = new Vector3(10, 8, 8);  // Positions camera on start
+        cameraParent.position = initialPosition;        // Positions camera on start
         cameraInitialPosition = cameraParent.position;  // Saves initial camera position
     }
 
@@ -49,19 +50,27 @@ public class CameraOrbit : MonoBehaviour
         Quaternion QT = Quaternion.Euler(cameraRotation.y, cameraRotation.x, 0);
 
         // Animates the rotation
-        this.cameraParent.rotation = Quaternion.Lerp(this.cameraParent.rotation, QT,
+        cameraParent.rotation = Quaternion.Lerp(cameraParent.rotation, QT,
             Time.deltaTime * rotateDampening);
 
         // Animates zooming in and out
-        if (this.cameraPosition.localPosition.z != cameraDistance * -1f)
+        if (cameraPosition.localPosition.z != cameraDistance * -1f)
         {
-            this.cameraPosition.localPosition = new Vector3(0f, 0f, Mathf.Lerp(this.cameraPosition.localPosition.z,
-                cameraDistance * -1f, Time.deltaTime * scrollDampening));
+            cameraPosition.localPosition = new Vector3(
+                0f,
+                0f,
+                Mathf.Lerp(
+                    cameraPosition.localPosition.z,
+                    cameraDistance * -1f,
+                    Time.deltaTime * scrollDampening
+                )
+            );
         }
-
-
     }
 
+    /*
+     * Rotates camera using RMB
+     **/ 
     void RotateCamera()
     {
         // If RMB has been pressed set rightCicked to true
@@ -81,31 +90,43 @@ public class CameraOrbit : MonoBehaviour
             //Rotation of the Camera based on Mouse Coordinates
             if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
             {
-                cameraRotation.x += Input.GetAxis("Mouse X") * movingSpeed;  // Change camera rotation's x value
-                cameraRotation.y += Input.GetAxis("Mouse Y") * movingSpeed;  // Change camera rotation's y value
+                // Change camera rotation's x value
+                cameraRotation.x += Input.GetAxis("Mouse X") * movingSpeed;
+                // Change camera rotation's y value
+                cameraRotation.y += Input.GetAxis("Mouse Y") * movingSpeed;  
 
-                //Clamps the camera's y coordinate so the camera does not flip or go over the horizon while rotating
+                //Clamps the y coordinate so the camera does not flip/go over y = 0
                 if (cameraRotation.y < 0f)
+                {
                     cameraRotation.y = 0f;
+                }
                 else if (cameraRotation.y > 90f)
+                {
                     cameraRotation.y = 90f;
+                }
             }
         }
     }
 
+    /* 
+     * Zooms in and out with scrolling pad
+     **/
     void ZoomCamera()
     {
         // Calculate the distance to scroll, 0.5f just a multiplier, Scrollwhell
         float scrollLength = Input.GetAxis("Mouse ScrollWheel") * movingSpeed * 0.5f;
         // Smoother zoom, the further from the start the quicker the zoom 
-        scrollLength *= (this.cameraDistance * 0.3f);
+        scrollLength *= (cameraDistance * 0.3f);
 
         // Moves the camera when zooming
-        this.cameraDistance += scrollLength * -1f;
+        cameraDistance += scrollLength * -1f;
         // Sets min and max bounds for zoom length
-        this.cameraDistance = Mathf.Clamp(this.cameraDistance, 1.5f, 100f);
+        cameraDistance = Mathf.Clamp(cameraDistance, 0.1f, 100f);
     }
 
+    /*
+     * Resets camera position
+     **/ 
     public void ResetCamera()
     {
         cameraParent.position = cameraInitialPosition;  // Sets current camera positon to initial
@@ -120,6 +141,9 @@ public class CameraOrbit : MonoBehaviour
         cameraRotation.y = 0f;
     }
 
+    /*
+     * Moves the camera parent using the keyboard
+     **/ 
     void MoveCameraKeyboard()
     {
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
@@ -155,7 +179,6 @@ public class CameraOrbit : MonoBehaviour
         if (Input.GetKey(KeyCode.R))
         {
             ResetCamera();
-
         }
     }
 }

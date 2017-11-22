@@ -45,7 +45,8 @@ public class RenderClasses : MonoBehaviour
             GameObject classHouse = Instantiate(
                 classHousePrefab,
                 positioning,
-                transform.rotation = Quaternion.Euler(
+                // Rotating only the house object
+                classHousePrefab.transform.rotation = Quaternion.Euler(
                     houseRotation[Random.Range(0, houseRotation.Count)])
             );
 
