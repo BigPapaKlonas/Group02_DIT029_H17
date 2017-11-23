@@ -8,11 +8,15 @@ using UnityEngine.SceneManagement;
 public class PlayDiagram : MonoBehaviour {
 
 	private Button button;
+    private SubscribingStudents subscribingStudents;
+    private ConnectionManager coordinator = ConnectionManager.coordinator;
 
-	// Use this for initialization
-	void Start () 
+    // Use this for initialization
+    void Start () 
 	{
-		button = GetComponent<Button>();
+        subscribingStudents = GetComponentInParent<SubscribingStudents>();
+
+        button = GetComponent<Button>();
 		button.onClick.AddListener(OnClick);
 
 		if (ConnectionManager.coordinator.GetInstructorBool () == false) {
@@ -20,9 +24,20 @@ public class PlayDiagram : MonoBehaviour {
 		}
 	}
 
-	void OnClick() 
+    void DisableSubscribingStudents()
+    {
+        coordinator.Unsubscribe("root/" + coordinator.GetInstructor() + "/" +
+            coordinator.GetDiagram() + "/students");
+        subscribingStudents.enabled = false;
+    }
+
+
+    void OnClick() 
 	{
-		ConnectionManager.coordinator.Publish (
+
+        DisableSubscribingStudents();
+
+        ConnectionManager.coordinator.Publish (
 			"root/" + 
 			ConnectionManager.coordinator.GetInstructor () + "/" + 
 			ConnectionManager.coordinator.GetDiagram (),
