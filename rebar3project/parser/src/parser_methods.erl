@@ -6,7 +6,7 @@
 -author("Erik and Justinas").
 
 %% API
--export([encode/1, get_SD/0, get_DD/0, get_CD/0, get_type/1,
+-export([encode/1, get_SD/0, get_DD/0, get_CD/0, publish_processes/0, get_type/1,
   get_diagram/1, get_parsed_diagram/1, get_processes/1,
   get_relationships/1, get_classes/1, get_mapping/1, get_messages/1, publish_processes/0]).
 
@@ -164,7 +164,19 @@ encode(X) ->
 
 %% Returns a JSON sequence diagram
 get_SD() ->
-  {ok, File} = file:read_file("triparallel.json"), File.
+  {ok, File} = file:read_file("SD.json"), File.
+
+publish_processes() ->
+  %% Creates a JSON with the processes from the sequence diagram JSON
+  {ok, File} = file:read_file("SD.json"),
+  ProcessesMap = maps:get(<<"processes">>, decode_map(File)),
+  ProcessesJSON = jsx:encode(ProcessesMap),
+
+  %% Creates connection
+  {ok, C} = emqttc:start_link([{host, "52.14.146.195"}, {client_id, <<"ErlangParser">>}]),
+
+  %% Publish
+  emqttc:publish(C, <<"processes">>, ProcessesJSON).
 
 %% Returns a JSON class diagram
 get_CD() ->
