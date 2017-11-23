@@ -1,0 +1,3 @@
+{release,{"default","0.0.1"},
+         {erts,"8.2"},
+         [{kernel,"5.1.1"},{stdlib,"3.2"},{jsx,"2.8.0"},{parser,"0.1.0"}]}. 
