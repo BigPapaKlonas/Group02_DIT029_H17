@@ -26,8 +26,8 @@ public class CameraOrbit : MonoBehaviour
         cameraPosition = transform;
         cameraRotation.x = -90f;            // Rotates camera on start to face the diagram
 
-        cameraParent.position = initialPosition;        // Positions camera on start
-        cameraInitialPosition = cameraParent.position;  // Saves initial camera position
+        //cameraParent.position = initialPosition;        // Positions camera on start
+        cameraInitialPosition = initialPosition;  // Saves initial camera position
     }
 
     // LateUpdate() is used to render camera last to avoid rotation/render issues
@@ -95,11 +95,12 @@ public class CameraOrbit : MonoBehaviour
                 // Change camera rotation's y value
                 cameraRotation.y += Input.GetAxis("Mouse Y") * movingSpeed;  
 
-                //Clamps the y coordinate so the camera does not flip/go over y = 0
-                if (cameraRotation.y < 0f)
+                //Clamps the camera, so that player can look 45 degress up
+                if (cameraRotation.y < -30f)
                 {
-                    cameraRotation.y = 0f;
+                    cameraRotation.y = -30f;
                 }
+                // Clamps the camera, so it does not flip
                 else if (cameraRotation.y > 90f)
                 {
                     cameraRotation.y = 90f;

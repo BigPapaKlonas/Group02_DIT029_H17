@@ -16,6 +16,8 @@ public class CameraModeController : MonoBehaviour
     // Original player rotation
     private Quaternion playerRotation;
 
+    private Vector3 initialPosition;
+
     /*
      * Retrieve camera child on start-up
      **/
@@ -27,7 +29,7 @@ public class CameraModeController : MonoBehaviour
     private void Update()
     {
         // Change camera position and rotation only on button click
-        if (Input.GetKeyDown(KeyCode.V))
+        if (Input.GetKeyDown(KeyCode.V) && !noClip)
         {
             BirdsView();
         }
@@ -35,6 +37,17 @@ public class CameraModeController : MonoBehaviour
         // Change camera position and rotation only on button click
         if (Input.GetKeyDown(KeyCode.N))
         {
+            cameraChild.localPosition = new Vector3(
+                0,
+                0.5f,
+                0
+            );
+
+            // Setting the player and camera rotations to face the original way
+            playerObject.transform.rotation = playerRotation;
+            cameraChild.rotation = playerRotation;
+
+            eagleVision = false;
             NoClipMode();
         }
     }
@@ -43,7 +56,7 @@ public class CameraModeController : MonoBehaviour
     {
 
         // Execute when Bird View selected and in 1st Person Mode
-        if (!eagleVision && !noClip)
+        if (!eagleVision)
         {
             // Set bool to true (bird view mode)
             eagleVision = true;
@@ -106,8 +119,8 @@ public class CameraModeController : MonoBehaviour
             // Set bool to true (no clip mode)
             noClip = true;
 
-            // Remove gravity so player object can move up
-            Physics.gravity = new Vector3(0, 0, 0);
+            // Removing forces from player object so it does not drift away
+            playerObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
             // Get the playerRotation before switching to No Clip
             playerRotation = playerObject.transform.rotation;
@@ -118,15 +131,11 @@ public class CameraModeController : MonoBehaviour
 
             // Add camera orbiting script
             cameraChild.gameObject.AddComponent<CameraOrbit>();
-            cameraChild.gameObject.GetComponent<CameraOrbit>().initialPosition 
+            cameraChild.gameObject.GetComponent<CameraOrbit>().initialPosition
                 = playerObject.transform.position;
             cameraChild.gameObject.GetComponent<CameraOrbit>().cameraDistance = 0;
 
             playerRotation = playerObject.transform.rotation;
-
-            // Player movement script is based on where the player is looking
-            // by reseting the player rotation, the player will move in global rotation
-            //playerObject.transform.rotation = Quaternion.Euler(0, 0, 0);
 
             // Rotate camera to look down
             cameraChild.rotation = playerRotation;
@@ -136,9 +145,6 @@ public class CameraModeController : MonoBehaviour
         {
             // Set bool to false (1st person mode)
             noClip = false;
-
-            // Adding gravity
-            Physics.gravity = new Vector3(0, 9.82f, 0);
 
             // Adding 1st Person movement contols
             playerObject.AddComponent<PlayerMovement>();
@@ -150,18 +156,16 @@ public class CameraModeController : MonoBehaviour
                 0.5f,
                 0
             );
- 
+
             // Setting the player and camera rotations to face the original way
             playerObject.transform.rotation = playerRotation;
             cameraChild.rotation = playerRotation;
 
             Destroy(cameraChild.gameObject.GetComponent<CameraOrbit>());
-            
+
             // Adding script that rotates camera with mouse movement
             cameraChild.gameObject.AddComponent<MouseLook>();
             cameraChild.GetComponent<MouseLook>().characterBody = playerObject;
-
-           
         }
     }
 }
