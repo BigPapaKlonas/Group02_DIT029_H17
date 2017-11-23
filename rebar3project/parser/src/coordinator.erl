@@ -1,53 +1,91 @@
 -module(coordinator).
 
-%% ====================================================================
-%% API functions
-%% ===================================================================
--export([start/0, publish/2, subscribe/1]).
+-behaviour(gen_server).
 
-start() ->
+-define(SERVER, ?MODULE).
 
+%% ------------------------------------------------------------------
+%% API Function Exports
+%% ------------------------------------------------------------------
 
-	%% connect to broker
-	{ok, C} = emqttc:start_link([{host, "localhost"}, {client_id, <<"simpleClient">>}]),
+-export([start_link/0, stop/0]).
 
+%% ------------------------------------------------------------------
+%% gen_server Function Exports
+%% ------------------------------------------------------------------
 
-	%% subscribe
-	emqttc:subscribe(C, <<"TopicA">>, qos2),
+-export([init/1, handle_call/3, handle_cast/2, handle_info/2,
+         terminate/2, code_change/3]).
 
-	%% publish
-	emqttc:publish(C, <<"TopicA">>, <<"Shuannnnnn">>),
+%% ------------------------------------------------------------------
+%% API Function Definitions
+%% ------------------------------------------------------------------
 
-	%% receive message
-	receive
-	    {publish, Topic, Payload} ->
-	        io:format("Message Received from ~s: ~p~n", [Topic, Payload])
-	after
-	    1000 ->
-	        io:format("Error: receive timeout!~n")
-	end,
+ start_link() ->
+    gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
 
-	%% disconnect from broker
-	emqttc:disconnect(C).
+stop() ->
+    gen_server:call(?SERVER, stop).
 
-publish(T, M) ->
-		{ok, C} = emqttc:start_link([{host, "localhost"},
-															 {client_id, <<"simpleClient">>},
-															 {reconnect, 3},
-															 {logger, {console, info}}]),
-		emqttc:publish(C, T, M).
+%% ------------------------------------------------------------------
+%% gen_server Function Definitions
+%% ------------------------------------------------------------------
 
-subscribe(T) ->
+init(_Args) ->
+    {ok, C} = emqttc:start_link([{host, "18.216.88.162"},
+                                 {client_id, <<"coordinator">>},
+                                 {reconnect, 3},
+                                 {logger, {console, info}}]),
+    %% The pending subscribe
+    {ok, C}.
 
-		{ok, C} = emqttc:start_link([{host, "localhost"}, {client_id, <<"simpleClient">>}]),
-		emqttc:subscribe(C, T, qos2),
-		receive
-		    {publish, Topic, Payload} ->
-		        io:format("Message Received from ~s: ~p~n", [Topic, Payload])
-		after
-		    1000 ->
-		        io:format("Error: receive timeout!~n")
-		end,
+handle_call(stop, _From, State) ->
+    {stop, normal, ok, State};
 
-		%% disconnect from broker
-		emqttc:disconnect(C).
+handle_call(_Request, _From, State) ->
+    {reply, ok, State}.
+
+handle_cast(_Msg, State) ->
+    {noreply, State}.
+
+%% Publish Messages
+handle_info(publish, C) ->
+    Payload = parser_methods:get_CD(),
+    emqttc:publish(C, <<"TopicA">>, Payload, [{qos, 1}]),
+    erlang:send_after(3000, self(), publish),
+    {noreply, C};
+
+%% Receive Messages
+handle_info({publish, Topic, JSON}, C) ->
+    %%forward it to parser.
+    case jsx:is_json(JSON) of
+      true  -> jsx:decode(JSON),
+               case parser_methods:get_format(JSON) of
+               true ->io:format("Message forward to parser from ~s: ~p~n", [Topic, JSON]);
+                                         % get parsed and send to Shaun
+               false ->io:format("JSON ERROR: Not DIT029 format\n")
+             end;
+      false ->io:format("JSON ERROR: Not a valid JSON\n")
+    end,
+    {noreply, C};
+
+%% Client connected
+handle_info({mqttc, C, connected}, C) ->
+    io:format("Client ~p is connected~n", [C]),
+    emqttc:subscribe(C, <<"TopicA">>, 1),
+    self() ! publish,
+    {noreply, C};
+
+%% Client disconnected
+handle_info({mqttc, C,  disconnected}, C) ->
+    io:format("Client ~p is disconnected~n", [C]),
+    {noreply, C};
+
+handle_info(_Info, State) ->
+    {noreply, State}.
+
+terminate(_Reason, _State) ->
+    ok.
+
+code_change(_OldVsn, State, _Extra) ->
+    {ok, State}.
