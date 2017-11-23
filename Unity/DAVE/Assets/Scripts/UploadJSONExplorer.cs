@@ -1,9 +1,12 @@
 ﻿using System.Collections;
-using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using SFB;
+using RethinkDb.Driver;
+using RethinkDb.Driver.Net;
+
 
 [RequireComponent(typeof(Button))]
 public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
@@ -16,30 +19,13 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
     public bool Multiselect = false;
     private Button button;
 
+    public void OnPointerDown(PointerEventData eventData) { }
 
-#if UNITY_WEBGL && !UNITY_EDITOR
-    //
-    // WebGL
-    //
-    [DllImport("__Internal")]
-    private static extern void UploadFile(string id);
-
-    public void OnPointerDown(PointerEventData eventData) {
-        UploadFile(gameObject.name);
-    }
-
-    // Called from browser
-    public void OnFileUploaded(string url) {
-        StartCoroutine(OutputRoutine(url));
-}
-
-#else
-    void Start() {
+    void Start()
+    {
         button = GetComponent<Button>();
         button.onClick.AddListener(OnClick);
     }
-
-    public void OnPointerDown(PointerEventData eventData) { }
 
     private void OnClick()
     {
@@ -51,7 +37,6 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
         }
     }
 
-#endif
     private IEnumerator OutputRoutine(string url)
     {
         // Debug: file's path
@@ -64,12 +49,81 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
         string output = loader.text;
 
         // Debug: Json text
-        Debug.Log("Raw JSON: " + output);
+        // Debug.Log("Raw JSON: " + output);
 
+		JsonParser parser = new JsonParser (output);
 
-        
+		Debug.Log ("Diagram type: " + parser.GetDiagramType ());
 
-        // Creates a broker for the parsing and rendering.
-        new JsonBroker(output);
+		ConnectionManager.coordinator.SetDiagramType (parser.GetDiagramType ());
+
+		output = parser.AddMetaToSequence ("root/" + 
+			ConnectionManager.coordinator.GetInstructor ().Replace (" ", "").ToLower () + "/" + 
+			ConnectionManager.coordinator.GetDiagram ().Replace (" ", "").ToLower ()
+		);
+
+		Debug.Log (output);
+
+		ConnectionManager.coordinator.SetSessionJson (output);
+	
+		Insert ();
+
+		SceneManager.LoadScene (ConnectionManager.coordinator.GetDiagramType ());
+
     }
+
+	/* 
+	 * Insert to the Database.
+	 * when ran in a Coroutine The full ConnectionManager.<variable> needs to be present.
+	 */
+	void Insert()
+	{
+
+		string instructor = ConnectionManager.coordinator.GetInstructor ();
+		string diagram = ConnectionManager.coordinator.GetDiagram ();
+		string diagramType = ConnectionManager.coordinator.GetDiagramType ();
+
+		/* 
+		 * If database contains the instructor name: 
+		 * Update instructors.diagrams
+		 * and add the diagram to diagrams table.
+		 * Else:
+		 * Add both to instructors and diagrams tables.
+		*/
+		if (ConnectionManager.R.Db ("root").Table ("instructors").GetField ("name")
+			.Contains (instructor).Run (ConnectionManager.conn)) 
+		{
+			ConnectionManager.R.Db("root")
+				.Table("diagrams").Insert(ConnectionManager.R.Array(
+					ConnectionManager.R.HashMap("name", diagram)
+					.With("type", diagramType)
+					.With("instructor", instructor)
+				))
+				.Run(ConnectionManager.conn);
+
+			ConnectionManager.R.Db ("root")
+				.Table ("instructors")
+				.Filter (row => row.G ("name").Eq (instructor))
+				.Update (ConnectionManager.R.HashMap("diagrams", ConnectionManager.R.Array(diagram)))
+				.Run(ConnectionManager.conn);
+
+		} else {
+
+			ConnectionManager.R.Db("root")
+				.Table("diagrams").Insert(ConnectionManager.R.Array(
+					ConnectionManager.R.HashMap("name", diagram)
+					.With("type", diagramType)
+					.With("instructor", instructor)
+				))
+				.Run(ConnectionManager.conn);
+
+			ConnectionManager.R.Db("root")
+				.Table("instructors").Insert(ConnectionManager.R.Array(
+					ConnectionManager.R.HashMap("name", instructor)
+					.With("diagrams", ConnectionManager.R.Array())
+				)
+				)
+				.Run(ConnectionManager.conn);
+		}
+	}
 }
