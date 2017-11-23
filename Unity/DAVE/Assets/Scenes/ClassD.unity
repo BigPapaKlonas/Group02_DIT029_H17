@@ -351,7 +351,7 @@ Prefab:
     - target: {fileID: 54874102436260604, guid: 64e321d3fdc93af4186fae5eace9a0f0,
         type: 2}
       propertyPath: m_UseGravity
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 23927100635159194, guid: 64e321d3fdc93af4186fae5eace9a0f0,
         type: 2}
@@ -361,6 +361,16 @@ Prefab:
     - target: {fileID: 23927100635159194, guid: 64e321d3fdc93af4186fae5eace9a0f0,
         type: 2}
       propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 54874102436260604, guid: 64e321d3fdc93af4186fae5eace9a0f0,
+        type: 2}
+      propertyPath: m_Constraints
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 54874102436260604, guid: 64e321d3fdc93af4186fae5eace9a0f0,
+        type: 2}
+      propertyPath: m_AngularDrag
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
@@ -773,7 +783,7 @@ Prefab:
     - target: {fileID: 224797727552978508, guid: 29d3d3bcf8ed2984b9f7d076602fc14d,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 450
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114329709858418346, guid: 29d3d3bcf8ed2984b9f7d076602fc14d,
         type: 2}

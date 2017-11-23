@@ -3,6 +3,7 @@
 public class CameraOrbit : MonoBehaviour
 {
     public Vector3 initialPosition;
+    public Vector3 initialRotation;
     public float cameraDistance;            // Distance from Camera
 
     private Transform cameraPosition;       // The camera being rotated
@@ -24,9 +25,8 @@ public class CameraOrbit : MonoBehaviour
     {
         cameraParent = transform.parent;
         cameraPosition = transform;
-        cameraRotation.x = -90f;            // Rotates camera on start to face the diagram
+        cameraRotation = initialRotation; // Rotates camera on start to face the diagram
 
-        //cameraParent.position = initialPosition;        // Positions camera on start
         cameraInitialPosition = initialPosition;  // Saves initial camera position
     }
 

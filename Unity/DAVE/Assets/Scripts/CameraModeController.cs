@@ -1,5 +1,11 @@
 ﻿using UnityEngine;
 
+/*
+ * Script use to swap between different camera modes; 1st person, Birds View, and No Clip.
+ * 1st person mode is used to let the player walk around the terrain
+ * Birds View provides a top down perspective on the terrain
+ * No Clip mode enables the player to fly around the scene 
+ **/ 
 public class CameraModeController : MonoBehaviour
 {
 
@@ -15,8 +21,6 @@ public class CameraModeController : MonoBehaviour
 
     // Original player rotation
     private Quaternion playerRotation;
-
-    private Vector3 initialPosition;
 
     /*
      * Retrieve camera child on start-up
@@ -37,17 +41,14 @@ public class CameraModeController : MonoBehaviour
         // Change camera position and rotation only on button click
         if (Input.GetKeyDown(KeyCode.N))
         {
+            // Reseting camera position when going to No clip from Birds View
             cameraChild.localPosition = new Vector3(
                 0,
                 0.5f,
                 0
             );
-
-            // Setting the player and camera rotations to face the original way
-            playerObject.transform.rotation = playerRotation;
-            cameraChild.rotation = playerRotation;
-
             eagleVision = false;
+
             NoClipMode();
         }
     }
@@ -71,15 +72,12 @@ public class CameraModeController : MonoBehaviour
             // by reseting the player rotation, the player will move in global rotation
             playerObject.transform.rotation = Quaternion.Euler(0, 0, 0);
 
-            // Get the position
-            Vector3 cameraPosition = cameraChild.position;
-
             // Position the camera above the player. The camera y-position 
             // is 1 less than entered, because the camera is Player object child
             cameraChild.position = new Vector3(
-                cameraPosition.x,
+                playerObject.transform.position.x,
                 31,
-                cameraPosition.z
+                playerObject.transform.position.z
             );
 
             // Rotate camera to look down
@@ -108,43 +106,50 @@ public class CameraModeController : MonoBehaviour
             // Setting player object as a variable, so the movement is global
             cameraChild.GetComponent<MouseLook>().characterBody = playerObject;
         }
-
     }
 
+    /*
+     * Used to enable the player to fly around
+     **/ 
     void NoClipMode()
     {
 
         if (!noClip)
         {
-            // Set bool to true (no clip mode)
+            // Set bool to true (currently in no clip mode)
             noClip = true;
 
             // Removing forces from player object so it does not drift away
             playerObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
+            // Adding trigger to disable going through house walls
+            playerObject.GetComponent<Collider>().isTrigger = true;
+
             // Get the playerRotation before switching to No Clip
             playerRotation = playerObject.transform.rotation;
+            cameraChild.rotation = playerRotation;
 
             // Removing script that rotates camera with mouse movement and moves player
             Destroy(cameraChild.GetComponent<MouseLook>());
             Destroy(playerObject.GetComponent<PlayerMovement>());
 
-            // Add camera orbiting script
+            // Add camera orbiting script and initialize the camera's position and rotation
+            // to face the way it faced before swapping to no clip
             cameraChild.gameObject.AddComponent<CameraOrbit>();
             cameraChild.gameObject.GetComponent<CameraOrbit>().initialPosition
                 = playerObject.transform.position;
+            cameraChild.gameObject.GetComponent<CameraOrbit>().initialRotation
+                = cameraChild.rotation.eulerAngles;
             cameraChild.gameObject.GetComponent<CameraOrbit>().cameraDistance = 0;
-
-            playerRotation = playerObject.transform.rotation;
-
-            // Rotate camera to look down
-            cameraChild.rotation = playerRotation;
         }
         // Execute when returning to 1st person view
         else
         {
             // Set bool to false (1st person mode)
             noClip = false;
+
+            // Adding trigger to disable going through house walls
+            playerObject.GetComponent<Collider>().isTrigger = false;
 
             // Adding 1st Person movement contols
             playerObject.AddComponent<PlayerMovement>();
