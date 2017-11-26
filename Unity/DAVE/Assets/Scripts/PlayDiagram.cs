@@ -24,6 +24,7 @@ public class PlayDiagram : MonoBehaviour {
 		}
 	}
 
+    // Unsubsribes from the current session's student topic and removes the SubscribingStudents window
     void DisableSubscribingStudents()
     {
         coordinator.Unsubscribe("root/" + coordinator.GetInstructor() + "/" +

@@ -1,21 +1,27 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using uPLibrary.Networking.M2Mqtt.Messages;
 
 public class SubscribingStudents : MonoBehaviour
 {
-    private ConnectionManager coordinator = ConnectionManager.coordinator;
-    private List<string> studentList = new List<string>();                  // List of Log structures
+    public GUISkin customSkin;
+
+    private ConnectionManager coordinator = ConnectionManager.coordinator;  // Used for publish/subscribe
+    private List<string> studentList = new List<string>();
     private Vector2 scrollPosition;                                         // Used to place ScrollView
-    private Rect windowRect = new Rect(0, 0, Screen.width, Screen.height * 0.1f);
+    // Creates the rectangle for the log
+    private Rect windowRect = new Rect(0, 0, Screen.width, Screen.height * 0.12f);
 
     private void Start()
     {
+        //Subscribes to the current session's student topic
         coordinator.Subscribe("root/" + coordinator.GetInstructor() + "/" +
-                coordinator.GetDiagram() + "/students");
+                 coordinator.GetDiagram() + "/students");
     }
 
     private void OnEnable()
     {
+        //Called when the object becomes enabled and active.
         coordinator.GetMqttClient().MqttMsgPublishReceived += SubscribingStudents_Handler;
     }
 
@@ -26,35 +32,38 @@ public class SubscribingStudents : MonoBehaviour
 
     void OnGUI()
     {
-        GUILayout.Window(123456, windowRect, LogWindow, "", new GUIStyle());
+        if (studentList.Count > 0)  //If the list contains at least one student
+        {
+            /*
+	        * Creates a window with id 11111 based on windowRect dimensions with StudentListWindow
+            * and with the title of the numbers of subscribing students
+	        */
+            GUILayout.Window(11111, windowRect, StudentListWindow,
+                "Subscribed students: " + studentList.Count.ToString());
+        }
     }
 
-
-    void SubscribingStudents_Handler(object sender, uPLibrary.Networking.M2Mqtt.Messages.MqttMsgPublishEventArgs e)
+    // Handler that receives and handles messages from the subscribed topic
+    void SubscribingStudents_Handler(object sender, MqttMsgPublishEventArgs e)
     {
+        // Verifies the message's topic
         if (e.Topic == "root/" + coordinator.GetInstructor() + "/" +
                  coordinator.GetDiagram() + "/students")
         {
-            studentList.Add(System.Text.Encoding.UTF8.GetString(e.Message));
+            studentList.Add(System.Text.Encoding.UTF8.GetString(e.Message)); // Adds message to list
         }
     }
 
-    void LogWindow(int windowID)
+    // GUI window that houses the student names
+    void StudentListWindow(int windowID)
     {
-        if (studentList.Count > 0)
-        {
-            scrollPosition = GUILayout.BeginScrollView(scrollPosition);
-            GUILayout.BeginHorizontal();
+        scrollPosition = GUILayout.BeginScrollView(scrollPosition); // Starts/adds the scroll view
+        GUILayout.BeginHorizontal();                                // Starts/adds horizontal area
 
-            foreach (string student in studentList)
-            {
-                GUILayout.Label(student);
-                //new GUIStyle(GUI.skin.label){alignment = TextAnchor.MiddleCenter});
-                GUILayout.Space(30);
-            }
-
-            GUILayout.EndHorizontal();
-            GUILayout.EndScrollView();
-        }
+        foreach (string student in studentList)                     // Iterates through studentList
+            GUILayout.Button(student, customSkin.button);           // Adds student as button title
+                                                                    // .. and applies a custom skin
+        GUILayout.EndHorizontal();                                  
+        GUILayout.EndScrollView();                                  
     }
 }
