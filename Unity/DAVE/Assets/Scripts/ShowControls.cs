@@ -13,7 +13,7 @@ public class ShowControls : MonoBehaviour {
     {
         GetComponent<Button>().onClick.AddListener(OnClick);
         CameraControlPanel = GameObject.FindGameObjectWithTag("CameraControlPanel");
-        Arrow = GameObject.FindGameObjectWithTag("arrow").GetComponent<Image>();
+        Arrow = GameObject.FindGameObjectWithTag("arrow_controls").GetComponent<Image>();
     }
 
     private void OnClick()

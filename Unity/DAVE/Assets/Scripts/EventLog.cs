@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /*
  * Log to display what is going on in the diagram 'in-game'.
@@ -19,29 +20,50 @@ public class EventLog : MonoBehaviour
         public LogType type;
     }
 
+    private Image Arrow;                    // Arrow image on button
+    public Sprite downArrow;                
+    public Sprite upArrow;                  
+
     public KeyCode toggleKey = KeyCode.L;   // The hotkey to show and hide the log window
     List<Log> logs = new List<Log>();       // List of Log structures
     Vector2 scrollPosition;                 // Used to place ScrollView
-    public bool showLogWindow = true;       // True on start
+    private bool showLogWindow = true;      // True on start
 
     // Creates the rectangle for the log
-    Rect windowRect = new Rect(Screen.width * 0.8f, 0, Screen.width * 0.2f, Screen.height);
+    Rect windowRect = new Rect(Screen.width - 360f, 30, 179f, Screen.height);
     // Label for clear button
     GUIContent clearLabel = new GUIContent("Clear", "Clear the contents of the console.");
     // Allows for repositioning the camera
     CameraOrbit cameraOrbitScript;
 
+    // Gets objects and sets click listener
+    private void Start()
+    {
+        cameraOrbitScript = (CameraOrbit)Camera.main.GetComponent(typeof(CameraOrbit));
+
+        GetComponent<Button>().onClick.AddListener(OnClick);
+        Arrow = GameObject.FindGameObjectWithTag("arrow_log").GetComponent<Image>();
+    }
+
     void OnEnable() //Called when the object becomes enabled and active.
     {
         // Assigns HandleLog function to handle log messages received
         Application.logMessageReceived += HandleLog;
-        // Gets the cameraOrbit script
-        cameraOrbitScript = (CameraOrbit)Camera.main.GetComponent(typeof(CameraOrbit));
     }
 
     void OnDisable()
     {
         Application.logMessageReceived += null;
+    }
+
+    private void OnClick()
+    {
+        showLogWindow = !showLogWindow; // Disables the log window
+
+        if (showLogWindow)
+            Arrow.sprite = downArrow;   // Make drop down arrow point downwards
+        else
+            Arrow.sprite = upArrow;
     }
 
     void Update()

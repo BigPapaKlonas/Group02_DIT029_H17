@@ -119,10 +119,10 @@ MonoBehaviour:
       m_Top: 0
       m_Bottom: 0
     m_Margin:
-      m_Left: 10
-      m_Right: 10
-      m_Top: 0
-      m_Bottom: 0
+      m_Left: 0
+      m_Right: 0
+      m_Top: 5
+      m_Bottom: 5
     m_Padding:
       m_Left: 0
       m_Right: 0
@@ -136,8 +136,8 @@ MonoBehaviour:
     m_Font: {fileID: 0}
     m_FontSize: 0
     m_FontStyle: 0
-    m_Alignment: 4
-    m_WordWrap: 0
+    m_Alignment: 1
+    m_WordWrap: 1
     m_RichText: 1
     m_TextClipping: 0
     m_ImagePosition: 0
