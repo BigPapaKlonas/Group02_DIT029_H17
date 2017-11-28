@@ -1,0 +1,8 @@
+{release,{"default","0.0.1"},
+         {erts,"8.2"},
+         [{kernel,"5.1.1"},
+          {stdlib,"3.2"},
+          {gen_logger,"1.2",load},
+          {jsx,"2.8.0"},
+          {emqttc,"0.8.0"},
+          {diagram_intiator,"0.1.0"}]}. 
