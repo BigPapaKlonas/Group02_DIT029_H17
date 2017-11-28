@@ -34,8 +34,15 @@ public class ConnectionManager : MonoBehaviour
 	private string diagramType;
 	private bool instructorBool;
 
+    /*
+     * Authentication for instructor.
+     */
+    public static bool auth;
+
+
     void Start()
     {
+   
 		// RethinkDB
 		DatabaseConnection ();
 		// Mqtt

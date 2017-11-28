@@ -4,8 +4,6 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using SFB;
-using RethinkDb.Driver;
-using RethinkDb.Driver.Net;
 
 
 [RequireComponent(typeof(Button))]
@@ -66,9 +64,7 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
 
 		ConnectionManager.coordinator.SetSessionJson (output);
 	
-		Insert ();
-
-		SceneManager.LoadScene (ConnectionManager.coordinator.GetDiagramType ());
+		StartCoroutine(Insert ());
 
     }
 
@@ -76,54 +72,31 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
 	 * Insert to the Database.
 	 * when ran in a Coroutine The full ConnectionManager.<variable> needs to be present.
 	 */
-	void Insert()
+	IEnumerator Insert()
 	{
 
 		string instructor = ConnectionManager.coordinator.GetInstructor ();
 		string diagram = ConnectionManager.coordinator.GetDiagram ();
 		string diagramType = ConnectionManager.coordinator.GetDiagramType ();
 
-		/* 
+        /* 
 		 * If database contains the instructor name: 
 		 * Update instructors.diagrams
 		 * and add the diagram to diagrams table.
 		 * Else:
 		 * Add both to instructors and diagrams tables.
 		*/
-		if (ConnectionManager.R.Db ("root").Table ("instructors").GetField ("name")
-			.Contains (instructor).Run (ConnectionManager.conn)) 
-		{
-			ConnectionManager.R.Db("root")
-				.Table("diagrams").Insert(ConnectionManager.R.Array(
-					ConnectionManager.R.HashMap("name", diagram)
-					.With("type", diagramType)
-					.With("instructor", instructor)
-				))
-				.Run(ConnectionManager.conn);
 
-			ConnectionManager.R.Db ("root")
-				.Table ("instructors")
-				.Filter (row => row.G ("name").Eq (instructor))
-				.Update (ConnectionManager.R.HashMap("diagrams", ConnectionManager.R.Array(diagram)))
-				.Run(ConnectionManager.conn);
+		var update = ConnectionManager.R.Db("root")
+			.Table("diagrams").Insert(ConnectionManager.R.Array(
+				ConnectionManager.R.HashMap("name", diagram)
+				.With("type", diagramType)
+				.With("instructor", instructor)
+			))
+			.Run(ConnectionManager.conn);
 
-		} else {
-
-			ConnectionManager.R.Db("root")
-				.Table("diagrams").Insert(ConnectionManager.R.Array(
-					ConnectionManager.R.HashMap("name", diagram)
-					.With("type", diagramType)
-					.With("instructor", instructor)
-				))
-				.Run(ConnectionManager.conn);
-
-			ConnectionManager.R.Db("root")
-				.Table("instructors").Insert(ConnectionManager.R.Array(
-					ConnectionManager.R.HashMap("name", instructor)
-					.With("diagrams", ConnectionManager.R.Array())
-				)
-				)
-				.Run(ConnectionManager.conn);
-		}
+        yield return update;
+            Debug.Log("Successful insert and update of the " + diagram + " table, for instructor: " + instructor);
+            SceneManager.LoadScene(ConnectionManager.coordinator.GetDiagramType());
 	}
 }

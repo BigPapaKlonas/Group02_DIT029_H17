@@ -572,7 +572,7 @@ PlayerSettings:
   scriptingRuntimeVersion: 1
   apiCompatibilityLevelPerPlatform:
     Standalone: 1
-    WebGL: 2
+    WebGL: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
   metroPackageName: DAVE

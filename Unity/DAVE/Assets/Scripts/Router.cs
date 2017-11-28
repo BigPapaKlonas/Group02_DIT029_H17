@@ -11,24 +11,39 @@ public class Router : MonoBehaviour {
 	*/
 	public Button studentBtn;
 	public Button instructorBtn;
-	public Button insNameBtn;
 	public Button diaNameBtn;
     public Button studentNameBtn;
 	public Button uploadBtn;
 
 	public InputField studentName;
-	public InputField instructorName;
 	public InputField diagramName;
 
 	public Text warning;
 
-	void OnEnable()
+    /*
+    * Authentication variables.
+    */
+    public GameObject startPanel;
+    public GameObject loginPanel;
+    public GameObject signUpPanel;
+
+    private GameObject canvas;
+
+    public Button loginBtn;
+
+    private void Start()
+    {
+        canvas = GameObject.Find("StartCanvas");
+    }
+
+    void OnEnable()
 	{
-		studentBtn.onClick.AddListener(()    => buttonCallBack(studentBtn));
+
+        studentBtn.onClick.AddListener(()    => buttonCallBack(studentBtn));
 		instructorBtn.onClick.AddListener(() => buttonCallBack(instructorBtn));
-		insNameBtn.onClick.AddListener(() => buttonCallBack(insNameBtn));
 		diaNameBtn.onClick.AddListener(() => buttonCallBack(diaNameBtn));
         studentNameBtn.onClick.AddListener(() => buttonCallBack(studentNameBtn));
+        loginBtn.onClick.AddListener(() => buttonCallBack(loginBtn));
 
     }
 
@@ -37,6 +52,12 @@ public class Router : MonoBehaviour {
 	 */
 	private void buttonCallBack(Button buttonPressed)
 	{
+        if (buttonPressed == loginBtn)
+        {
+            GameObject login = Instantiate(loginPanel);
+            login.transform.SetParent(canvas.transform, false);
+            startPanel.SetActive(false);
+        }
 		
 		if (buttonPressed == studentBtn)
 		{
@@ -51,20 +72,18 @@ public class Router : MonoBehaviour {
 
 		if (buttonPressed == instructorBtn)
 		{
-			ConnectionManager.coordinator.SetInstructorBool(true);
-			buttonPressed.gameObject.SetActive(false);
-		}
-
-		if (buttonPressed == insNameBtn)
-		{	
-			if (instructorName.text != "") {
-				ConnectionManager.coordinator.SetInstructor (instructorName.text);
-				buttonPressed.gameObject.SetActive (false);
-				instructorName.gameObject.SetActive (false);
-			} else {
-				warning.text = "You have to enter your name";
-			}
-		}
+            if (ConnectionManager.auth == false)
+            {  
+                GameObject login = Instantiate(loginPanel);
+                login.transform.SetParent(canvas.transform, false);
+                startPanel.SetActive(false);
+            }
+            else
+            {
+                ConnectionManager.coordinator.SetInstructorBool(true);
+                buttonPressed.gameObject.SetActive(false);
+            }
+        }
 		if (buttonPressed == diaNameBtn)
 		{
 			if (diagramName.text != "") {
@@ -90,7 +109,6 @@ public class Router : MonoBehaviour {
 	{
 		studentBtn.onClick.RemoveAllListeners();
 		instructorBtn.onClick.RemoveAllListeners();
-		insNameBtn.onClick.RemoveAllListeners();
 		diaNameBtn.onClick.RemoveAllListeners();
         studentNameBtn.onClick.RemoveAllListeners();
 	}
