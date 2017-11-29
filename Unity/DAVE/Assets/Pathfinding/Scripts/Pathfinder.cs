@@ -255,7 +255,7 @@ public class Pathfinder : MonoBehaviour
                 //If we have no nodes on the open list AND we are not at the end, then we got stucked! return empty list then.
                 if (sortedOpenList.Count == 0)
                 {
-                    print("Empty Openlist, closedList");
+                    //print("Empty Openlist, closedList");
                     listMethod.Invoke(new List<Vector3>());
                     return;
                 }

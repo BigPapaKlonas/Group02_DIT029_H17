@@ -27,6 +27,7 @@ public class CameraModeController : MonoBehaviour
      **/
     private void Start()
     {
+        // Cursor.visible = false;
         cameraChild = playerObject.transform.Find("Camera");
     }
 

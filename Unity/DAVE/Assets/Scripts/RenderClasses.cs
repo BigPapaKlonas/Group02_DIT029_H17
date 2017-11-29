@@ -28,7 +28,7 @@ public class RenderClasses : MonoBehaviour
     /*
      * Makes houses by looping through JSON
      **/
-    public void AddHouse(JSONClass json)
+    public void AddHouse(JSONClass json, string uniqueId)
     {
         float offset = 0;   // Value used in Vector3 for house positioning
         foreach (var classes in json.Classes)
@@ -57,7 +57,8 @@ public class RenderClasses : MonoBehaviour
             houseList.Add(classHouse);
 
             // Change the name of the house in Hierarchy
-            classHouse.name = classes.Name;
+            // Use uniqueId to identify classes with same names
+            classHouse.name = classes.Name + uniqueId;
 
             // Change the name of the house on the wall above the door
             classHouse.GetComponentInChildren<TextMesh>().text = classes.Name;

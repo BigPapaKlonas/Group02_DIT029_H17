@@ -50,8 +50,9 @@ public class JsonBroker
 
     public void RenderClassDiagram(JSONClass JSONClass)
     {
-        RenderClasses(JSONClass);
-        RenderRelationships(JSONClass);
+        string id = Guid.NewGuid().ToString("N");
+        RenderClasses(JSONClass, id);
+        RenderRelationships(JSONClass, id);
     }
 
     public void RenderDeployment(JSONDeployment JSONDeployment)
@@ -69,14 +70,14 @@ public class JsonBroker
         uplButton.GetComponent<StartMessages>().NewMessage(JSONSequence);
     }
 
-    public void RenderClasses(JSONClass JSONClass)
+    public void RenderClasses(JSONClass JSONClass, string id)
     {
-        uplButton.GetComponent<RenderClasses>().AddHouse(JSONClass);
+        uplButton.GetComponent<RenderClasses>().AddHouse(JSONClass, id);
     }
 
-    public void RenderRelationships(JSONClass JSONClass)
+    public void RenderRelationships(JSONClass JSONClass, string id)
     {
-        uplButton.GetComponent<RenderClassRelationship>().AddRelationship(JSONClass);
+        uplButton.GetComponent<RenderClassRelationship>().AddRelationship(JSONClass, id);
     }
 
     private bool IsValidJson(string strInput)
