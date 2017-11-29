@@ -19,6 +19,7 @@ public class RenderDevices : MonoBehaviour
         int i;
         float yPos = 4.890001F;
         int biggest = 1;
+        // Go through the parsed JSON
         foreach (var pair in json.Mapping)
         {
             i = DeviceNames.IndexOf(pair.Device);
@@ -46,38 +47,50 @@ public class RenderDevices : MonoBehaviour
 
         foreach (Device device in Devices)
         {
-            Vector3 pos = PlaceInCircle(center, (float)Devices.Count, (float)(360 / Devices.Count * i++));
+            //Place the devices in a circle
+            Vector3 pos = PlaceInCircle(center, (float)(Devices.Count), (float)(360 / Devices.Count * i++));
             GameObject newDevice = (GameObject)Instantiate(
                 devicePrefab,
                 pos,
                 this.transform.rotation);
 
             Vector3 nPos = pos;
-            int length = device.GetProcesses().Count;
-            
-            if (length > 1)
-            {
-                newDevice.transform.localScale += new Vector3(0, (float)(0.8 * (length -1)), 0);
-                newDevice.transform.localPosition += new Vector3(0, (float)(0.8 * (length -1)/ 2), 0);
-                nPos += new Vector3(0.5F, 0.8F * (2 * length - 1) / 2 - 0.1F, 0);
-            }
-            else
-                nPos += new Vector3(0.5F, 0.8F * (length) / 2 - 0.1F, 0);
 
+            // Rezises the height of the device
+            int length = device.GetProcesses().Count;
+            if (length == 2)
+            {
+                newDevice.transform.localScale += new Vector3(0, 0, newDevice.transform.localScale.z);
+            }
+            else if(length > 6)
+            {
+                newDevice.transform.localScale += new Vector3(0, (float)(0.8 * 3), newDevice.transform.localScale.z);
+            }
+            else if(length > 2)
+                newDevice.transform.localScale += new Vector3(0, (float)(0.8 * (int)((length) / 2)), newDevice.transform.localScale.z);
+            nPos += new Vector3(0.5F, newDevice.transform.localScale.y / 2 - 0.5F, 0);
             newDevice.name = device.GetName();
 
-            Debug.Log(newDevice.name + "");
-
+            // Places the name of the device
             Quaternion rot = Quaternion.Euler(0, 270, 0);
-           
             TextMesh name = (TextMesh)Instantiate(
                 namePrefab,
                 nPos,
                 rot);
-
             name.text = "<<Device>>\n" + device.GetName();
 
-            pos += new Vector3(0.1F, -0.25F, 0);
+            // Resizes the width of the device
+            float width = GetWidth(name);
+            if (length > 4 && width > (newDevice.transform.localScale.z))
+                newDevice.transform.localScale += new Vector3(0, 0, width - newDevice.transform.localScale.z);
+
+            // The position of the process
+            if (length == 1)
+                pos += new Vector3(0.1F, 0.8F * (length) / 2 - 0.6F, 0);
+            else if (length == 2)
+                pos += new Vector3(0.1F, 0.8F * (length -1) / 2 - 0.6F, -newDevice.transform.localScale.z / 4);
+            else
+                pos += new Vector3(0.1F, newDevice.transform.localScale.y / 2 - 1, - newDevice.transform.localScale.z/4);
             foreach (string process in device.GetProcesses())
             {
 
@@ -94,12 +107,19 @@ public class RenderDevices : MonoBehaviour
 
                 newProcess.GetComponentInChildren<TextMesh>().text =  ":" + process;
 
-                pos.y += 0.8F;
+                if (device.GetProcesses().IndexOf(process) % 2 == 0)
+                    pos.z += newDevice.transform.localScale.z / 5 * 2.5F;
+                else
+                {
+                    // Update posistion for the next process
+                    pos.y -= 0.8F;
+                    pos.z -= newDevice.transform.localScale.z / 5 * 2.5F;
+                }
 
             }
         }
     }
-
+    //Places an object at a posistion in a circle 
     Vector3 PlaceInCircle(Vector3 center, float radius, float ang)
     {
         Vector3 pos;
@@ -108,6 +128,22 @@ public class RenderDevices : MonoBehaviour
         pos.z = center.z + radius * Mathf.Sin(ang * Mathf.Deg2Rad);
         return pos;
 
+    }
+
+
+    // Gets the width of the text
+    float GetWidth(TextMesh mesh)
+    {
+        float width = 0;
+        foreach (char symbol in mesh.text)
+        {
+            CharacterInfo info;
+            if (mesh.font.GetCharacterInfo(symbol, out info, mesh.fontSize, mesh.fontStyle))
+            {
+                width += info.advance;
+            }
+        }
+        return width * mesh.characterSize * 0.07f;
     }
 
 }

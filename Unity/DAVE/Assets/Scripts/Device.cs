@@ -32,8 +32,8 @@ public class Device
     {
         return name;
     }
-    public Boolean Contains(string from, string to)
+    public Boolean Contains(string process)
     {
-        return processes.Contains(from) || processes.Contains(to);
+        return processes.Contains(process);
     }
 }
