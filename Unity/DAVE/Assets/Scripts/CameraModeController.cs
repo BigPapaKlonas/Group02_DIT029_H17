@@ -12,9 +12,10 @@ public class CameraModeController : MonoBehaviour
     // Player Object
     public GameObject playerObject;
 
-    // Bool used to monitor bird view selection
+    // Bools used to monitor between the different camera controll modes
     private bool eagleVision = false;
     private bool noClip = false;
+    private bool cursorEnabled = false;
 
     // Player's child camera 
     private Transform cameraChild;
@@ -27,7 +28,7 @@ public class CameraModeController : MonoBehaviour
      **/
     private void Start()
     {
-        // Cursor.visible = false;
+        Cursor.visible = false;
         cameraChild = playerObject.transform.Find("Camera");
     }
 
@@ -52,6 +53,13 @@ public class CameraModeController : MonoBehaviour
 
             NoClipMode();
         }
+
+        // Change camera position and rotation only on button click
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            CameraCursorToggle();
+        }
+
     }
 
     void BirdsView()
@@ -166,6 +174,39 @@ public class CameraModeController : MonoBehaviour
             // Setting the player and camera rotations to face the original way
             playerObject.transform.rotation = playerRotation;
             cameraChild.rotation = playerRotation;
+
+            Destroy(cameraChild.gameObject.GetComponent<CameraOrbit>());
+
+            // Adding script that rotates camera with mouse movement
+            cameraChild.gameObject.AddComponent<MouseLook>();
+            cameraChild.GetComponent<MouseLook>().characterBody = playerObject;
+        }
+    }
+
+    /*
+     * Toggles between cursor visibility and camera movement
+     **/
+    void CameraCursorToggle()
+    {
+        // Showing cursor
+        if (!cursorEnabled)
+        {
+            cursorEnabled = true;
+            Cursor.visible = true;
+
+            // Removing script that rotates camera with mouse movement and moves player
+            Destroy(cameraChild.GetComponent<MouseLook>());
+            Destroy(playerObject.GetComponent<PlayerMovement>());
+        }
+        // Remove cursor from screen
+        else
+        {
+            cursorEnabled = false;
+            Cursor.visible = false;
+
+            // Adding 1st Person movement contols
+            playerObject.AddComponent<PlayerMovement>();
+            playerObject.GetComponent<PlayerMovement>().LookTransform = playerObject.transform;
 
             Destroy(cameraChild.gameObject.GetComponent<CameraOrbit>());
 

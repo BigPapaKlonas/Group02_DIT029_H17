@@ -13,7 +13,7 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
     public string FileName = "";
     public string Directory = "";
     public string Extension = "json";
-    public bool Multiselect = false;
+    public bool Multiselect = true;
     private Button button;
     
     // offset used to position house "districts"

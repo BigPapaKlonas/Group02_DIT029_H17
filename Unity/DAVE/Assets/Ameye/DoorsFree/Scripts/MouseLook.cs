@@ -17,8 +17,8 @@ public class MouseLook : MonoBehaviour
 	
 	void Start()
 	{
-		// Set target direction to the camera's initial orientation.
-		targetDirection = transform.localRotation.eulerAngles;
+        // Set target direction to the camera's initial orientation.
+        targetDirection = transform.localRotation.eulerAngles;
 		
 		// Set target direction for the character body to its inital state.
 		if (characterBody) targetCharacterDirection = characterBody.transform.localRotation.eulerAngles;

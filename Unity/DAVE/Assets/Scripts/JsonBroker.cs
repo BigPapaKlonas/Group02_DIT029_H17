@@ -10,7 +10,6 @@ public class JsonBroker
 
     public JsonBroker(string nJson, float houseOffset)
     {
-        // offset used to position house "districts"
 
         if (IsValidJson(nJson))
         {
