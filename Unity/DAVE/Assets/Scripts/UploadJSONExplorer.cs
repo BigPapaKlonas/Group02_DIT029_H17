@@ -15,6 +15,10 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
     public string Extension = "json";
     public bool Multiselect = false;
     private Button button;
+    
+    // offset used to position house "districts"
+    float positionOffset = -50;
+
 
 
 #if UNITY_WEBGL && !UNITY_EDITOR
@@ -44,10 +48,13 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
     private void OnClick()
     {
         var paths = StandaloneFileBrowser.OpenFilePanel(Title, Directory, Extension, Multiselect);
-        if (paths.Length > 0)
+        foreach(var file in paths)
         {
-            // Starts a new routine with the path to the selected file as argument
-            StartCoroutine(OutputRoutine(new System.Uri(paths[0]).AbsoluteUri));
+            if (file.Length > 0)
+            {
+                // Starts a new routine with the path to the selected file as argument
+                StartCoroutine(OutputRoutine(new System.Uri(file).AbsoluteUri));
+            }
         }
     }
 
@@ -66,10 +73,8 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
         // Debug: Json text
         Debug.Log("Raw JSON: " + output);
 
-
-        
-
         // Creates a broker for the parsing and rendering.
-        new JsonBroker(output);
+        new JsonBroker(output, positionOffset);
+        positionOffset += 40;
     }
 }

@@ -8,14 +8,16 @@ public class JsonBroker
 {
     private Button uplButton;
 
-    public JsonBroker(string nJson)
+    public JsonBroker(string nJson, float houseOffset)
     {
+        // offset used to position house "districts"
+
         if (IsValidJson(nJson))
         {
             // Creates a JsonHelper for the parsing.
             JsonHelper JsonHelper = new JsonHelper(nJson);
             uplButton = GameObject.Find("UploadBtn").GetComponent<Button>();
-
+            
             switch (JsonHelper.GetDiagramType())
             {
                 case "sequence_diagram":
@@ -24,7 +26,7 @@ public class JsonBroker
                     break;
                 case "class_diagram":
                     Debug.Log("Class");
-                    RenderClassDiagram(JsonHelper.ParseClass());
+                    RenderClassDiagram(JsonHelper.ParseClass(), houseOffset);
                     break;
                 case "deployment_diagram":
                     Debug.Log("deployment");
@@ -48,10 +50,10 @@ public class JsonBroker
         RenderMessages(JSONSequence);
     }
 
-    public void RenderClassDiagram(JSONClass JSONClass)
+    public void RenderClassDiagram(JSONClass JSONClass, float houseOffset)
     {
         string id = Guid.NewGuid().ToString("N");
-        RenderClasses(JSONClass, id);
+        RenderClasses(JSONClass, id, houseOffset);
         RenderRelationships(JSONClass, id);
     }
 
@@ -70,9 +72,9 @@ public class JsonBroker
         uplButton.GetComponent<StartMessages>().NewMessage(JSONSequence);
     }
 
-    public void RenderClasses(JSONClass JSONClass, string id)
+    public void RenderClasses(JSONClass JSONClass, string id, float offset)
     {
-        uplButton.GetComponent<RenderClasses>().AddHouse(JSONClass, id);
+        uplButton.GetComponent<RenderClasses>().AddHouse(JSONClass, id, offset);
     }
 
     public void RenderRelationships(JSONClass JSONClass, string id)

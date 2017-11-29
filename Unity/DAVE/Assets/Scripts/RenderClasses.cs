@@ -28,7 +28,7 @@ public class RenderClasses : MonoBehaviour
     /*
      * Makes houses by looping through JSON
      **/
-    public void AddHouse(JSONClass json, string uniqueId)
+    public void AddHouse(JSONClass json, string uniqueId, float houseOffset)
     {
         float offset = 0;   // Value used in Vector3 for house positioning
         foreach (var classes in json.Classes)
@@ -36,9 +36,9 @@ public class RenderClasses : MonoBehaviour
 
             // Initial position for each new house object
             Vector3 positioning = new Vector3(
-                Random.Range(-45, 45),
+                Random.Range(houseOffset, houseOffset + 30),
                 0,
-                Random.Range(-45, 45)    
+                Random.Range(houseOffset, houseOffset + 30)    
             );
 
             // Create House
@@ -49,6 +49,8 @@ public class RenderClasses : MonoBehaviour
                 classHousePrefab.transform.rotation = Quaternion.Euler(
                     houseRotation[Random.Range(0, houseRotation.Count)])
             );
+
+            Debug.Log("Pos " + classHouse.transform.position);
 
             //Find if new house object collides with an existing one
             FindNewHousePosition(houseList, classHouse);
