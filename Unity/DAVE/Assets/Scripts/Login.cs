@@ -19,15 +19,16 @@ public class Login : MonoBehaviour
 
     public Button backBtn;
 
-    private GameObject canvas;
+    private GameObject startCanvas;
 
     void Start()
     {
 
-        canvas = GameObject.Find("StartCanvas");
+        startCanvas = GameObject.Find("StartCanvas");
         login.onClick.AddListener(OnLoginClick);
         signUp.onClick.AddListener(OnSignUpClick);
         backBtn.onClick.AddListener(OnBackClick);
+
     }
 
     void OnBackClick()
@@ -46,7 +47,7 @@ public class Login : MonoBehaviour
 
         loginPanel.SetActive(false);
         GameObject signUp = Instantiate(signUpPanel);
-        signUp.transform.SetParent(canvas.transform, false);
+        signUp.transform.SetParent(startCanvas.transform, false);
         
     }
 
@@ -73,8 +74,18 @@ public class Login : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Wrong username and password.");
+            StartCoroutine(ShowForFive());
         }
+    }
+
+    IEnumerator ShowForFive()
+    {
+        Text invalidPassword = Instantiate(invalid);
+        invalidPassword.transform.SetParent(startCanvas.transform, false);
+        invalidPassword.enabled = true;
+        Debug.LogError("Passwords doesn't match or username is already in use.");
+        yield return new WaitForSeconds(3f);
+        invalidPassword.enabled = false;
     }
 
 }

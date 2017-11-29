@@ -34,6 +34,11 @@ public class Router : MonoBehaviour {
     private void Start()
     {
         canvas = GameObject.Find("StartCanvas");
+
+        if (ConnectionManager.auth == true)
+        {
+            loginBtn.gameObject.SetActive(false);
+        }
     }
 
     void OnEnable()

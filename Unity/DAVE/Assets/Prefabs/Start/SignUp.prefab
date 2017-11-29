@@ -484,8 +484,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114278443043657570}
   m_TextComponent: {fileID: 114331470706831474}
   m_Placeholder: {fileID: 114566433573825790}
-  m_ContentType: 0
-  m_InputType: 0
+  m_ContentType: 7
+  m_InputType: 2
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0
@@ -608,7 +608,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   signUpPanel: {fileID: 1830932010870130}
-  startPanel: {fileID: 1077778120957570, guid: d7a99bfcf6ba0e34dba9496b9695da42, type: 2}
   loginPanel: {fileID: 1894211449382374, guid: 510d6eac2e049ee4cb80f02d2f1d9904, type: 2}
   registerBtn: {fileID: 114763815612103158}
   username: {fileID: 114760624790397976}
@@ -653,8 +652,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114235451545121586}
   m_TextComponent: {fileID: 114963736986180680}
   m_Placeholder: {fileID: 114070791963532352}
-  m_ContentType: 0
-  m_InputType: 0
+  m_ContentType: 7
+  m_InputType: 2
   m_AsteriskChar: 42
   m_KeyboardType: 0
   m_LineType: 0

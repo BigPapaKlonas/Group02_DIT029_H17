@@ -8,6 +8,8 @@ public class SignUp : MonoBehaviour
     public GameObject signUpPanel;
     public GameObject loginPanel;
 
+    public Text invalid;
+
     public Button registerBtn;
     public InputField username;
     public InputField password1;
@@ -15,10 +17,14 @@ public class SignUp : MonoBehaviour
 
     public Button backBtn;
 
+    private GameObject startCanvas;
+
     private void Start()
     {
         registerBtn.onClick.AddListener(OnSignUpClick);
         backBtn.onClick.AddListener(OnBackClick);
+
+        startCanvas = GameObject.Find("StartCanvas");
     }
 
     void OnBackClick()
@@ -68,7 +74,21 @@ public class SignUp : MonoBehaviour
             }
 
         }
+        else
+        {
+            StartCoroutine (ShowForFive());
+        }
 
+    }
+
+    IEnumerator ShowForFive()
+    {
+        Text invalidPassword = Instantiate(invalid);
+        invalidPassword.transform.SetParent(startCanvas.transform, false);
+        invalidPassword.enabled = true;
+        Debug.LogError("Passwords doesn't match or username is already in use.");
+        yield return new WaitForSeconds(3f);
+        invalidPassword.enabled = false;
     }
 }
 
