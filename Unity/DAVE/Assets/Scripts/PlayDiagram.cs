@@ -8,14 +8,11 @@ using UnityEngine.SceneManagement;
 public class PlayDiagram : MonoBehaviour {
 
 	private Button button;
-    private SubscribingStudents subscribingStudents;
     private ConnectionManager coordinator = ConnectionManager.coordinator;
 
     // Use this for initialization
     void Start () 
 	{
-        subscribingStudents = GetComponentInParent<SubscribingStudents>();
-
         button = GetComponent<Button>();
 		button.onClick.AddListener(OnClick);
 
@@ -24,20 +21,8 @@ public class PlayDiagram : MonoBehaviour {
 		}
 	}
 
-    // Unsubsribes from the current session's student topic and removes the SubscribingStudents window
-    void DisableSubscribingStudents()
-    {
-        coordinator.Unsubscribe("root/" + coordinator.GetInstructor() + "/" +
-            coordinator.GetDiagram() + "/students");
-        subscribingStudents.enabled = false;
-    }
-
-
-    void OnClick() 
+     void OnClick() 
 	{
-
-        DisableSubscribingStudents();
-
         ConnectionManager.coordinator.Publish (
 			"root/" + 
 			ConnectionManager.coordinator.GetInstructor () + "/" + 

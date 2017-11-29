@@ -13,7 +13,7 @@ public class ShowStudents : MonoBehaviour
     private ConnectionManager coordinator = ConnectionManager.coordinator;  // Used for publish/subscribe
     private List<string> studentList = new List<string>();
     private Vector2 scrollPosition;                                         // Used to place ScrollView
-    // Creates the rectangle for the log
+    // Creates and positions the rectangle for the log
     private Rect windowRect = new Rect(Screen.width - 179f, 30, 179f, Screen.height);
     private bool showStudentsWindow = true;
 
@@ -23,14 +23,13 @@ public class ShowStudents : MonoBehaviour
         //Subscribes to the current session's student topic
         coordinator.Subscribe("root/" + coordinator.GetInstructor() + "/" +
             coordinator.GetDiagram() + "/students");
-
         GetComponent<Button>().onClick.AddListener(OnClick);
         Arrow = GameObject.FindGameObjectWithTag("arrow_students").GetComponent<Image>();
     }
 
     private void OnClick()
     {
-        Debug.Log("logmsg" + "*" + "43" + "*" + "34" + "*" + "mmmmmmm miami");
+        Debug.Log("logmsg" + "*" + "43" + "*" + "34" + "*" + "mmmmmmm miami"); // For debug
         showStudentsWindow = !showStudentsWindow; // // Disables/enables the students window
 
         if (showStudentsWindow)
@@ -53,16 +52,14 @@ public class ShowStudents : MonoBehaviour
     void OnGUI()
     {
         if (!showStudentsWindow)
-        {
             return; // Returns if log is disabled
-        }
-
 
         labelStyle = new GUIStyle() //new GUIStyle(GUI.skin.button)
         {
             wordWrap = true,
             alignment = TextAnchor.MiddleCenter
         };
+
         labelStyle.normal.textColor = Color.white;
 
 
@@ -93,9 +90,8 @@ public class ShowStudents : MonoBehaviour
         foreach (string student in studentList)     // Iterates through studentList
         { 
             GUILayout.Label(student, labelStyle);   // Adds student name and applies a custom style
-            GUILayout.Space(6);
+            GUILayout.Space(6);                     // Adds space between the student names
         }
-
         GUILayout.EndScrollView();
     }
 }

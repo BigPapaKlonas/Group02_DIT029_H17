@@ -3,7 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /*
- * Log to display what is going on in the diagram 'in-game'.
+ * Window with a log displaying what is going on in the diagram 'in-game'. Clicking on one of the
+ * generated buttons will zoom into the event it corresponds to.
  * Calling Debug.log("logmsg" + "*"+ placeholder.y + "*" + placeholder.z + "*" + "zzz") 
  * will add "zzz" as a button to the log and onClick will take camera to placeholder position
  * Based on: https://gist.github.com/mminer/975374
@@ -29,7 +30,7 @@ public class EventLog : MonoBehaviour
     Vector2 scrollPosition;                 // Used to place ScrollView
     private bool showLogWindow = true;      // True on start
 
-    // Creates the rectangle for the log
+    // Creates and positions the rectangle for the log
     Rect windowRect = new Rect(Screen.width - 360f, 30, 179f, Screen.height);
     // Label for clear button
     GUIContent clearLabel = new GUIContent("Clear", "Clear the contents of the console.");
@@ -40,7 +41,6 @@ public class EventLog : MonoBehaviour
     private void Start()
     {
         cameraOrbitScript = (CameraOrbit)Camera.main.GetComponent(typeof(CameraOrbit));
-
         GetComponent<Button>().onClick.AddListener(OnClick);
         Arrow = GameObject.FindGameObjectWithTag("arrow_log").GetComponent<Image>();
     }
@@ -69,17 +69,13 @@ public class EventLog : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(toggleKey))    // Disable/enables the log on toggle key pressed
-        {
             showLogWindow = !showLogWindow;
-        }
     }
 
     void OnGUI()
     {
         if (!showLogWindow)
-        {
             return; // Returns if log is disabled
-        }
 
         // Creates a window with id 123456 based on windowRect dimensions with LogWindow and title "Log"
         GUILayout.Window(123456, windowRect, LogWindow, "Log");
