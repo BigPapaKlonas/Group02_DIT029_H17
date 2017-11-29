@@ -136,7 +136,6 @@ public class CameraModeController : MonoBehaviour
 
             // Get the playerRotation before switching to No Clip
             playerRotation = playerObject.transform.rotation;
-            cameraChild.rotation = playerRotation;
 
             // Removing script that rotates camera with mouse movement and moves player
             Destroy(cameraChild.GetComponent<MouseLook>());
@@ -147,8 +146,6 @@ public class CameraModeController : MonoBehaviour
             cameraChild.gameObject.AddComponent<CameraOrbit>();
             cameraChild.gameObject.GetComponent<CameraOrbit>().initialPosition
                 = playerObject.transform.position;
-            cameraChild.gameObject.GetComponent<CameraOrbit>().initialRotation
-                = cameraChild.rotation.eulerAngles;
             cameraChild.gameObject.GetComponent<CameraOrbit>().cameraDistance = 0;
         }
         // Execute when returning to 1st person view
@@ -171,9 +168,8 @@ public class CameraModeController : MonoBehaviour
                 0
             );
 
-            // Setting the player and camera rotations to face the original way
+            // Reseting rotation in case rotate was used
             playerObject.transform.rotation = playerRotation;
-            cameraChild.rotation = playerRotation;
 
             Destroy(cameraChild.gameObject.GetComponent<CameraOrbit>());
 

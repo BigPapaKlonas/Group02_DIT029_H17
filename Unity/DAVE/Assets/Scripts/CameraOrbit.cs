@@ -2,8 +2,7 @@
 
 public class CameraOrbit : MonoBehaviour
 {
-    public Vector3 initialPosition;
-    public Vector3 initialRotation;
+    public Vector3 initialPosition;         // Initial camera position
     public float cameraDistance;            // Distance from Camera
 
     private Transform cameraPosition;       // The camera being rotated
@@ -25,7 +24,7 @@ public class CameraOrbit : MonoBehaviour
     {
         cameraParent = transform.parent;
         cameraPosition = transform;
-        cameraRotation = initialRotation; // Rotates camera on start to face the diagram
+        cameraRotation = new Vector3(0, 0, 0);   // Rotates camera on start
 
         cameraInitialPosition = initialPosition;  // Saves initial camera position
     }
@@ -95,7 +94,7 @@ public class CameraOrbit : MonoBehaviour
                 // Change camera rotation's y value
                 cameraRotation.y += Input.GetAxis("Mouse Y") * movingSpeed;  
 
-                //Clamps the camera, so that player can look 45 degress up
+                //Clamps the camera, so that player can look 30 degress up
                 if (cameraRotation.y < -30f)
                 {
                     cameraRotation.y = -30f;
