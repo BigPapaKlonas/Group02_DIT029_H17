@@ -58,8 +58,7 @@ public class ShowStudents : MonoBehaviour
         * Creates a window with id 11111 based on windowRect dimensions with StudentListWindow
         * and with the title of the numbers of subscribing students
         */
-        GUILayout.Window(11111, windowRect, StudentListWindow,
-                "Subscribed students: " + studentList.Count.ToString());
+        GUILayout.Window(11111, windowRect, StudentListWindow, studentList.Count.ToString());
     }
 
     // Handler that receives and handles messages from the subscribed topic

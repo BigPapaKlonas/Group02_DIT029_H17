@@ -10,7 +10,7 @@ using UnityEngine.UI;
  * Based on: https://gist.github.com/mminer/975374
  **/
 
-public class EventLog : MonoBehaviour
+public class ShowLog : MonoBehaviour
 {
     // Structure used for each log item 
     struct Log
@@ -78,7 +78,7 @@ public class EventLog : MonoBehaviour
             return; // Returns if log is disabled
 
         // Creates a window with id 123456 based on windowRect dimensions with LogWindow and title "Log"
-        GUILayout.Window(123456, windowRect, LogWindow, "Log");
+        GUILayout.Window(123456, windowRect, LogWindow, "");
     }
 
 
