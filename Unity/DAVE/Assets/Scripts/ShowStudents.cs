@@ -8,8 +8,8 @@ public class ShowStudents : MonoBehaviour
     private Image Arrow;                                                    // Arrow image on button
     public Sprite downArrow;
     public Sprite upArrow;
+    public GUISkin customSkin;                                              // Skin for the labels
 
-    private GUIStyle labelStyle;                                            // Style for the labels
     private ConnectionManager coordinator = ConnectionManager.coordinator;  // Used for publish/subscribe
     private List<string> studentList = new List<string>();
     private Vector2 scrollPosition;                                         // Used to place ScrollView
@@ -54,16 +54,6 @@ public class ShowStudents : MonoBehaviour
         if (!showStudentsWindow)
             return; // Returns if log is disabled
 
-        labelStyle = new GUIStyle() //new GUIStyle(GUI.skin.button)
-        {
-            wordWrap = true,
-            alignment = TextAnchor.MiddleCenter
-        };
-
-        labelStyle.normal.textColor = Color.white;
-
-
-
         /*
         * Creates a window with id 11111 based on windowRect dimensions with StudentListWindow
         * and with the title of the numbers of subscribing students
@@ -86,11 +76,12 @@ public class ShowStudents : MonoBehaviour
     // GUI window that houses the student names
     void StudentListWindow(int windowID)
     {
+        
         scrollPosition = GUILayout.BeginScrollView(scrollPosition);
-        foreach (string student in studentList)     // Iterates through studentList
+        foreach (string student in studentList)          // Iterates through studentList
         { 
-            GUILayout.Label(student, labelStyle);   // Adds student name and applies a custom style
-            GUILayout.Space(6);                     // Adds space between the student names
+            GUILayout.Label(student, customSkin.label);  // Adds student name and applies a custom style
+            GUILayout.Space(6);                          // Adds space between the student names
         }
         GUILayout.EndScrollView();
     }
