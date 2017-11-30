@@ -1,0 +1,12 @@
+{application, gen_logger,
+ [
+  {description, "Erlang gen_logger behaviour"},
+  {vsn, "1.2"},
+  {modules, []},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {env, []}
+ ]}.
