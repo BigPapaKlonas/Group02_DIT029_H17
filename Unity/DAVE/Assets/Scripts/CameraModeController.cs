@@ -41,7 +41,7 @@ public class CameraModeController : MonoBehaviour
         }
 
         // Change camera position and rotation only on button click
-        if (Input.GetKeyDown(KeyCode.N))
+        if (Input.GetKeyDown(KeyCode.N) && !cursorEnabled)
         {
             // Reseting camera position when going to No clip from Birds View
             cameraChild.localPosition = new Vector3(
@@ -55,7 +55,7 @@ public class CameraModeController : MonoBehaviour
         }
 
         // Change camera position and rotation only on button click
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C) && !noClip)
         {
             CameraCursorToggle();
         }
