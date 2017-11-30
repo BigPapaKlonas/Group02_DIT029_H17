@@ -5,14 +5,14 @@ import docker_container
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client, userdata, flags, rc):
     print("Connected with result code "+str(rc))
-    client.subscribe("processes/#", qos=2)          # Subscribes to topic with QoS 2
+    client.subscribe("root/processes/#", qos=2)          # Subscribes to topic with QoS 2
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
     print("Received: "+str(msg.payload))
 
     # In case received message is of specified topic, the message is past into the start_containers function
-    if(msg.topic == "processes"):
+    if(msg.topic == "root/processes"):
         docker_container.start_containers(msg.payload.decode("utf-8"))
 
 # 'loop_forever' automatically handles reconnecting as long as the initial connection succeeds (crashes otherwise)
