@@ -3,9 +3,10 @@
 public class CameraOrbit : MonoBehaviour
 {
     public Vector3 initialPosition;         // Initial camera position
-    public float cameraDistance;            // Distance from Camera
 
-    private Transform cameraPosition;       // The camera being rotated
+    private float cameraDistance;           // Distance from Camera
+
+    private Transform childCamera;          // The camera being rotated
     private Transform cameraParent;         // The object the camera is being rotated about
 
     private Vector3 cameraInitialPosition;  // Stores the camera's initial position
@@ -22,8 +23,15 @@ public class CameraOrbit : MonoBehaviour
     // Initialization of transform objects
     void Start()
     {
+
+        cameraDistance = 0;
         cameraParent = transform.parent;
-        cameraPosition = transform;
+        childCamera = transform;
+
+        // Rotation reset every noClip button click
+        cameraParent.rotation = Quaternion.Euler(0, 0, 0);
+        childCamera.localRotation = Quaternion.Euler(0, 0, 0);
+
         cameraRotation = new Vector3(0, 0, 0);   // Rotates camera on start
 
         cameraInitialPosition = initialPosition;  // Saves initial camera position
@@ -53,13 +61,13 @@ public class CameraOrbit : MonoBehaviour
             Time.deltaTime * rotateDampening);
 
         // Animates zooming in and out
-        if (cameraPosition.localPosition.z != cameraDistance * -1f)
+        if (childCamera.localPosition.z != cameraDistance * -1f)
         {
-            cameraPosition.localPosition = new Vector3(
+            childCamera.localPosition = new Vector3(
                 0f,
                 0f,
                 Mathf.Lerp(
-                    cameraPosition.localPosition.z,
+                    childCamera.localPosition.z,
                     cameraDistance * -1f,
                     Time.deltaTime * scrollDampening
                 )

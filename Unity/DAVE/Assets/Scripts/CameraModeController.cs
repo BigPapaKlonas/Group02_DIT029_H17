@@ -41,21 +41,22 @@ public class CameraModeController : MonoBehaviour
         }
 
         // Change camera position and rotation only on button click
-        if (Input.GetKeyDown(KeyCode.N) && !cursorEnabled)
+        if (Input.GetKeyDown(KeyCode.N))
         {
-            // Reseting camera position when going to No clip from Birds View
+            // Reseting camera position/rotation when going to No clip from Birds View
             cameraChild.localPosition = new Vector3(
                 0,
                 0.5f,
                 0
             );
+            cameraChild.rotation = Quaternion.Euler(0, 0, 0);
             eagleVision = false;
 
             NoClipMode();
         }
 
         // Change camera position and rotation only on button click
-        if (Input.GetKeyDown(KeyCode.C) && !noClip)
+        if (Input.GetKeyDown(KeyCode.C))
         {
             CameraCursorToggle();
         }
@@ -71,8 +72,11 @@ public class CameraModeController : MonoBehaviour
             // Set bool to true (bird view mode)
             eagleVision = true;
 
+            // Adding a moving script in case swapping from Cursor mode
+            playerObject.GetComponent<PlayerMovement>().enabled = true;
+
             // Removing script that rotates camera with mouse movement
-            Destroy(cameraChild.GetComponent<MouseLook>());
+            cameraChild.GetComponent<MouseLook>().enabled = false;
 
             // Get the playerRotation before switching to Bird's view
             playerRotation = playerObject.transform.rotation;
@@ -92,6 +96,7 @@ public class CameraModeController : MonoBehaviour
             // Rotate camera to look down
             cameraChild.rotation = Quaternion.Euler(90, 0, 0);
         }
+
         // Execute when returning to 1st person view
         else
         {
@@ -110,16 +115,23 @@ public class CameraModeController : MonoBehaviour
             cameraChild.rotation = playerRotation;
 
             // Adding script that rotates camera with mouse movement
-            cameraChild.gameObject.AddComponent<MouseLook>();
-
-            // Setting player object as a variable, so the movement is global
-            cameraChild.GetComponent<MouseLook>().characterBody = playerObject;
+            cameraChild.gameObject.GetComponent<MouseLook>().enabled = true;
         }
+
+        // If cursor mode on while swapping, disable movement 
+        // Previous if will get all the position and rotation data
+        if (cursorEnabled)
+        {
+            playerObject.GetComponent<PlayerMovement>().enabled = false;
+            cameraChild.GetComponent<MouseLook>().enabled = false;
+            cameraChild.gameObject.GetComponent<CameraOrbit>().enabled = false;
+        }
+
     }
 
     /*
      * Used to enable the player to fly around
-     **/ 
+     **/
     void NoClipMode()
     {
 
@@ -138,16 +150,17 @@ public class CameraModeController : MonoBehaviour
             playerRotation = playerObject.transform.rotation;
 
             // Removing script that rotates camera with mouse movement and moves player
-            Destroy(cameraChild.GetComponent<MouseLook>());
-            Destroy(playerObject.GetComponent<PlayerMovement>());
+            cameraChild.GetComponent<MouseLook>().enabled = false;
+            playerObject.GetComponent<PlayerMovement>().enabled = false;
 
-            // Add camera orbiting script and initialize the camera's position and rotation
+            // Add camera orbiting script and reinitialize the camera's position and rotation
             // to face the way it faced before swapping to no clip
             cameraChild.gameObject.AddComponent<CameraOrbit>();
+
             cameraChild.gameObject.GetComponent<CameraOrbit>().initialPosition
-                = playerObject.transform.position;
-            cameraChild.gameObject.GetComponent<CameraOrbit>().cameraDistance = 0;
+               = playerObject.transform.position;
         }
+
         // Execute when returning to 1st person view
         else
         {
@@ -158,8 +171,7 @@ public class CameraModeController : MonoBehaviour
             playerObject.GetComponent<Collider>().isTrigger = false;
 
             // Adding 1st Person movement contols
-            playerObject.AddComponent<PlayerMovement>();
-            playerObject.GetComponent<PlayerMovement>().LookTransform = playerObject.transform;
+            playerObject.GetComponent<PlayerMovement>().enabled = true;
 
             // Reset camera position in case zoom was used
             cameraChild.localPosition = new Vector3(
@@ -174,8 +186,16 @@ public class CameraModeController : MonoBehaviour
             Destroy(cameraChild.gameObject.GetComponent<CameraOrbit>());
 
             // Adding script that rotates camera with mouse movement
-            cameraChild.gameObject.AddComponent<MouseLook>();
-            cameraChild.GetComponent<MouseLook>().characterBody = playerObject;
+            cameraChild.gameObject.GetComponent<MouseLook>().enabled = true;
+        }
+
+        // If cursor mode on while swapping, disable movement 
+        // Previous if will get all the position and rotation data
+        if (cursorEnabled)
+        {
+            playerObject.GetComponent<PlayerMovement>().enabled = false;
+            cameraChild.GetComponent<MouseLook>().enabled = false;
+            cameraChild.gameObject.GetComponent<CameraOrbit>().enabled = false;
         }
     }
 
@@ -190,10 +210,33 @@ public class CameraModeController : MonoBehaviour
             cursorEnabled = true;
             Cursor.visible = true;
 
+            // Removing forces from player object so it does not drift away
+            playerObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
+
             // Removing script that rotates camera with mouse movement and moves player
-            Destroy(cameraChild.GetComponent<MouseLook>());
-            Destroy(playerObject.GetComponent<PlayerMovement>());
+            cameraChild.GetComponent<MouseLook>().enabled = false;
+            playerObject.GetComponent<PlayerMovement>().enabled = false;
+            cameraChild.GetComponent<CameraOrbit>().enabled = false;
         }
+
+        // If swapping to birdsview enable movement controll
+        else if (cursorEnabled && eagleVision)
+        {
+            cursorEnabled = false;
+            Cursor.visible = false;
+
+            playerObject.GetComponent<PlayerMovement>().enabled = true;
+        }
+
+        // If swapping to noClip disable camera orbit script
+        else if (cursorEnabled && noClip)
+        {
+            cursorEnabled = false;
+            Cursor.visible = false;
+
+            cameraChild.gameObject.GetComponent<CameraOrbit>().enabled = true;
+        }
+
         // Remove cursor from screen
         else
         {
@@ -201,14 +244,12 @@ public class CameraModeController : MonoBehaviour
             Cursor.visible = false;
 
             // Adding 1st Person movement contols
-            playerObject.AddComponent<PlayerMovement>();
-            playerObject.GetComponent<PlayerMovement>().LookTransform = playerObject.transform;
+            playerObject.GetComponent<PlayerMovement>().enabled = true;
 
-            Destroy(cameraChild.gameObject.GetComponent<CameraOrbit>());
+            cameraChild.gameObject.GetComponent<CameraOrbit>().enabled = false;
 
             // Adding script that rotates camera with mouse movement
-            cameraChild.gameObject.AddComponent<MouseLook>();
-            cameraChild.GetComponent<MouseLook>().characterBody = playerObject;
+            cameraChild.gameObject.GetComponent<MouseLook>().enabled = true;
         }
     }
 }
