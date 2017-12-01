@@ -22,6 +22,10 @@ public class ResetCameraBtn : MonoBehaviour, IPointerDownHandler
 
     private void OnClick()
     {
-        cameraOrbitScript.ResetCamera();    // Calls if the button is clicked
+        // Reset the camera when the R key is pressed
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            cameraOrbitScript.ResetCamera();    // Calls if the button is clicked
+        }
     }
 }
