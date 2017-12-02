@@ -9,14 +9,14 @@ public class RenderDevices : MonoBehaviour
     public GameObject devicePrefab;
     public GameObject processPrefab;
     public TextMesh namePrefab;
+    public TextMesh multiplicityPrefab;
+    TextMesh multiplicity;
     public static ArrayList Devices = new ArrayList();
     ArrayList DeviceNames = new ArrayList();
     public Material connnectionMaterial;
     public GameObject communication;
-    GameObject df;
-    GameObject dt;
-    float delta;
     public Vector3 center;
+
 
     public void CreateDevices(JSONDeployment json)
     {
@@ -89,28 +89,64 @@ public class RenderDevices : MonoBehaviour
             if (width > (newDevice.transform.localScale.z))
                 newDevice.transform.localScale += new Vector3(0, 0, width - newDevice.transform.localScale.z);
 
-            // The position of the process
-            if (length == 1)
-                pos += new Vector3(0.1F, 0.8F * (length) / 2 - 0.6F, 0);
-            else if (length == 2)
-                pos += new Vector3(0.1F, 0.8F * (length -1) / 2 - 0.6F, -newDevice.transform.localScale.z / 4);
-            else
-                pos += new Vector3(0.1F, newDevice.transform.localScale.y / 2 - 1, - newDevice.transform.localScale.z/4);
-            foreach (string process in device.GetProcesses())
+            if(length > 8)
             {
+
+                pos += new Vector3(0.1F, -0.15F, 0);
+                GameObject newProcess = (GameObject)Instantiate(
+                    processPrefab,
+                    pos,
+                    this.transform.rotation
+                );
+                newProcess.name = newDevice.name + ":multi";
+                newProcess.transform.localScale += new Vector3(0, 
+                    newDevice.transform.localScale.y - (newProcess.transform.localScale.y + 1), 
+                    newDevice.transform.localScale.z - (0.6F + newProcess.transform.localScale.z));
+                TextMesh old = newProcess.GetComponentInChildren<TextMesh>();
+                old.text = "";
+                multiplicity = (TextMesh)Instantiate(
+                    multiplicityPrefab,
+                    pos,
+                    rot);
+                multiplicity.name = newDevice.name + ":multiText";
+                multiplicity.text = "9...*";
+
+            }
+            else
+            {
+                // The position of the process
+                if (length == 1)
+                    pos += new Vector3(0.1F, 0.8F / 2 - 0.6F, 0);
+                else if (length == 2)
+                    pos += new Vector3(0.1F, 0.8F / 2 - 0.6F, -newDevice.transform.localScale.z / 4);
+                else
+                    pos += new Vector3(0.1F, newDevice.transform.localScale.y / 2 - 1, -newDevice.transform.localScale.z / 4);
+
+                PlaceProcessBoxes(device, pos, newDevice);
+            }
+
+        }
+
+    }
+
+
+    void PlaceProcessBoxes(Device device, Vector3 pos, GameObject newDevice)
+    {
+        foreach (string process in device.GetProcesses())
+        {
 
                 //Creating the processes
                 GameObject newProcess = (GameObject)Instantiate(
                     processPrefab,
                     pos,
                     this.transform.rotation
-                    );
+                 );
                 newProcess.name = "proc:" + process;
 
                 //TURN OFF THE LIGHT
                 newProcess.GetComponentInChildren<Light>().intensity = 0;
 
-                newProcess.GetComponentInChildren<TextMesh>().text =  ":" + process;
+                newProcess.GetComponentInChildren<TextMesh>().text = ":" + process;
 
                 if (device.GetProcesses().IndexOf(process) % 2 == 0)
                     pos.z += newDevice.transform.localScale.z / 5 * 2.5F;
@@ -121,9 +157,7 @@ public class RenderDevices : MonoBehaviour
                     pos.z -= newDevice.transform.localScale.z / 5 * 2.5F;
                 }
 
-            }
         }
-
     }
     //Places an object at a posistion in a circle 
     Vector3 PlaceInCircle(Vector3 center, float radius, float ang)
@@ -135,7 +169,6 @@ public class RenderDevices : MonoBehaviour
         return pos;
 
     }
-
 
     // Gets the width of the text
     float GetWidth(TextMesh mesh)
@@ -150,6 +183,11 @@ public class RenderDevices : MonoBehaviour
             }
         }
         return width * mesh.characterSize * 0.06f;
+    }
+     // Updates the multiplicity text
+    public void ChangeProcessText(string process)
+    {
+        multiplicity.text = process;
     }
 
 }

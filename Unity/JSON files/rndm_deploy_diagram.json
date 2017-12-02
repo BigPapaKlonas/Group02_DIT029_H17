@@ -39,6 +39,10 @@
  "device" : "desktop_computer1"
  },
  {
+ "process" : "u18",
+ "device" : "desktop_computer1"
+ },
+ {
  "process" : "u16",
  "device" : "desktop_computer1"
  },

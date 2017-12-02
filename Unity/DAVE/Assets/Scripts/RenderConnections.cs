@@ -41,20 +41,20 @@ public class RenderConnections : MonoBehaviour
         if(nrOfProcesses == processes.Count)
         {
             foreach(StartMessages.MessageData msg in msgs)
-                DrawConnection(FindDevice(msg.from), FindDevice(msg.to));
+                DrawConnection(FindDevice(msg.from).GetName(), FindDevice(msg.to).GetName());
         }
     }
 
-    public string FindDevice(string pr)
+    public Device FindDevice(string pr)
     {
         foreach(Device d in devices)
         {
             if (d.Contains(pr))
             {
-                return d.GetName();
+                return d;
             }
         }
-        return "";
+        return null;
     }
 
     void DrawConnection(string from, string to)
