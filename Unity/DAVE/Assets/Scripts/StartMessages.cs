@@ -93,7 +93,9 @@ public class StartMessages : MonoBehaviour
                     rand = Random.Range(0.5f, 1.5f);
                     actSizeList.Enqueue(rand);
                 }
-
+                MessageData[] tmpData = new MessageData[messageDataList.Count];
+                messageDataList.CopyTo(tmpData, 0);
+                GetComponent<RenderConnections>().CreateConnections(new ArrayList(tmpData));
                 StartMessageChain(destList, offset);
                 StartParMessageChain(destListPar, offset);
                 //offset += json.Diagram.Content.Count + 0.5f;
@@ -136,6 +138,9 @@ public class StartMessages : MonoBehaviour
 
                     //s}
                 }
+                MessageData[] tmpData = new MessageData[messageDataList.Count];
+                messageDataList.CopyTo(tmpData, 0);
+                GetComponent<RenderConnections>().CreateConnections(new ArrayList(tmpData));
                 StartMessageChain(destList, 0f);
             }
         }

@@ -8,10 +8,15 @@ public class RenderDevices : MonoBehaviour
 
     public GameObject devicePrefab;
     public GameObject processPrefab;
-    public GameObject communicationPrefab;
     public TextMesh namePrefab;
-    ArrayList Devices = new ArrayList();
+    public static ArrayList Devices = new ArrayList();
     ArrayList DeviceNames = new ArrayList();
+    public Material connnectionMaterial;
+    public GameObject communication;
+    GameObject df;
+    GameObject dt;
+    float delta;
+    public Vector3 center;
 
     public void CreateDevices(JSONDeployment json)
     {
@@ -43,7 +48,7 @@ public class RenderDevices : MonoBehaviour
         }
 
         i = 0;
-        Vector3 center = new Vector3(0, yPos, 9.880002F);
+        center = new Vector3(0, yPos, 9.880002F);
 
         foreach (Device device in Devices)
         {
@@ -81,7 +86,7 @@ public class RenderDevices : MonoBehaviour
 
             // Resizes the width of the device
             float width = GetWidth(name);
-            if (length > 4 && width > (newDevice.transform.localScale.z))
+            if (width > (newDevice.transform.localScale.z))
                 newDevice.transform.localScale += new Vector3(0, 0, width - newDevice.transform.localScale.z);
 
             // The position of the process
@@ -118,6 +123,7 @@ public class RenderDevices : MonoBehaviour
 
             }
         }
+
     }
     //Places an object at a posistion in a circle 
     Vector3 PlaceInCircle(Vector3 center, float radius, float ang)
@@ -143,7 +149,7 @@ public class RenderDevices : MonoBehaviour
                 width += info.advance;
             }
         }
-        return width * mesh.characterSize * 0.07f;
+        return width * mesh.characterSize * 0.06f;
     }
 
 }
