@@ -11,7 +11,7 @@ public class ProcessAnimation : MonoBehaviour {
     public GameObject emptyTarget;
     public Queue destList;
     public GameObject current;
-    private bool sent;
+    public bool sent;
     Vector3 thisPos;
     Vector3 nextPos;
     public GameObject messageText;
@@ -37,7 +37,7 @@ public class ProcessAnimation : MonoBehaviour {
 	
 	void Update () {
         
-        if (transform.localScale.y < endSize) {
+        if (sent == false) {
            // Debug.Log(transform.localScale);
             current.GetComponent<SystemBox>().lightSwitch = true;
             counter++;
@@ -48,12 +48,12 @@ public class ProcessAnimation : MonoBehaviour {
             endScale = maxScale;
             
         }
-        else if(sent == false) {
-            current.GetComponent<SystemBox>().lightSwitch = false;
-            sent = true;
-            SendMessage();
+        //else if(sent == false) {
+        //    current.GetComponent<SystemBox>().lightSwitch = false;
+        //    sent = true;
+        //    SendMessage();
 
-        }
+        //}
 	}
 
     

@@ -66,10 +66,10 @@ public class MessageAnimation : MonoBehaviour {
             arrowhead.GetComponent<Arrowhead>().changePos(left, distThisFrame);
            
 
-        }else if(sent == false) {
+        //}else if(sent == false) {
 
-            MessageRecieved();
-            sent = true;
+        //    MessageRecieved();
+        //    sent = true;
             
         }
 	}
