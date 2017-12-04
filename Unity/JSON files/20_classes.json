@@ -1,0 +1,314 @@
+{
+  "meta": {
+    "format": "DIT029 format",
+    "version": "1.0",
+    "extensions": []
+  },
+  "type": "class_diagram",
+  "classes": [
+    {
+      "name": "Device",
+      "fields": [
+        {
+          "name": "network_interface",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Gateway",
+      "fields": []
+    },
+    {
+      "name": "User",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Beny",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Hanas",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Minne",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Apolis",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Al",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Jazz",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "Era",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "a1",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "a2",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "a3",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "a4",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "a5",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "a6",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "a7",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "a8",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "a9",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "a0",
+      "fields": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "relationships": [
+    {
+      "type": "inheritance",
+      "superclass": "Device",
+      "subclass": "Gateway"
+    },
+    {
+      "type": "inheritance",
+      "superclass": "Device",
+      "subclass": "User"
+    },
+    {
+      "type": "inheritance",
+      "superclass": "Al",
+      "subclass": "Jazz"
+    },
+    {
+      "type": "inheritance",
+      "superclass": "Jazz",
+      "subclass": "Era"
+    },
+    {
+      "type": "inheritance",
+      "superclass": "Minne",
+      "subclass": "Apolis"
+    },
+    {
+      "type": "inheritance",
+      "superclass": "a1",
+      "subclass": "a2"
+    },
+    {
+      "type": "inheritance",
+      "superclass": "a3",
+      "subclass": "a4"
+    },
+    {
+      "type": "inheritance",
+      "superclass": "a3",
+      "subclass": "a5"
+    },
+    {
+      "type": "inheritance",
+      "superclass": "a6",
+      "subclass": "a7"
+    },
+    {
+      "type": "inheritance",
+      "superclass": "a7",
+      "subclass": "a0"
+    },
+    {
+      "type": "inheritance",
+      "superclass": "a8",
+      "subclass": "a9"
+    }
+  ]
+}

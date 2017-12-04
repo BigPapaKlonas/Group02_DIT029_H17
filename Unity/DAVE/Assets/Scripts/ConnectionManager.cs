@@ -65,12 +65,16 @@ public class ConnectionManager : MonoBehaviour
 
 	void Awake(){
 		MakeThisTheOnlyCoordinator();
-	}
+            
+        // Saving player and DAVEPathfinder to avoid errors when loading CD 
+        DontDestroyOnLoad(GameObject.FindGameObjectWithTag("Map"));
+        DontDestroyOnLoad(GameObject.FindGameObjectWithTag("Terrain"));
+    }
 
 	void MakeThisTheOnlyCoordinator() {
 		if (coordinator == null) {
 			DontDestroyOnLoad(gameObject);
-			coordinator = this;
+            coordinator = this;
 		} else if (coordinator != this){
 			Destroy(gameObject);
 		}

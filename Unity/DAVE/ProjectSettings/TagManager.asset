@@ -12,6 +12,13 @@ TagManager:
   - u2
   - u3
   - SystemBox
+  - Door
+  - EntranceWall
+  - Wall
+  - House
+  - Road
+  - Terrain
+  - Map
   layers:
   - Default
   - TransparentFX
@@ -21,9 +28,9 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
+  - Map Only
+  - Map Hidden
+  - Map Seen
   - 
   - 
   - 

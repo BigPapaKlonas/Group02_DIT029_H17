@@ -4,7 +4,11 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using SFB;
-
+using System;
+using RethinkDb.Driver;
+using RethinkDb.Driver.Net;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 [RequireComponent(typeof(Button))]
 public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
@@ -14,8 +18,12 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
     public string FileName = "";
     public string Directory = "";
     public string Extension = "json";
-    public bool Multiselect = false;
+    public bool Multiselect = true;
     private Button button;
+    
+    // offset used to position house "districts"
+    float positionOffset = -50;
+
 
     public void OnPointerDown(PointerEventData eventData) { }
 
@@ -28,10 +36,13 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
     private void OnClick()
     {
         var paths = StandaloneFileBrowser.OpenFilePanel(Title, Directory, Extension, Multiselect);
-        if (paths.Length > 0)
+        foreach(var file in paths)
         {
-            // Starts a new routine with the path to the selected file as argument
-            StartCoroutine(OutputRoutine(new System.Uri(paths[0]).AbsoluteUri));
+            if (file.Length > 0)
+            {
+                // Starts a new routine with the path to the selected file as argument
+                StartCoroutine(OutputRoutine(new System.Uri(file).AbsoluteUri));
+            }
         }
     }
 
@@ -45,7 +56,6 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
 
         // Read the json from the file into a string
         string output = loader.text;
-
         // Debug: Json text
         // Debug.Log("Raw JSON: " + output);
 
@@ -61,11 +71,18 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
 		);
 
 		Debug.Log (output);
-
 		ConnectionManager.coordinator.SetSessionJson (output);
 	
-		StartCoroutine(Insert ());
+        // Check if output is valid
+        if (!IsValidJson(output))
+        {
+            yield return "JSON not valid, check JSON structure";
+        }
 
+        DiagramBroker broker = new DiagramBroker(output, positionOffset);
+        Debug.Log(positionOffset);
+        positionOffset += 40;
+        StartCoroutine(Insert ());
     }
 
 	/* 
@@ -99,4 +116,34 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
             Debug.Log("Successful insert and update of the " + diagram + " table, for instructor: " + instructor);
             SceneManager.LoadScene(ConnectionManager.coordinator.GetDiagramType());
 	}
+
+    private bool IsValidJson(string strInput)
+    //https://stackoverflow.com/questions/14977848/how-to-make-sure-that-string-is-valid-json-using-json-net
+    {
+        strInput = strInput.Trim();
+        if ((strInput.StartsWith("{") && strInput.EndsWith("}")) || //For object
+            (strInput.StartsWith("[") && strInput.EndsWith("]"))) //For array
+        {
+            try
+            {
+                var obj = JToken.Parse(strInput);
+                obj.Equals(obj); //Could not suppress warning 'value is assigned but never use' so this prevents the error message
+                return true;
+            }
+            catch (JsonReaderException jex) //Exception in parsing json
+            {
+                Debug.Log(jex.Message);
+                return false;
+            }
+            catch (Exception ex) //some other exception
+            {
+                Debug.Log(ex.ToString());
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

@@ -320,7 +320,7 @@ Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1136390913}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 224525752785243182, guid: d7a99bfcf6ba0e34dba9496b9695da42,
         type: 2}
