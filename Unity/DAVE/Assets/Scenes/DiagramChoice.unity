@@ -546,6 +546,11 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114419541627606114, guid: bcd31524bc7d1467ab4c2901c232229d,
+        type: 2}
+      propertyPath: sceneName
+      value: InstructorChoice
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: bcd31524bc7d1467ab4c2901c232229d, type: 2}
   m_IsPrefabParent: 0
@@ -679,7 +684,7 @@ Prefab:
     - target: {fileID: 224513623627779664, guid: 02f6db4e987694ebc8e1b6571d4df05c,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: 106.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224735025525148386, guid: 02f6db4e987694ebc8e1b6571d4df05c,
         type: 2}
@@ -740,6 +745,12 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 842700287}
   m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!114 &842700290 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114667451790588758, guid: 02f6db4e987694ebc8e1b6571d4df05c,
+    type: 2}
+  m_PrefabInternal: {fileID: 842700287}
+  m_Script: {fileID: 1367256648, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &1177405081
 GameObject:
   m_ObjectHideFlags: 0
@@ -812,6 +823,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -920,8 +932,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1751582340}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 317, y: 126.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 243996693}
   - {fileID: 87687132}
@@ -947,7 +959,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonPrefab: {fileID: 842700289}
-  scroll: {fileID: 0}
+  scroll: {fileID: 842700290}
   parentPanel: {fileID: 0}
   table: diagrams
   row: name

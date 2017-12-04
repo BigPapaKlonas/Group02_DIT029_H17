@@ -5,8 +5,6 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using SFB;
 using System;
-using RethinkDb.Driver;
-using RethinkDb.Driver.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 

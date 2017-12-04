@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class Router : MonoBehaviour {
 
@@ -88,19 +89,29 @@ public class Router : MonoBehaviour {
 
         if (buttonPressed == studentNameBtn)
         {
-			ConnectionManager.coordinator.SetStudent(studentName.text);
+            if (studentName.text != "")
+            {
+                ConnectionManager.coordinator.SetStudent(studentName.text);
+            }
+            else
+            {
+                StartCoroutine(ShowInvalidText("You have to enter a name"));
+            }
+			
         }
 
 		if (buttonPressed == instructorBtn)
 		{
             if (ConnectionManager.auth == false)
-            {  
+            {
+                Debug.Log("IF");
                 GameObject login = Instantiate(loginPanel);
                 login.transform.SetParent(canvas.transform, false);
                 startPanel.SetActive(false);
             }
             else
             {
+                Debug.Log("ELSE");
                 ConnectionManager.coordinator.SetInstructorBool(true);
                 buttonPressed.gameObject.SetActive(false);
             }
@@ -120,8 +131,8 @@ public class Router : MonoBehaviour {
 					true    
 				);
 			} else {
-				warning.text = "You have to enter a diagram name";
-			}
+                StartCoroutine(ShowInvalidText("You have to enter a diagram name"));
+            }
         }
 
 	}
@@ -133,6 +144,13 @@ public class Router : MonoBehaviour {
 		roomNameBtn.onClick.RemoveAllListeners();
         studentNameBtn.onClick.RemoveAllListeners();
 	}
+
+    IEnumerator ShowInvalidText(string msg)
+    {
+        warning.text = msg;
+        yield return new WaitForSeconds(3f);
+        warning.text = "";
+    }
 
 
 }
