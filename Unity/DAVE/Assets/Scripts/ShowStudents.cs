@@ -18,7 +18,7 @@ public class ShowStudents : MonoBehaviour
     private bool showStudentsWindow = true;
 
     // Gets objects and sets click listener
-    void Start()
+    private void Start()
     {
         //Subscribes to the current session's student topic
         coordinator.Subscribe("root/" + coordinator.GetInstructor() + "/" +
@@ -49,7 +49,7 @@ public class ShowStudents : MonoBehaviour
         coordinator.GetMqttClient().MqttMsgPublishReceived += null;
     }
 
-    void OnGUI()
+    private void OnGUI()
     {
         if (!showStudentsWindow)
             return; // Returns if log is disabled
@@ -62,7 +62,7 @@ public class ShowStudents : MonoBehaviour
     }
 
     // Handler that receives and handles messages from the subscribed topic
-    void SubscribingStudents_Handler(object sender, MqttMsgPublishEventArgs e)
+    private void SubscribingStudents_Handler(object sender, MqttMsgPublishEventArgs e)
     {
         // Verifies the message's topic
         if (e.Topic == "root/" + coordinator.GetInstructor() + "/" +
@@ -73,7 +73,7 @@ public class ShowStudents : MonoBehaviour
     }
 
     // GUI window that houses the student names
-    void StudentListWindow(int windowID)
+    private void StudentListWindow(int windowID)
     {
         
         scrollPosition = GUILayout.BeginScrollView(scrollPosition);

@@ -13,7 +13,7 @@ using UnityEngine.UI;
 public class ShowLog : MonoBehaviour
 {
     // Structure used for each log item 
-    struct Log
+    private struct Log
     {
         public string message;
         public Vector3 targetPosition;
@@ -21,21 +21,21 @@ public class ShowLog : MonoBehaviour
         public LogType type;
     }
 
-    private Image Arrow;                    // Arrow image on button
+    private Image Arrow;                            // Arrow image on button
     public Sprite downArrow;                
     public Sprite upArrow;                  
 
-    public KeyCode toggleKey = KeyCode.L;   // The hotkey to show and hide the log window
-    List<Log> logs = new List<Log>();       // List of Log structures
-    Vector2 scrollPosition;                 // Used to place ScrollView
-    private bool showLogWindow = true;      // True on start
+    public KeyCode toggleKey = KeyCode.L;           // The hotkey to show and hide the log window
+    private List<Log> logs = new List<Log>();       // List of Log structures
+    private Vector2 scrollPosition;                 // Used to place ScrollView
+    private bool showLogWindow = true;              // True on start
 
     // Creates and positions the rectangle for the log
-    Rect windowRect = new Rect(Screen.width - 360f, 30, 179f, Screen.height);
+    private Rect windowRect = new Rect(Screen.width - 360f, 30, 179f, Screen.height);
     // Label for clear button
-    GUIContent clearLabel = new GUIContent("Clear", "Clear the contents of the console.");
+    private GUIContent clearLabel = new GUIContent("Clear", "Clear the contents of the console.");
     // Allows for repositioning the camera
-    CameraOrbit cameraOrbitScript;
+    private CameraOrbit cameraOrbitScript;
 
     // Gets objects and sets click listener
     private void Start()
@@ -45,13 +45,13 @@ public class ShowLog : MonoBehaviour
         Arrow = GameObject.FindGameObjectWithTag("arrow_log").GetComponent<Image>();
     }
 
-    void OnEnable() //Called when the object becomes enabled and active.
+    private void OnEnable() //Called when the object becomes enabled and active.
     {
         // Assigns HandleLog function to handle log messages received
         Application.logMessageReceived += HandleLog;
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         Application.logMessageReceived += null;
     }
@@ -66,13 +66,13 @@ public class ShowLog : MonoBehaviour
             Arrow.sprite = upArrow;
     }
 
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(toggleKey))    // Disable/enables the log on toggle key pressed
             showLogWindow = !showLogWindow;
     }
 
-    void OnGUI()
+    private void OnGUI()
     {
         if (!showLogWindow)
             return; // Returns if log is disabled
@@ -83,7 +83,7 @@ public class ShowLog : MonoBehaviour
 
 
     // GUI window that houses the log items
-    void LogWindow(int windowID)
+    private void LogWindow(int windowID)
     {
         //Create GUIStyles for the different buttons that will be added to the window
         GUIStyle logBtnStyle = new GUIStyle(GUI.skin.button)
@@ -120,7 +120,7 @@ public class ShowLog : MonoBehaviour
 
 
     // Decodes and records a log from the log callback.
-    void HandleLog(string message, string stackTrace, LogType type)
+    private void HandleLog(string message, string stackTrace, LogType type)
     {
         // Checks type and if message starts with logmsg
         if (type.Equals(LogType.Log) && message.StartsWith("logmsg"))
