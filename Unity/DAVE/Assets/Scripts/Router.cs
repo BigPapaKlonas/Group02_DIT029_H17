@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Router : MonoBehaviour {
 
@@ -11,24 +12,50 @@ public class Router : MonoBehaviour {
 	*/
 	public Button studentBtn;
 	public Button instructorBtn;
-	public Button insNameBtn;
-	public Button diaNameBtn;
+	public Button roomNameBtn;
     public Button studentNameBtn;
 	public Button uploadBtn;
 
 	public InputField studentName;
-	public InputField instructorName;
-	public InputField diagramName;
+	public InputField roomName;
 
 	public Text warning;
 
-	void OnEnable()
+    /*
+    * Authentication variables.
+    */
+    public GameObject startPanel;
+    public GameObject loginPanel;
+    public GameObject signUpPanel;
+
+    private GameObject canvas;
+
+    public Button loginBtn;
+
+    private void Start()
+    {
+        canvas = GameObject.Find("StartCanvas");
+
+        if (ConnectionManager.auth == true)
+        {
+            loginBtn.GetComponentInChildren<Text>().text = "Log out";
+            studentBtn.gameObject.SetActive(false);
+            studentName.gameObject.SetActive(false);
+            studentNameBtn.gameObject.SetActive(false);
+            instructorBtn.GetComponent<RectTransform>().localPosition = new Vector3 (0f, -25f, 0f);
+            roomName.GetComponent<RectTransform>().localPosition = new Vector3(-15f, -25f, 0f);
+            uploadBtn.GetComponent<RectTransform>().localPosition = new Vector3(0f, -25f, 0f);
+        }
+    }
+
+    void OnEnable()
 	{
-		studentBtn.onClick.AddListener(()    => buttonCallBack(studentBtn));
+
+        studentBtn.onClick.AddListener(()    => buttonCallBack(studentBtn));
 		instructorBtn.onClick.AddListener(() => buttonCallBack(instructorBtn));
-		insNameBtn.onClick.AddListener(() => buttonCallBack(insNameBtn));
-		diaNameBtn.onClick.AddListener(() => buttonCallBack(diaNameBtn));
+		roomNameBtn.onClick.AddListener(() => buttonCallBack(roomNameBtn));
         studentNameBtn.onClick.AddListener(() => buttonCallBack(studentNameBtn));
+        loginBtn.onClick.AddListener(() => buttonCallBack(loginBtn));
 
     }
 
@@ -37,6 +64,21 @@ public class Router : MonoBehaviour {
 	 */
 	private void buttonCallBack(Button buttonPressed)
 	{
+        if (buttonPressed == loginBtn)
+        {
+            if (ConnectionManager.auth != true)
+            {
+                GameObject login = Instantiate(loginPanel);
+                login.transform.SetParent(canvas.transform, false);
+                startPanel.SetActive(false);
+            }
+            else
+            {
+                ConnectionManager.auth = false;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+
+        }
 		
 		if (buttonPressed == studentBtn)
 		{
@@ -51,32 +93,30 @@ public class Router : MonoBehaviour {
 
 		if (buttonPressed == instructorBtn)
 		{
-			ConnectionManager.coordinator.SetInstructorBool(true);
-			buttonPressed.gameObject.SetActive(false);
-		}
-
-		if (buttonPressed == insNameBtn)
-		{	
-			if (instructorName.text != "") {
-				ConnectionManager.coordinator.SetInstructor (instructorName.text);
-				buttonPressed.gameObject.SetActive (false);
-				instructorName.gameObject.SetActive (false);
-			} else {
-				warning.text = "You have to enter your name";
-			}
-		}
-		if (buttonPressed == diaNameBtn)
+            if (ConnectionManager.auth == false)
+            {  
+                GameObject login = Instantiate(loginPanel);
+                login.transform.SetParent(canvas.transform, false);
+                startPanel.SetActive(false);
+            }
+            else
+            {
+                ConnectionManager.coordinator.SetInstructorBool(true);
+                buttonPressed.gameObject.SetActive(false);
+            }
+        }
+		if (buttonPressed == roomNameBtn)
 		{
-			if (diagramName.text != "") {
-				ConnectionManager.coordinator.SetDiagram (diagramName.text);
+			if (roomName.text != "") {
+				ConnectionManager.coordinator.SetRoom (roomName.text);
 				buttonPressed.gameObject.SetActive (false);
-				diagramName.gameObject.SetActive (false);
+                roomName.gameObject.SetActive (false);
             
 				// Publish to the broker.
 				ConnectionManager.coordinator.Publish (
 					"root/" + ConnectionManager.coordinator.GetInstructor () + "/" +
-					ConnectionManager.coordinator.GetDiagram (), 
-					"Init diagram", 
+					ConnectionManager.coordinator.GetRoom (), 
+					"Init room", 
 					true    
 				);
 			} else {
@@ -90,8 +130,7 @@ public class Router : MonoBehaviour {
 	{
 		studentBtn.onClick.RemoveAllListeners();
 		instructorBtn.onClick.RemoveAllListeners();
-		insNameBtn.onClick.RemoveAllListeners();
-		diaNameBtn.onClick.RemoveAllListeners();
+		roomNameBtn.onClick.RemoveAllListeners();
         studentNameBtn.onClick.RemoveAllListeners();
 	}
 

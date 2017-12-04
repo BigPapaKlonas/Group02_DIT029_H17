@@ -10,7 +10,6 @@ using RethinkDb.Driver.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-
 [RequireComponent(typeof(Button))]
 public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
 {
@@ -57,7 +56,23 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
 
         // Read the json from the file into a string
         string output = loader.text;
+        // Debug: Json text
+        // Debug.Log("Raw JSON: " + output);
 
+		JsonParser parser = new JsonParser (output);
+
+		Debug.Log ("Diagram type: " + parser.GetDiagramType ());
+
+		ConnectionManager.coordinator.SetDiagramType (parser.GetDiagramType ());
+
+		output = parser.AddMetaToSequence ("root/" + 
+			ConnectionManager.coordinator.GetInstructor ().Replace (" ", "").ToLower () + "/" + 
+			ConnectionManager.coordinator.GetRoom ().Replace (" ", "").ToLower ()
+		);
+
+		Debug.Log (output);
+		ConnectionManager.coordinator.SetSessionJson (output);
+	
         // Check if output is valid
         if (!IsValidJson(output))
         {
@@ -67,7 +82,40 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
         DiagramBroker broker = new DiagramBroker(output, positionOffset);
         Debug.Log(positionOffset);
         positionOffset += 40;
+        StartCoroutine(Insert ());
     }
+
+	/* 
+	 * Insert to the Database.
+	 * when ran in a Coroutine The full ConnectionManager.<variable> needs to be present.
+	 */
+	IEnumerator Insert()
+	{
+
+		string instructor = ConnectionManager.coordinator.GetInstructor ();
+		string diagram = ConnectionManager.coordinator.GetRoom ();
+		string diagramType = ConnectionManager.coordinator.GetDiagramType ();
+
+        /* 
+		 * If database contains the instructor name: 
+		 * Update instructors.diagrams
+		 * and add the diagram to diagrams table.
+		 * Else:
+		 * Add both to instructors and diagrams tables.
+		*/
+
+		var update = ConnectionManager.R.Db("root")
+			.Table("diagrams").Insert(ConnectionManager.R.Array(
+				ConnectionManager.R.HashMap("name", diagram)
+				.With("type", diagramType)
+				.With("instructor", instructor)
+			))
+			.Run(ConnectionManager.conn);
+
+        yield return update;
+            Debug.Log("Successful insert and update of the " + diagram + " table, for instructor: " + instructor);
+            SceneManager.LoadScene(ConnectionManager.coordinator.GetDiagramType());
+	}
 
     private bool IsValidJson(string strInput)
     //https://stackoverflow.com/questions/14977848/how-to-make-sure-that-string-is-valid-json-using-json-net

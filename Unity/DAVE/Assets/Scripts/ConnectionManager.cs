@@ -28,14 +28,21 @@ public class ConnectionManager : MonoBehaviour
 	 * during the lifecycle of the application.
 	 */
 	private string instructor;
-	private string diagram;
+	private string room;
 	private string student;
 	private string sessionJSON;
-	private string diagramType;
+	private string roomType;
 	private bool instructorBool;
+
+    /*
+     * Authentication for instructor.
+     */
+    public static bool auth;
+
 
     void Start()
     {
+   
 		// RethinkDB
 		DatabaseConnection ();
 		// Mqtt
@@ -150,7 +157,7 @@ public class ConnectionManager : MonoBehaviour
 	}
 	void Diagram(MqttMsgPublishEventArgs e)
 	{
-		if (e.Topic == parentTopic + "/diagram")
+		if (e.Topic == parentTopic + "/room")
 		{
 			Debug.Log("Messages: " + System.Text.Encoding.UTF8.GetString(e.Message));
 			//Render message
@@ -176,13 +183,13 @@ public class ConnectionManager : MonoBehaviour
 	{
 		return this.instructor;
 	}
-	public void SetDiagram (string diagram)
+	public void SetRoom (string room)
 	{
-		this.diagram = diagram;
+		this.room = room;
 	}
-	public string GetDiagram ()
+	public string GetRoom ()
 	{
-		return this.diagram;
+		return this.room;
 	}
 	public void SetStudent (string student)
 	{
@@ -202,11 +209,11 @@ public class ConnectionManager : MonoBehaviour
 	}
 	public void SetDiagramType (string type)
 	{
-		this.diagramType = type;
+		this.roomType = type;
 	}
 	public string GetDiagramType ()
 	{
-		return this.diagramType;
+		return this.roomType;
 	}
 	public void SetInstructorBool (bool instructorBool) 
 	{

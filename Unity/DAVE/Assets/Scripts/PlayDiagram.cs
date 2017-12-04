@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 
 public class PlayDiagram : MonoBehaviour {
 
@@ -25,7 +23,7 @@ public class PlayDiagram : MonoBehaviour {
 		ConnectionManager.coordinator.Publish (
 			"root/" + 
 			ConnectionManager.coordinator.GetInstructor () + "/" + 
-			ConnectionManager.coordinator.GetDiagram (),
+			ConnectionManager.coordinator.GetRoom (),
 			ConnectionManager.coordinator.GetSessionJson (),
 			true
 		);
@@ -33,7 +31,7 @@ public class PlayDiagram : MonoBehaviour {
 		ConnectionManager.coordinator.Publish (
 			"root/" + 
 			ConnectionManager.coordinator.GetInstructor () + "/" + 
-			ConnectionManager.coordinator.GetDiagram () + "/nodes",
+			ConnectionManager.coordinator.GetRoom () + "/nodes",
 			"init_diagram",
 			true
 		);
