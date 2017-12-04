@@ -103,7 +103,7 @@ public class DiagramBroker
     {
 
         string instructor = ConnectionManager.coordinator.GetInstructor();
-        string diagram = ConnectionManager.coordinator.GetDiagram();
+        string diagram = ConnectionManager.coordinator.GetRoom();
         string diagramType = ConnectionManager.coordinator.GetDiagramType();
 
         /* 
