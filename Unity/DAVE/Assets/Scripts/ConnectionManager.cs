@@ -5,11 +5,13 @@ using uPLibrary.Networking.M2Mqtt;
 using System;
 using RethinkDb.Driver;
 using RethinkDb.Driver.Net;
+using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 public class ConnectionManager : MonoBehaviour
 {
     private Button uplButton;
-    private string parentTopic;
 
     private MqttClient client;
     private MqttClientDAVE daveClient;
@@ -29,20 +31,31 @@ public class ConnectionManager : MonoBehaviour
 	 */
 	private string instructor;
 	private string room;
-	private string student;
-	private string sessionJSON;
+    private string student;
 	private string roomType;
 	private bool instructorBool;
+    private string parentTopic;
+    private Queue<JsonObject> selectedJSONS = new Queue<JsonObject>();
+
+    public struct JsonObject        // JsonObject structure  
+    {
+        public string json;
+        public string diagramType;
+    }
 
     /*
      * Authentication for instructor.
      */
     public static bool auth;
 
+    /*
+     * Queues of received JSON strings.
+     */
+    public static Queue<String> classDiagramQueue = new Queue<String>();
+    public static Queue<String> deploymentDiagramQueue = new Queue<String>();
 
     void Start()
     {
-   
 		// RethinkDB
 		DatabaseConnection ();
 		// Mqtt
@@ -119,7 +132,7 @@ public class ConnectionManager : MonoBehaviour
 
 		// Creates a MqttClientDAVE with the following credentials
 		// Change IP when deployed to AWS.
-		this.daveClient = new MqttClientDAVE("13.59.108.164", 1883, System.Guid.NewGuid().ToString());
+		this.daveClient = new MqttClientDAVE("13.59.108.164", 1883, Guid.NewGuid().ToString());
 
 		this.client = this.daveClient.GetMqttClient();
 		// Assign handler for handling the receiving messages
@@ -127,110 +140,142 @@ public class ConnectionManager : MonoBehaviour
 
 	}
 
+    // Handler that gets received messages from subscribed topics
 	void Client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
 	{
 		Debug.Log("Received\r\n" + "Topic: " + e.Topic + "\r\n" + "Message: " +
 			System.Text.Encoding.UTF8.GetString(e.Message));
 
-		CheckReceived(e);
-	}
+        CheckReceived(e);
+    }
+    
+    // Method checks if received message should be added to the queue that will be animated
+    private void CheckReceived(MqttMsgPublishEventArgs e)
+    { 
+        if (e.Topic == parentTopic + "/class_diagram")          // Checks topic
+        {
+            String payload = System.Text.Encoding.UTF8.GetString(e.Message);
+            if (IsValidJson(payload))                           // Checks if payload is a valid JSON
+            {
+                Debug.Log("Class diagram JSON received, verified and queued");
+                classDiagramQueue.Enqueue(payload);             // Adds payload (JSON) to the queue
+            }
+        }
+        else if (e.Topic == parentTopic + "/deployment_diagram")
+        {
+            String payload = System.Text.Encoding.UTF8.GetString(e.Message);
+            Debug.Log("Deployment diagram JSON received, verified and queued");
+            if (IsValidJson(payload))
+            {
+                deploymentDiagramQueue.Enqueue(payload);
+            }
+        }
+    }
 
-	/* 
-	 * Calls helper methods to check the received message
-	 */
-	private void CheckReceived(MqttMsgPublishEventArgs e)
-	{
-		State(e);
-		Processes(e);
-		Diagram(e);
-		Students(e);
-	}
-	void State(MqttMsgPublishEventArgs e)
-	{
-		if (e.Topic == parentTopic + "/state" && System.Text.Encoding.UTF8.GetString(e.Message) == "start")
-			Debug.Log("State: " + System.Text.Encoding.UTF8.GetString(e.Message));
-		//Start animation and simulation
 
-		else if (e.Topic == parentTopic + "/state" && System.Text.Encoding.UTF8.GetString(e.Message) == "pause")
-			Debug.Log("State: " + System.Text.Encoding.UTF8.GetString(e.Message));
-		//Pause animation and simulation
-
-	}
-	void Processes(MqttMsgPublishEventArgs e)
-	{
-		if (e.Topic == parentTopic + "/processes")
-		{
-			Debug.Log("Processes: " + System.Text.Encoding.UTF8.GetString(e.Message));
-			//Render systemboxes
-		}
-	}
-	void Diagram(MqttMsgPublishEventArgs e)
-	{
-		if (e.Topic == parentTopic + "/room")
-		{
-			Debug.Log("Messages: " + System.Text.Encoding.UTF8.GetString(e.Message));
-			//Render message
-		}
-	}
-	void Students(MqttMsgPublishEventArgs e)
-	{
-		if (e.Topic == parentTopic + "/students")
-		{
-			Debug.Log("Students: " + System.Text.Encoding.UTF8.GetString(e.Message));
-			//Add student name to scene
-		}
-	}
-		
-	/* 
+    /* 
 	 * get/set methods 
 	 */
-	public void SetInstructor (string instructor)
+    public void SetInstructor (string instructor)
 	{
 		this.instructor = instructor;
-	}
-	public string GetInstructor ()
+        UpdateParentTopic();
+    }
+    public string GetInstructor ()
 	{
 		return this.instructor;
 	}
 	public void SetRoom (string room)
 	{
 		this.room = room;
-	}
-	public string GetRoom ()
+        UpdateParentTopic();
+    }
+    public string GetRoom ()
 	{
 		return this.room;
 	}
 	public void SetStudent (string student)
 	{
 		this.student = student;
-	}
-	public string GetStudent ()
+    }
+    public string GetStudent ()
 	{
 		return this.student;
 	}
-	public void SetSessionJson (string json)
+	public void AddSelectedJson (string json)
 	{
-		this.sessionJSON = json;
-	}
-	public string GetSessionJson ()
+        selectedJSONS.Enqueue(
+            new JsonObject()
+            {
+                json = json,
+                diagramType = new JsonParser(json).GetDiagramType() // Gets the diagram type
+            });
+    }
+    public Queue<JsonObject> GetSelectedJsons ()
 	{
-		return this.sessionJSON;
+		return selectedJSONS;
 	}
-	public void SetDiagramType (string type)
-	{
-		this.roomType = type;
-	}
-	public string GetDiagramType ()
+    public string GetDiagramType ()
 	{
 		return this.roomType;
 	}
 	public void SetInstructorBool (bool instructorBool) 
 	{
 		this.instructorBool = instructorBool;
-	}
+    }
 	public bool GetInstructorBool ()
 	{
 		return this.instructorBool;
 	}
 
+    //Updates the ParentTopic when either the room or the instructor are updated
+    private void UpdateParentTopic ()
+    {
+        if (coordinator.GetInstructor() != null && coordinator.GetRoom() != null)
+        {
+            parentTopic = "root/" + coordinator.GetInstructor().ToLower() + "/"
+                        + coordinator.GetRoom().ToLower();
+        }
+    }
+
+    // Source: https://goo.gl/n89LoF
+    private bool IsValidJson(string strInput)
+    {
+        strInput = strInput.Trim();
+        if ((strInput.StartsWith("{") && strInput.EndsWith("}")) || //For object
+            (strInput.StartsWith("[") && strInput.EndsWith("]"))) //For array
+        {
+            try
+            {
+                var obj = JToken.Parse(strInput);
+                obj.Equals(obj); //Could not suppress warning 'value is assigned but never use' so this prevents the error message
+                return true;
+            }
+            catch (JsonReaderException jex) //Exception in parsing json
+            {
+                Debug.Log(jex.Message);
+                return false;
+            }
+            catch (Exception ex) //some other exception
+            {
+                Debug.Log(ex.ToString());
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    // Checks if the json is either a sequence, class or a deployment diagram
+    private bool IsValidDiagramType(string json)
+    {
+        string[] allowedDiagramTypes = {"sequence_diagram", "class_diagram", "deployment_diagram"};
+        string diagramType = new JsonParser(json).GetDiagramType(); // Gets the diagram type
+        // Checks if allowedDiagramTypes contains diagram type of the string json
+        if ((((IList<string>)allowedDiagramTypes).Contains(diagramType)))
+            return true;
+        return false;
+    }
 }

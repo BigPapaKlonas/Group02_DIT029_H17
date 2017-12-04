@@ -70,10 +70,9 @@ public class RenderButtons : MonoBehaviour {
 
 	/*
 	 * The callback that handles the setting of which instructor and diagram the student chose.
-	 * In the instructor case it loads the next scene.
+	 * In the instructor case it loads the next scene, DiagramChoice.
 	 * In the diagram case it publishes the student name to the chosen room /student and 
-	 * subscribes to the "class room". 
-	 * Depending on type of diagram a scene is loaded.
+	 * subscribes to the "class room". Finally, it changes to the "Main" scene.
 	 */
 	private void ButtonCallBack (Button buttonPressed)
 	{
@@ -94,21 +93,20 @@ public class RenderButtons : MonoBehaviour {
 				coordinator.GetStudent (),
 				true
 			);
+            
+            /*
 			coordinator.Subscribe (
 				"root/" + coordinator.GetInstructor () + "/" +
-				coordinator.GetRoom ()
+				coordinator.GetRoom ()+ "/#"
 			);
+            **/
 
 			Cursor<string> result = R.Db ("root").Table ("diagrams")
 				.Filter (R.HashMap ("name", coordinator.GetRoom ()))
 				.GetField ("type")
 				.RunCursor<string> (conn);
-					
-			foreach (var type in result){
-				coordinator.SetDiagramType(type);
-			}
-				
-			SceneManager.LoadScene (coordinator.GetDiagramType ());
+									
+			SceneManager.LoadScene ("Main");
 
 			break;
 		default:

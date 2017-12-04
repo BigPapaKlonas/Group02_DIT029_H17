@@ -1,15 +1,14 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using SFB;
 using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
-[RequireComponent(typeof(Button))]
-public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
+public class UploadJSONExplorer : MonoBehaviour
 {
     // The following variables dictates the file explorer's behaviour and looks
     public string Title = "Select the your diagram file..";
@@ -18,12 +17,6 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
     public string Extension = "json";
     public bool Multiselect = true;
     private Button button;
-    
-    // offset used to position house "districts"
-    float positionOffset = -50;
-
-
-    public void OnPointerDown(PointerEventData eventData) { }
 
     void Start()
     {
@@ -34,65 +27,53 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
     private void OnClick()
     {
         var paths = StandaloneFileBrowser.OpenFilePanel(Title, Directory, Extension, Multiselect);
-        foreach(var file in paths)
+        foreach (var file in paths)
         {
             if (file.Length > 0)
             {
                 // Starts a new routine with the path to the selected file as argument
-                StartCoroutine(OutputRoutine(new System.Uri(file).AbsoluteUri));
+                AddJson(new Uri(file).AbsoluteUri);
             }
         }
-    }
-
-    private IEnumerator OutputRoutine(string url)
-    {
-        // Debug: file's path
-        Debug.Log("Path: " + url);
-
-        var loader = new WWW(url);
-        yield return loader;
-
-        // Read the json from the file into a string
-        string output = loader.text;
-        // Debug: Json text
-        // Debug.Log("Raw JSON: " + output);
-
-		JsonParser parser = new JsonParser (output);
-
-		Debug.Log ("Diagram type: " + parser.GetDiagramType ());
-
-		ConnectionManager.coordinator.SetDiagramType (parser.GetDiagramType ());
-
-		output = parser.AddMetaToSequence ("root/" + 
-			ConnectionManager.coordinator.GetInstructor ().Replace (" ", "").ToLower () + "/" + 
-			ConnectionManager.coordinator.GetRoom ().Replace (" ", "").ToLower ()
-		);
-
-		Debug.Log (output);
-		ConnectionManager.coordinator.SetSessionJson (output);
-	
-        // Check if output is valid
-        if (!IsValidJson(output))
+        if (SceneManager.GetActiveScene().name == "Start")
         {
-            yield return "JSON not valid, check JSON structure";
+            SceneManager.LoadScene("Main");
         }
-
-        DiagramBroker broker = new DiagramBroker(output, positionOffset);
-        Debug.Log(positionOffset);
-        positionOffset += 40;
-        StartCoroutine(Insert ());
     }
 
-	/* 
+    // Adds JSON from the path (url) to queue with valid JSONS prepared for uploading
+    private void AddJson(string url)
+    {
+        var loader = new WWW(url);              // Retrieves content from url 
+        string output = loader.text;            // Read the json from the file into a string
+
+        if (IsValidJson(output))                // Checks if output is a valid JSON
+        {
+            if (IsValidDiagramType(output))     // Checks if the json, output, is of a valid type
+
+            {
+                // Adds the JSON diagram to the queue of strings to be ready to be uploaded
+                ConnectionManager.coordinator.AddSelectedJson(output);
+                // Coroutine for uploading data to Database
+                StartCoroutine(Insert());
+            }
+            else
+                Debug.Log("Invalid type! Not a sequence, class or sequence diagram");
+        }
+        else
+            Debug.Log("JSON not valid! Check JSON structure");
+    }
+
+    /* 
 	 * Insert to the Database.
 	 * when ran in a Coroutine The full ConnectionManager.<variable> needs to be present.
 	 */
-	IEnumerator Insert()
-	{
+    IEnumerator Insert()
+    {
 
-		string instructor = ConnectionManager.coordinator.GetInstructor ();
-		string diagram = ConnectionManager.coordinator.GetRoom ();
-		string diagramType = ConnectionManager.coordinator.GetDiagramType ();
+        string instructor = ConnectionManager.coordinator.GetInstructor();
+        string room = ConnectionManager.coordinator.GetRoom();
+        string diagramType = ConnectionManager.coordinator.GetDiagramType();
 
         /* 
 		 * If database contains the instructor name: 
@@ -102,21 +83,32 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
 		 * Add both to instructors and diagrams tables.
 		*/
 
-		var update = ConnectionManager.R.Db("root")
-			.Table("diagrams").Insert(ConnectionManager.R.Array(
-				ConnectionManager.R.HashMap("name", diagram)
-				.With("type", diagramType)
-				.With("instructor", instructor)
-			))
-			.Run(ConnectionManager.conn);
+        var update = ConnectionManager.R.Db("root")
+            .Table("diagrams").Insert(ConnectionManager.R.Array(
+                ConnectionManager.R.HashMap("name", room)
+                .With("type", diagramType)
+                .With("instructor", instructor)
+            ))
+            .Run(ConnectionManager.conn);
 
         yield return update;
-            Debug.Log("Successful insert and update of the " + diagram + " table, for instructor: " + instructor);
-            SceneManager.LoadScene(ConnectionManager.coordinator.GetDiagramType());
-	}
+        Debug.Log("Successful insert and update of the " + room + " table, for instructor: "
+            + instructor);
+    }
 
+    // Checks if the json is either a sequence, class or a deployment diagram
+    private bool IsValidDiagramType(string json)
+    {
+        string[] allowedDiagramTypes = {"sequence_diagram", "class_diagram", "deployment_diagram"};
+        string diagramType = new JsonParser(json).GetDiagramType(); // Gets the diagram type
+        // Checks if allowedDiagramTypes contains diagram type of the string json
+        if ((((IList<string>)allowedDiagramTypes).Contains(diagramType)))
+            return true;
+        return false;
+    }
+
+    // Source: https://goo.gl/n89LoF
     private bool IsValidJson(string strInput)
-    //https://stackoverflow.com/questions/14977848/how-to-make-sure-that-string-is-valid-json-using-json-net
     {
         strInput = strInput.Trim();
         if ((strInput.StartsWith("{") && strInput.EndsWith("}")) || //For object

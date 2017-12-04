@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayDiagram : MonoBehaviour {
@@ -21,14 +19,21 @@ public class PlayDiagram : MonoBehaviour {
 
      void OnClick() 
 	{
-        ConnectionManager.coordinator.Publish (
-			"root/" + 
-			ConnectionManager.coordinator.GetInstructor () + "/" + 
-			ConnectionManager.coordinator.GetRoom (),
-			ConnectionManager.coordinator.GetSessionJson (),
-			true
-		);
-
+        // Iterates through the selected JSONS and publishes them to the MQTT broker
+        while (ConnectionManager.coordinator.GetSelectedJsons().Count > 0)
+        {
+            var jsonStruct = ConnectionManager.coordinator.GetSelectedJsons().Dequeue();
+            
+            ConnectionManager.coordinator.Publish(
+            "root/" +
+            ConnectionManager.coordinator.GetInstructor() + "/" +
+            ConnectionManager.coordinator.GetRoom() + "/" +
+            jsonStruct.diagramType,
+            jsonStruct.json,
+            true
+        );
+        }
+        
 		ConnectionManager.coordinator.Publish (
 			"root/" + 
 			ConnectionManager.coordinator.GetInstructor () + "/" + 
