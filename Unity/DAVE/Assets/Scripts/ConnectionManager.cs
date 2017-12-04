@@ -96,7 +96,16 @@ public class ConnectionManager : MonoBehaviour
 		daveClient.Subscribe(SubscribeTopic.Replace(" ", "").ToLower());
 	}
 
-	public MqttClient GetMqttClient(){
+    /*
+    * Unsubscribe to topic
+    */
+    public void Unsubscribe(string UnsubscribeTopic)
+    {
+        Debug.Log("Unsubscribed from topic: " + UnsubscribeTopic.Replace(" ", "").ToLower());
+        daveClient.Unsubscribe(UnsubscribeTopic.Replace(" ", "").ToLower());
+    }
+
+    public MqttClient GetMqttClient(){
 		return this.client;
 	}
 

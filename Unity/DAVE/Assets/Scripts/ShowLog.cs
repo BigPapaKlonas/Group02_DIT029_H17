@@ -1,17 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /*
- * Log to display what is going on in the diagram 'in-game'.
+ * Window with a log displaying what is going on in the diagram 'in-game'. Clicking on one of the
+ * generated buttons will zoom into the event it corresponds to.
  * Calling Debug.log("logmsg" + "*"+ placeholder.y + "*" + placeholder.z + "*" + "zzz") 
  * will add "zzz" as a button to the log and onClick will take camera to placeholder position
  * Based on: https://gist.github.com/mminer/975374
  **/
 
-public class EventLog : MonoBehaviour
+public class ShowLog : MonoBehaviour
 {
     // Structure used for each log item 
-    struct Log
+    private struct Log
     {
         public string message;
         public Vector3 targetPosition;
@@ -19,53 +21,69 @@ public class EventLog : MonoBehaviour
         public LogType type;
     }
 
-    public KeyCode toggleKey = KeyCode.L;   // The hotkey to show and hide the log window
-    List<Log> logs = new List<Log>();       // List of Log structures
-    Vector2 scrollPosition;                 // Used to place ScrollView
-    public bool showLogWindow = true;       // True on start
+    private Image Arrow;                            // Arrow image on button
+    public Sprite downArrow;                
+    public Sprite upArrow;                  
 
-    // Creates the rectangle for the log
-    Rect windowRect = new Rect(Screen.width * 0.8f, 0, Screen.width * 0.2f, Screen.height);
+    public KeyCode toggleKey = KeyCode.L;           // The hotkey to show and hide the log window
+    private List<Log> logs = new List<Log>();       // List of Log structures
+    private Vector2 scrollPosition;                 // Used to place ScrollView
+    private bool showLogWindow = true;              // True on start
+
+    // Creates and positions the rectangle for the log
+    private Rect windowRect = new Rect(Screen.width - 179f, 30, 179f, Screen.height);
     // Label for clear button
-    GUIContent clearLabel = new GUIContent("Clear", "Clear the contents of the console.");
+    private GUIContent clearLabel = new GUIContent("Clear", "Clear the contents of the console.");
     // Allows for repositioning the camera
-    CameraOrbit cameraOrbitScript;
+    private CameraOrbit cameraOrbitScript;
 
-    void OnEnable() //Called when the object becomes enabled and active.
+    // Gets objects and sets click listener
+    private void Start()
+    {
+        cameraOrbitScript = (CameraOrbit)Camera.main.GetComponent(typeof(CameraOrbit));
+        GetComponent<Button>().onClick.AddListener(OnClick);
+        Arrow = GameObject.FindGameObjectWithTag("arrow_log").GetComponent<Image>();
+    }
+
+    private void OnEnable() //Called when the object becomes enabled and active.
     {
         // Assigns HandleLog function to handle log messages received
         Application.logMessageReceived += HandleLog;
-        // Gets the cameraOrbit script
-        cameraOrbitScript = (CameraOrbit)Camera.main.GetComponent(typeof(CameraOrbit));
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         Application.logMessageReceived += null;
     }
 
-    void Update()
+    private void OnClick()
     {
-        if (Input.GetKeyDown(toggleKey))    // Disable/enables the log on toggle key pressed
-        {
-            showLogWindow = !showLogWindow;
-        }
+        showLogWindow = !showLogWindow; // Disables the log window
+
+        if (showLogWindow)
+            Arrow.sprite = downArrow;   // Make drop down arrow point downwards
+        else
+            Arrow.sprite = upArrow;
     }
 
-    void OnGUI()
+    private void Update()
+    {
+        if (Input.GetKeyDown(toggleKey))    // Disable/enables the log on toggle key pressed
+            showLogWindow = !showLogWindow;
+    }
+
+    private void OnGUI()
     {
         if (!showLogWindow)
-        {
             return; // Returns if log is disabled
-        }
 
         // Creates a window with id 123456 based on windowRect dimensions with LogWindow and title "Log"
-        GUILayout.Window(123456, windowRect, LogWindow, "Log");
+        GUILayout.Window(123456, windowRect, LogWindow, "");
     }
 
 
     // GUI window that houses the log items
-    void LogWindow(int windowID)
+    private void LogWindow(int windowID)
     {
         //Create GUIStyles for the different buttons that will be added to the window
         GUIStyle logBtnStyle = new GUIStyle(GUI.skin.button)
@@ -102,7 +120,7 @@ public class EventLog : MonoBehaviour
 
 
     // Decodes and records a log from the log callback.
-    void HandleLog(string message, string stackTrace, LogType type)
+    private void HandleLog(string message, string stackTrace, LogType type)
     {
         // Checks type and if message starts with logmsg
         if (type.Equals(LogType.Log) && message.StartsWith("logmsg"))
