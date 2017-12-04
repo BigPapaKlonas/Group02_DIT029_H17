@@ -87,20 +87,20 @@ public class RenderButtons : MonoBehaviour {
 			SceneManager.LoadScene ("DiagramChoice");
 			break;
 		case "diagrams":
-			coordinator.SetDiagram (name);
+			coordinator.SetRoom (name);
 			coordinator.Publish (
 				"root/" + coordinator.GetInstructor () + "/" +
-				coordinator.GetDiagram () + "/students/", 
+				coordinator.GetRoom () + "/students/", 
 				coordinator.GetStudent (),
 				true
 			);
 			coordinator.Subscribe (
 				"root/" + coordinator.GetInstructor () + "/" +
-				coordinator.GetDiagram ()
+				coordinator.GetRoom ()
 			);
 
 			Cursor<string> result = R.Db ("root").Table ("diagrams")
-				.Filter (R.HashMap ("name", coordinator.GetDiagram ()))
+				.Filter (R.HashMap ("name", coordinator.GetRoom ()))
 				.GetField ("type")
 				.RunCursor<string> (conn);
 					

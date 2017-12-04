@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Router : MonoBehaviour {
 
@@ -11,12 +12,12 @@ public class Router : MonoBehaviour {
 	*/
 	public Button studentBtn;
 	public Button instructorBtn;
-	public Button diaNameBtn;
+	public Button roomNameBtn;
     public Button studentNameBtn;
 	public Button uploadBtn;
 
 	public InputField studentName;
-	public InputField diagramName;
+	public InputField roomName;
 
 	public Text warning;
 
@@ -37,7 +38,13 @@ public class Router : MonoBehaviour {
 
         if (ConnectionManager.auth == true)
         {
-            loginBtn.gameObject.SetActive(false);
+            loginBtn.GetComponentInChildren<Text>().text = "Log out";
+            studentBtn.gameObject.SetActive(false);
+            studentName.gameObject.SetActive(false);
+            studentNameBtn.gameObject.SetActive(false);
+            instructorBtn.GetComponent<RectTransform>().localPosition = new Vector3 (0f, -25f, 0f);
+            roomName.GetComponent<RectTransform>().localPosition = new Vector3(-15f, -25f, 0f);
+            uploadBtn.GetComponent<RectTransform>().localPosition = new Vector3(0f, -25f, 0f);
         }
     }
 
@@ -46,7 +53,7 @@ public class Router : MonoBehaviour {
 
         studentBtn.onClick.AddListener(()    => buttonCallBack(studentBtn));
 		instructorBtn.onClick.AddListener(() => buttonCallBack(instructorBtn));
-		diaNameBtn.onClick.AddListener(() => buttonCallBack(diaNameBtn));
+		roomNameBtn.onClick.AddListener(() => buttonCallBack(roomNameBtn));
         studentNameBtn.onClick.AddListener(() => buttonCallBack(studentNameBtn));
         loginBtn.onClick.AddListener(() => buttonCallBack(loginBtn));
 
@@ -59,9 +66,18 @@ public class Router : MonoBehaviour {
 	{
         if (buttonPressed == loginBtn)
         {
-            GameObject login = Instantiate(loginPanel);
-            login.transform.SetParent(canvas.transform, false);
-            startPanel.SetActive(false);
+            if (ConnectionManager.auth != true)
+            {
+                GameObject login = Instantiate(loginPanel);
+                login.transform.SetParent(canvas.transform, false);
+                startPanel.SetActive(false);
+            }
+            else
+            {
+                ConnectionManager.auth = false;
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+
         }
 		
 		if (buttonPressed == studentBtn)
@@ -89,18 +105,18 @@ public class Router : MonoBehaviour {
                 buttonPressed.gameObject.SetActive(false);
             }
         }
-		if (buttonPressed == diaNameBtn)
+		if (buttonPressed == roomNameBtn)
 		{
-			if (diagramName.text != "") {
-				ConnectionManager.coordinator.SetDiagram (diagramName.text);
+			if (roomName.text != "") {
+				ConnectionManager.coordinator.SetRoom (roomName.text);
 				buttonPressed.gameObject.SetActive (false);
-				diagramName.gameObject.SetActive (false);
+                roomName.gameObject.SetActive (false);
             
 				// Publish to the broker.
 				ConnectionManager.coordinator.Publish (
 					"root/" + ConnectionManager.coordinator.GetInstructor () + "/" +
-					ConnectionManager.coordinator.GetDiagram (), 
-					"Init diagram", 
+					ConnectionManager.coordinator.GetRoom (), 
+					"Init room", 
 					true    
 				);
 			} else {
@@ -114,7 +130,7 @@ public class Router : MonoBehaviour {
 	{
 		studentBtn.onClick.RemoveAllListeners();
 		instructorBtn.onClick.RemoveAllListeners();
-		diaNameBtn.onClick.RemoveAllListeners();
+		roomNameBtn.onClick.RemoveAllListeners();
         studentNameBtn.onClick.RemoveAllListeners();
 	}
 

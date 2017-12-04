@@ -21,6 +21,9 @@ public class Login : MonoBehaviour
 
     private GameObject startCanvas;
 
+    /*
+    * Adding listeners to our buttons and finding the Canvas.
+    */
     void Start()
     {
 
@@ -51,22 +54,26 @@ public class Login : MonoBehaviour
         
     }
 
+    /*
+    * Comparing hashes for passwords in database.
+    */
     IEnumerator LoginAuthentication()
     {
         byte[] data = System.Text.Encoding.ASCII.GetBytes(password.text);
         data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
         string hash = System.Text.Encoding.ASCII.GetString(data);
         
+        // Compare username to password hash, returns a confirmation bool.
         bool confirmation = ConnectionManager.R.Db("root")
             .Table("instructors")
-            .Contains(row => row.G("name").Eq(username.text)
+            .Contains(row => row.G("name").Eq(username.text.ToLower())
             .And(row.G("password").Eq(hash))).Run(ConnectionManager.conn);
         yield return confirmation;
 
-        if (confirmation == true)
+        if (confirmation == true && password.text != "" && username.text != "")
         {
             ConnectionManager.auth = true;
-            ConnectionManager.coordinator.SetInstructor(username.text);
+            ConnectionManager.coordinator.SetInstructor(username.text.ToLower());
 
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 
@@ -74,16 +81,19 @@ public class Login : MonoBehaviour
         }
         else
         {
-            StartCoroutine(ShowForFive());
+            StartCoroutine(ShowInvalidText());
         }
     }
 
-    IEnumerator ShowForFive()
+    /*
+     * Checking for invalid password or username.
+    */
+    IEnumerator ShowInvalidText()
     {
         Text invalidPassword = Instantiate(invalid);
         invalidPassword.transform.SetParent(startCanvas.transform, false);
         invalidPassword.enabled = true;
-        Debug.LogError("Passwords doesn't match or username is already in use.");
+        Debug.LogError("Invalid credentials");
         yield return new WaitForSeconds(3f);
         invalidPassword.enabled = false;
     }

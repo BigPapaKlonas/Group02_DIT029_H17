@@ -57,7 +57,7 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
 
 		output = parser.AddMetaToSequence ("root/" + 
 			ConnectionManager.coordinator.GetInstructor ().Replace (" ", "").ToLower () + "/" + 
-			ConnectionManager.coordinator.GetDiagram ().Replace (" ", "").ToLower ()
+			ConnectionManager.coordinator.GetRoom ().Replace (" ", "").ToLower ()
 		);
 
 		Debug.Log (output);
@@ -76,7 +76,7 @@ public class UploadJSONExplorer : MonoBehaviour, IPointerDownHandler
 	{
 
 		string instructor = ConnectionManager.coordinator.GetInstructor ();
-		string diagram = ConnectionManager.coordinator.GetDiagram ();
+		string diagram = ConnectionManager.coordinator.GetRoom ();
 		string diagramType = ConnectionManager.coordinator.GetDiagramType ();
 
         /* 

@@ -904,9 +904,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cdbd2a0c4ce4a743a8b3142a64cb8ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPanel: {fileID: 1077778120957570, guid: d7a99bfcf6ba0e34dba9496b9695da42, type: 2}
   loginPanel: {fileID: 1894211449382374}
-  signUpPanel: {fileID: 1830932010870130, guid: 0ee868748c4750744a1cb6b3339b8e4c,
+  signUpPanel: {fileID: 1208097660866028, guid: 0ee868748c4750744a1cb6b3339b8e4c,
     type: 2}
   login: {fileID: 114634605203411180}
   signUp: {fileID: 114810997613058796}
@@ -914,7 +913,6 @@ MonoBehaviour:
   password: {fileID: 114555319806937866}
   invalid: {fileID: 114073093779916800, guid: 1ba8e5a1bad44ee45b5d1c012cda6c2b, type: 2}
   backBtn: {fileID: 114340937125669582}
-  canvas: {fileID: 1050319234740856, guid: 29d3d3bcf8ed2984b9f7d076602fc14d, type: 2}
 --- !u!114 &114994890336359728
 MonoBehaviour:
   m_ObjectHideFlags: 1
