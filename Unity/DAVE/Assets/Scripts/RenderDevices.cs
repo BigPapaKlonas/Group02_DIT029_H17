@@ -13,8 +13,6 @@ public class RenderDevices : MonoBehaviour
     TextMesh multiplicity;
     public static ArrayList Devices = new ArrayList();
     ArrayList DeviceNames = new ArrayList();
-    public Material connnectionMaterial;
-    public GameObject communication;
     public Vector3 center;
 
 
@@ -59,6 +57,7 @@ public class RenderDevices : MonoBehaviour
                 pos,
                 this.transform.rotation);
 
+            // Set the position of the Device name textmesh
             Vector3 nPos = pos;
 
             // Rezises the height of the device

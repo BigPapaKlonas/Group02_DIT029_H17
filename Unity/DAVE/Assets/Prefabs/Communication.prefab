@@ -38,7 +38,7 @@ Transform:
   m_GameObject: {fileID: 1494611448182904}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.025, y: 0.025, z: 0.025}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -57,7 +57,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: e78b94da3e5794b459262f09234b9a7d, type: 2}
+  - {fileID: 2100000, guid: 1d342bedfdd23754886db0909731dc1e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -83,7 +83,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1494611448182904}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!65 &65369457986347910
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -106,7 +106,7 @@ Light:
   serializedVersion: 8
   m_Type: 2
   m_Color: {r: 0.003, g: 0.359, b: 0.053, a: 1}
-  m_Intensity: 10
+  m_Intensity: 50
   m_Range: 1
   m_SpotAngle: 30
   m_CookieSize: 10

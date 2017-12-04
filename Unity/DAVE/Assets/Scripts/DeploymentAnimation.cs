@@ -4,60 +4,75 @@ public class DeploymentAnimation : MonoBehaviour {
 
     public GameObject communicationPrefab;
 
-    GameObject fromDevice, toDevice, communication, fromProcess, toProcess;
-    float speed = 0.01f;
+    GameObject fromDevice, toDevice, communication, fromProcess, toProcess = null;
+    public string From, To, FromDevice, ToDevice; 
+    float speed = 0.5f;
     Device from, to;
     StartMessages.MessageData msg;
-
+    public bool send;
+    bool start;
     // Update is called once per frame
     void Update () {
-        // Turn on process light
-        if (communication.transform.position.Equals(fromDevice.transform.position))
+
+        if (send && start)
         {
-            fromProcess.GetComponentInChildren<Light>().intensity = 10;
-            if (from.GetProcesses().Count > 8)
-                GetComponent<RenderDevices>().ChangeProcessText(msg.from);      // Attached?
+            // Turn on process light
+            if (communication.transform.position.Equals(fromDevice.transform.position))
+            {
+                fromProcess.GetComponentInChildren<Light>().intensity = 10;
+                if (from.GetProcesses().Count > 8)
+                    GetComponent<RenderDevices>().ChangeProcessText(msg.from);      // Attached?
+
+            }
+            // Communication light moving from the device sending a message to the device recieving the message
+
+            float step = speed * Time.deltaTime;
+            communication.transform.position = Vector3.MoveTowards(communication.transform.position, toDevice.transform.position, step);
+
+            // Turn off process light 
+            if (communication.transform.position.Equals(toDevice.transform.position))
+            {
+                fromProcess.GetComponentInChildren<Light>().intensity = 0;
+                if (from.GetProcesses().Count > 8)
+                    GetComponent<RenderDevices>().ChangeProcessText("9...*");       // Attached?
+                send = false;
+            }
+
+
 
         }
-                  
-        // Communication light moving from the device sending a message to the device recieving the message
-        float step = speed * Time.deltaTime;
-        communication.transform.position = Vector3.MoveTowards(communication.transform.position, toDevice.transform.position, step);
-        
-        // Turn off process light 
-        if (communication.transform.position.Equals(toDevice.transform.position))
-        {
-            fromProcess.GetComponentInChildren<Light>().intensity = 0;
-            if (from.GetProcesses().Count > 8)
-                GetComponent<RenderDevices>().ChangeProcessText("9...*");       // Attached?
-        }
-               
-		
 	}
 
-    public void StartCommunication(StartMessages.MessageData message)
+    public void StartCommunication()//StartMessages.MessageData message)
     {
-        msg = message;
-        from = GetComponent<RenderConnections>().FindDevice(msg.from);
-        to = GetComponent<RenderConnections>().FindDevice(msg.to);
+        //msg = message;
+        // Get the name of the devices the processes are mapped to
+        from = GetComponent<RenderConnections>().FindDevice(From);//msg.from);
+        to = GetComponent<RenderConnections>().FindDevice(To);//msg.to);
+        // Find the gameobject with the name of the device
         fromDevice = GameObject.Find(from.GetName());
-        toDevice = GameObject.Find(GetComponent<RenderConnections>().FindDevice(msg.to).GetName());
+        toDevice = GameObject.Find(to.GetName());
+
+        // Create the communication light in the posistion of the device sending the message
         communication = (GameObject)Instantiate(
             communicationPrefab,
             fromDevice.transform.position,
             this.transform.rotation);
+
+        // Find the process
         if (from.GetProcesses().Count < 8)
-            fromProcess = GameObject.Find("proc:" + msg.from);
-        else
-            fromProcess = GameObject.Find(from + ":multi");
+            fromProcess = GameObject.Find("proc:" + From);// msg.from);
+         else
+          fromProcess = GameObject.Find(from + ":multi");
 
         if (from.GetProcesses().Count < 8)
-            toProcess = GameObject.Find("proc:" + msg.to);
-        else
-            toProcess = GameObject.Find(to + ":multi");
+            toProcess = GameObject.Find("proc:" + To);// msg.to);
+         else
+         toProcess = GameObject.Find(to + ":multi");
+        start = true;
 
-        }
-    // Byt eventuellt GameObjects till positioner
+    }
+    // Needs the distance of the activation boxes as arguments
     public void SetSpeed(GameObject fromSystem, GameObject toSystem)
     {
         float deviceDist = Mathf.Sqrt(Mathf.Pow(fromDevice.transform.position.z - toDevice.transform.position.z, 2)
