@@ -66,10 +66,10 @@ public class MessageAnimation : MonoBehaviour {
             arrowhead.GetComponent<Arrowhead>().changePos(left, distThisFrame);
            
 
-        //}else if(sent == false) {
+        }else if(sent == false) {
 
-        //    MessageRecieved();
-        //    sent = true;
+            MessageRecieved();
+            sent = true;
             
         }
 	}
@@ -83,10 +83,10 @@ public class MessageAnimation : MonoBehaviour {
         this.transform.rotation
         );
 
-        ProcessAnimation p = activationBoxGO.GetComponent<ProcessAnimation>();
-        p.destList = destList;
+        ProcessAnimationOnRecieve p = activationBoxGO.GetComponent<ProcessAnimationOnRecieve>();
+        
         p.current = current;
-        p.endSize = StartMessages.actSizeList.Dequeue();
+        
         
 
 

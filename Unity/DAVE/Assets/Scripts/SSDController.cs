@@ -10,9 +10,8 @@ using System;
 
 public class SSDController : MonoBehaviour {
 
-    public SpawnSystemBox systemSpawner;
-    public SpawnActivationBox activationSpawner;
-    public SpawnMessage messageSpawner;
+    public SSDSpawner spawner;
+    
 
     public string room;
 
@@ -23,6 +22,10 @@ public class SSDController : MonoBehaviour {
     private MqttClient client;
     // Use this for initialization
     void Start() {
+
+        GameObject go = GameObject.Find("root/shaun/diagram");
+        spawner = (SSDSpawner)go.GetComponent(typeof(SSDSpawner));
+
         // create client instance 
         client = new MqttClient(IPAddress.Parse("13.59.108.164"), 1883, false, null);
 
@@ -38,31 +41,33 @@ public class SSDController : MonoBehaviour {
     }
     void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e) {
 
-        Debug.Log("Received: " + System.Text.Encoding.UTF8.GetString(e.Message));
         string SMessage = System.Text.Encoding.UTF8.GetString(e.Message);
-        Debug.Log("Received: " + SMessage);
+        Debug.Log("Received: " + System.Text.Encoding.UTF8.GetString(e.Message));
         string[] array = SMessage.Split(' ');
         if (array[1] == "initial") {
-            systemSpawner.systemBoxName = array[0];
-            systemSpawner.newSpawn = true;
+            spawner.systemBoxName = array[0];
+            spawner.newSystem = true;
         } else if (array[1] == "preparemessage") {
-            activationSpawner.systemName = array[0];
-            activationSpawner.newSpawn = true;
+            spawner.systemName = array[0];
+            spawner.message = array[3];
+            spawner.newActivation = true;
         } else if (array[1] == "idle") {
-            activationSpawner.systemName = array[0];
-            activationSpawner.stop = true;
+            spawner.systemName = array[0];
+            spawner.stop = true;
         } else if (array[1] == "sentmessage") {
+            spawner.endAct = true;
             awaitMessage = true;
             sendee = array[0];
             reciever = array[2];
             message = array[3];
         } else if (array[1] == "recievedmessage" && awaitMessage) {
-            messageSpawner.message = message;
-            messageSpawner.from = sendee;
-            messageSpawner.to = reciever;
-            messageSpawner.newSpawn = true;
+            spawner.message = message;
+            spawner.from = sendee;
+            spawner.to = reciever;
+            spawner.newMessage = true;
+            awaitMessage = false;
         } else if (array[1] == "finished") {
-            //destroy gameobject array[0]
+            spawner.y = spawner.size - 1f;
 
         }
     }

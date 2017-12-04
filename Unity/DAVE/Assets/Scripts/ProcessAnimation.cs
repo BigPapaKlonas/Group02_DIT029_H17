@@ -15,13 +15,17 @@ public class ProcessAnimation : MonoBehaviour {
     Vector3 thisPos;
     Vector3 nextPos;
     public GameObject messageText;
-    
+    public float y;
+
+    private string room;
+
 
     public float speed = 0.01f;
     float maxScale = 7f;
     float counter;
     Transform d;
     public float endSize;
+    private SSDSpawner spawner;
     
     void Start () {
 
@@ -31,8 +35,9 @@ public class ProcessAnimation : MonoBehaviour {
         endScale = originalScale;
         counter = 0;
         sent = false;
-     
-	}
+        room = "root/shaun/diagram";
+
+    }
 
 	
 	void Update () {
@@ -47,22 +52,27 @@ public class ProcessAnimation : MonoBehaviour {
             transform.position = vector3 - transform.up * (transform.localScale.y / 2 + originalScale / 2);
             endScale = maxScale;
             
-        }
-        //else if(sent == false) {
-        //    current.GetComponent<SystemBox>().lightSwitch = false;
-        //    sent = true;
-        //    SendMessage();
+        } else if (sent == true) {
+            current.GetComponent<SystemBox>().lightSwitch = false;
+            y = transform.position.y - transform.localScale.y / 2;
+            y = y + 0.1f;
+            GameObject go = GameObject.Find(room);
+            spawner = (SSDSpawner)go.GetComponent(typeof(SSDSpawner));
+            spawner.y = y;
 
-        //}
+        }
 	}
 
+    void Stop() {
+        sent = true;
+    }
     
-    void SendMessage() {
+    void SendMessages() {
       
       if(destList.Count > 0){
         GameObject next = (GameObject)destList.Dequeue();
        
-        float y = transform.position.y - transform.localScale.y / 2;
+        y = transform.position.y - transform.localScale.y / 2;
         y = y + 0.1f;
         thisPos = new Vector3(
           this.transform.position.x,
