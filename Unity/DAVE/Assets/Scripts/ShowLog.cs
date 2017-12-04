@@ -31,7 +31,7 @@ public class ShowLog : MonoBehaviour
     private bool showLogWindow = true;              // True on start
 
     // Creates and positions the rectangle for the log
-    private Rect windowRect = new Rect(Screen.width - 360f, 30, 179f, Screen.height);
+    private Rect windowRect = new Rect(Screen.width - 179f, 30, 179f, Screen.height);
     // Label for clear button
     private GUIContent clearLabel = new GUIContent("Clear", "Clear the contents of the console.");
     // Allows for repositioning the camera

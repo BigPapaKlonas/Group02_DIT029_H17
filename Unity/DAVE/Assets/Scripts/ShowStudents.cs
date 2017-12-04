@@ -14,7 +14,7 @@ public class ShowStudents : MonoBehaviour
     private List<string> studentList = new List<string>();
     private Vector2 scrollPosition;                                         // Used to place ScrollView
     // Creates and positions the rectangle for the log
-    private Rect windowRect = new Rect(Screen.width - 179f, 30, 179f, Screen.height);
+    private Rect windowRect = new Rect(Screen.width - 360f, 30, 179f, Screen.height);
     private bool showStudentsWindow = true;
 
     // Gets objects and sets click listener
