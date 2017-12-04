@@ -22,7 +22,7 @@ public class ShowStudents : MonoBehaviour
     {
         //Subscribes to the current session's student topic
         coordinator.Subscribe("root/" + coordinator.GetInstructor() + "/" +
-            coordinator.GetDiagram() + "/students");
+            coordinator.GetRoom() + "/students");
         GetComponent<Button>().onClick.AddListener(OnClick);
         Arrow = GameObject.FindGameObjectWithTag("arrow_students").GetComponent<Image>();
     }
@@ -66,7 +66,7 @@ public class ShowStudents : MonoBehaviour
     {
         // Verifies the message's topic
         if (e.Topic == "root/" + coordinator.GetInstructor() + "/" +
-                 coordinator.GetDiagram() + "/students")
+                 coordinator.GetRoom() + "/students")
         {
             studentList.Add(System.Text.Encoding.UTF8.GetString(e.Message)); // Adds message to list
         }
