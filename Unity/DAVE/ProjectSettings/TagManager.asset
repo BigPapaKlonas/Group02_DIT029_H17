@@ -19,6 +19,10 @@ TagManager:
   - Road
   - Terrain
   - Map
+  - CameraControlPanel
+  - arrow_controls
+  - arrow_log
+  - arrow_students
   layers:
   - Default
   - TransparentFX

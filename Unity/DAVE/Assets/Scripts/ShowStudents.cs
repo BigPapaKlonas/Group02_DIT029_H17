@@ -10,7 +10,7 @@ public class ShowStudents : MonoBehaviour
     public Sprite upArrow;
     public GUISkin customSkin;                                              // Skin for the labels
 
-    private ConnectionManager coordinator = ConnectionManager.coordinator;  // Used for publish/subscribe
+    ConnectionManager coordinator = ConnectionManager.coordinator;  // Used for publish/subscribe
     private List<string> studentList = new List<string>();
     private Vector2 scrollPosition;                                         // Used to place ScrollView
     // Creates and positions the rectangle for the log

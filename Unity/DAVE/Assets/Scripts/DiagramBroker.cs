@@ -10,7 +10,7 @@ public class DiagramBroker : MonoBehaviour
 
     private void Start()
     {
-        uplButton = GameObject.Find("Upload").GetComponent<Button>();
+        uplButton = GameObject.Find("UploadBtn").GetComponent<Button>();
 
         coordinator.Subscribe(
             "root/" + coordinator.GetInstructor() + "/" +

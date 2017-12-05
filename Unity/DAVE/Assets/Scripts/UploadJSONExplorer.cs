@@ -17,6 +17,8 @@ public class UploadJSONExplorer : MonoBehaviour
     public string Extension = "json";
     public bool Multiselect = true;
     private Button button;
+
+    public GameObject playBtnPrefab;
     private int fileCounter = 0;
 
     void Start()
@@ -42,6 +44,15 @@ public class UploadJSONExplorer : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "Start" && fileCounter != 0)
         {
             SceneManager.LoadScene("Main");
+        }
+
+        // Instantiates and activates the playBtn
+        else if (SceneManager.GetActiveScene().name == "Main" && fileCounter != 0)
+        {
+            GameObject playBtn = Instantiate(playBtnPrefab);
+            playBtn.SetActive(true);
+            GameObject canvas = GameObject.Find("Canvas_Show_Reset_Upload_Play");
+            playBtn.transform.SetParent(canvas.transform, false);
         }
     }
 

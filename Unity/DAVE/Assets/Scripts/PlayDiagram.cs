@@ -41,5 +41,7 @@ public class PlayDiagram : MonoBehaviour {
 			"init_diagram",
 			true
 		);
+
+        gameObject.SetActive(false);
 	}
 }
