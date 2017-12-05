@@ -1,4 +1,4 @@
-parser
+diagram_intiator
 =====
 
 An OTP application

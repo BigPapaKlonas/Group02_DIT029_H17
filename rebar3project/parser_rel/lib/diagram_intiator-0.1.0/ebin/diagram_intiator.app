@@ -1,0 +1,12 @@
+{application,diagram_intiator,
+             [{description,"An OTP application"},
+              {vsn,"0.1.0"},
+              {registered,[]},
+              {mod,{diagram_intiator_app,[]}},
+              {applications,[kernel,stdlib,jsx,emqttc]},
+              {env,[]},
+              {modules,[diagram_intiator,diagram_intiator_app,
+                        diagram_intiator_sup,parser]},
+              {maintainers,[]},
+              {licenses,["Apache 2.0"]},
+              {links,[]}]}.

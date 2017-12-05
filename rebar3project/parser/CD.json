@@ -1,45 +1,45 @@
-{  
-   "meta":{  
+{
+   "meta":{
       "format":"DIT029 format",
       "version":"1.0",
       "extensions":[]
    },
    "type":"class_diagram",
-   "classes":[  
-      {  
+   "classes":[
+      {
          "name":"Device",
-         "fields":[  
-            {  
+         "fields":[
+            {
                "name":"network_interface",
                "type":"string"
             }
          ]
       },
-      {  
+      {
          "name":"Gateway",
          "fields":[]
       },
-      {  
+      {
          "name":"User",
-         "fields":[  
-            {  
+         "fields":[
+            {
                "name":"name",
                "type":"string"
             },
-            {  
+            {
                "name":"email",
                "type":"string"
             }
          ]
       }
    ],
-   "relationships":[  
-      {  
+   "relationships":[
+      {
          "type":"inheritance",
          "superclass":"Device",
          "subclass":"Gateway"
       },
-      {  
+      {
          "type":"inheritance",
          "superclass":"Device",
          "subclass":"User"

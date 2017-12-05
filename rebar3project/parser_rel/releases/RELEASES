@@ -1,0 +1,8 @@
+[{release,"default","0.0.1","8.2",
+          [{kernel,"5.1.1","./lib/kernel-5.1.1"},
+           {stdlib,"3.2","./lib/stdlib-3.2"},
+           {gen_logger,"1.2","./lib/gen_logger-1.2"},
+           {emqttc,"0.8.0","./lib/emqttc-0.8.0"},
+           {jsx,"2.8.0","./lib/jsx-2.8.0"},
+           {diagram_intiator,"0.1.0","./lib/diagram_intiator-0.1.0"}],
+          permanent}].
