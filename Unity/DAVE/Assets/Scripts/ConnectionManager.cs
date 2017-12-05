@@ -1,13 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
-using uPLibrary.Networking.M2Mqtt.Messages;
 using uPLibrary.Networking.M2Mqtt;
 using System;
 using RethinkDb.Driver;
 using RethinkDb.Driver.Net;
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 
 public class ConnectionManager : MonoBehaviour
 {
@@ -48,11 +45,6 @@ public class ConnectionManager : MonoBehaviour
      */
     public static bool auth;
 
-    /*
-     * Queues of received JSON strings.
-     */
-    public static Queue<String> classDiagramQueue = new Queue<String>();
-    public static Queue<String> deploymentDiagramQueue = new Queue<String>();
 
     void Start()
     {
@@ -127,49 +119,14 @@ public class ConnectionManager : MonoBehaviour
 	}
 
 
-	public void EstablishConnection()
-	{
+    public void EstablishConnection()
+    {
 
-		// Creates a MqttClientDAVE with the following credentials
-		// Change IP when deployed to AWS.
-		this.daveClient = new MqttClientDAVE("13.59.108.164", 1883, Guid.NewGuid().ToString());
+        // Creates a MqttClientDAVE with the following credentials
+        // Change IP when deployed to AWS.
+        this.daveClient = new MqttClientDAVE("13.59.108.164", 1883, Guid.NewGuid().ToString());
 
-		this.client = this.daveClient.GetMqttClient();
-		// Assign handler for handling the receiving messages
-		this.daveClient.GetMqttClient().MqttMsgPublishReceived += Client_MqttMsgPublishReceived;
-
-	}
-
-    // Handler that gets received messages from subscribed topics
-	void Client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
-	{
-		Debug.Log("Received\r\n" + "Topic: " + e.Topic + "\r\n" + "Message: " +
-			System.Text.Encoding.UTF8.GetString(e.Message));
-
-        CheckReceived(e);
-    }
-    
-    // Method checks if received message should be added to the queue that will be animated
-    private void CheckReceived(MqttMsgPublishEventArgs e)
-    { 
-        if (e.Topic == parentTopic + "/class_diagram")          // Checks topic
-        {
-            String payload = System.Text.Encoding.UTF8.GetString(e.Message);
-            if (IsValidJson(payload))                           // Checks if payload is a valid JSON
-            {
-                Debug.Log("Class diagram JSON received, verified and queued");
-                classDiagramQueue.Enqueue(payload);             // Adds payload (JSON) to the queue
-            }
-        }
-        else if (e.Topic == parentTopic + "/deployment_diagram")
-        {
-            String payload = System.Text.Encoding.UTF8.GetString(e.Message);
-            Debug.Log("Deployment diagram JSON received, verified and queued");
-            if (IsValidJson(payload))
-            {
-                deploymentDiagramQueue.Enqueue(payload);
-            }
-        }
+        this.client = this.daveClient.GetMqttClient();
     }
 
 
@@ -227,6 +184,10 @@ public class ConnectionManager : MonoBehaviour
 	{
 		return this.instructorBool;
 	}
+    public string GetParentTopic()
+    {
+        return parentTopic;
+    }
 
     //Updates the ParentTopic when either the room or the instructor are updated
     private void UpdateParentTopic ()
@@ -236,46 +197,5 @@ public class ConnectionManager : MonoBehaviour
             parentTopic = "root/" + coordinator.GetInstructor().ToLower() + "/"
                         + coordinator.GetRoom().ToLower();
         }
-    }
-
-    // Source: https://goo.gl/n89LoF
-    private bool IsValidJson(string strInput)
-    {
-        strInput = strInput.Trim();
-        if ((strInput.StartsWith("{") && strInput.EndsWith("}")) || //For object
-            (strInput.StartsWith("[") && strInput.EndsWith("]"))) //For array
-        {
-            try
-            {
-                var obj = JToken.Parse(strInput);
-                obj.Equals(obj); //Could not suppress warning 'value is assigned but never use' so this prevents the error message
-                return true;
-            }
-            catch (JsonReaderException jex) //Exception in parsing json
-            {
-                Debug.Log(jex.Message);
-                return false;
-            }
-            catch (Exception ex) //some other exception
-            {
-                Debug.Log(ex.ToString());
-                return false;
-            }
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    // Checks if the json is either a sequence, class or a deployment diagram
-    private bool IsValidDiagramType(string json)
-    {
-        string[] allowedDiagramTypes = {"sequence_diagram", "class_diagram", "deployment_diagram"};
-        string diagramType = new JsonParser(json).GetDiagramType(); // Gets the diagram type
-        // Checks if allowedDiagramTypes contains diagram type of the string json
-        if ((((IList<string>)allowedDiagramTypes).Contains(diagramType)))
-            return true;
-        return false;
     }
 }
