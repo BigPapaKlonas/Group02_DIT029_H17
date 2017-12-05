@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ShowControls : MonoBehaviour {
 
-    private GameObject CameraControlPanel;
+    public GameObject CameraControlPanel;
     private Image Arrow;
     public Sprite downArrow;
     public Sprite upArrow;
@@ -12,24 +12,31 @@ public class ShowControls : MonoBehaviour {
     void Start()
     {
         GetComponent<Button>().onClick.AddListener(OnClick);
-        CameraControlPanel = GameObject.FindGameObjectWithTag("CameraControlPanel");
         Arrow = GameObject.FindGameObjectWithTag("arrow_controls").GetComponent<Image>();
     }
 
     private void OnClick()
     {
-        Debug.Log("clicked");
-        /*
-        if (CameraControlPanel.activeSelf)          // If active
+        // In case the panel is visable
+        if (CameraControlPanel.GetComponent<CanvasRenderer>().GetAlpha() == 1)
         {
-            CameraControlPanel.SetActive(false);    // Deactivates panel
             Arrow.sprite = upArrow;                 // Make drop down arrow point upwards
+
+            // Make the panel and its children, the text and pictures, transparent
+            CameraControlPanel.GetComponent<CanvasRenderer>().SetAlpha(0);
+            foreach (var children in CameraControlPanel.GetComponentsInChildren<CanvasRenderer>())
+            { 
+                children.SetAlpha(0);
+            }
         }
         else
-        { 
+        {
+            CameraControlPanel.GetComponent<CanvasRenderer>().SetAlpha(1);
+            foreach (var children in CameraControlPanel.GetComponentsInChildren<CanvasRenderer>())
+            {
+                children.SetAlpha(1);
+            }
             Arrow.sprite = downArrow;
-            CameraControlPanel.SetActive(true);
         }
-        **/
     }
 }

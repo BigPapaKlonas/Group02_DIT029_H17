@@ -604,9 +604,24 @@ Prefab:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114068721055286804, guid: 1f9d1ee9ab4ff8d44a88f85d872fc917,
+        type: 2}
+      propertyPath: CameraControlPanel
+      value: 
+      objectReference: {fileID: 1998975273}
+    - target: {fileID: 114068721055286804, guid: 1f9d1ee9ab4ff8d44a88f85d872fc917,
+        type: 2}
+      propertyPath: CameraControlPanelPrefab
+      value: 
+      objectReference: {fileID: 1998975273}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1f9d1ee9ab4ff8d44a88f85d872fc917, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1998975273 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1540244097253832, guid: 1f9d1ee9ab4ff8d44a88f85d872fc917,
+    type: 2}
+  m_PrefabInternal: {fileID: 1954676180}
 --- !u!1001 &2024400952
 Prefab:
   m_ObjectHideFlags: 0

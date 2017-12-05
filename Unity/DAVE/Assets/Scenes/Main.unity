@@ -501,9 +501,19 @@ Prefab:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114875614642768352, guid: 3ac538b8f8f911e4caf4414691f80df9,
+        type: 2}
+      propertyPath: CameraControlPanel
+      value: 
+      objectReference: {fileID: 124320320}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3ac538b8f8f911e4caf4414691f80df9, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &124320320 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1867121438798610, guid: 3ac538b8f8f911e4caf4414691f80df9,
+    type: 2}
+  m_PrefabInternal: {fileID: 124320319}
 --- !u!1001 &543819826
 Prefab:
   m_ObjectHideFlags: 0
