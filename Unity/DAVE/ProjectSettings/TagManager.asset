@@ -23,6 +23,7 @@ TagManager:
   - arrow_controls
   - arrow_log
   - arrow_students
+  - game_management
   layers:
   - Default
   - TransparentFX

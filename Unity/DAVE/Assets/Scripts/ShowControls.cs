@@ -18,6 +18,8 @@ public class ShowControls : MonoBehaviour {
 
     private void OnClick()
     {
+        Debug.Log("clicked");
+        /*
         if (CameraControlPanel.activeSelf)          // If active
         {
             CameraControlPanel.SetActive(false);    // Deactivates panel
@@ -28,5 +30,6 @@ public class ShowControls : MonoBehaviour {
             Arrow.sprite = downArrow;
             CameraControlPanel.SetActive(true);
         }
+        **/
     }
 }

@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Scenes/StaticSSD.unity
-    guid: 48d9f234aea954b4aa0d8aaecc8539e0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/NewScene/ExperimentalBG.unity
     guid: b40250737293431478445a5d03d294d9
@@ -17,18 +17,21 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
-    path: Assets/Scenes/deployment_diagram.unity
-    guid: 5c8e873bebe4a4b22904f78a547b2506
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/DiagramChoice.unity
     guid: 2e8130f0324574c8d844174e0ff070c2
   - enabled: 1
     path: Assets/Scenes/InstructorChoice.unity
     guid: adb426104d5f94a4cb12c9edb98b1269
-  - enabled: 1
-    path: Assets/Scenes/sequence_diagram.unity
-    guid: 9eecabee9ec9440148ee9d4ced93515d
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: c58474734858dcd44baf933d6e154873
+  - enabled: 1
+    path: Assets/Scenes/Student.unity
+    guid: 2b001c1b723362b46b4e71b3f7fc06a6

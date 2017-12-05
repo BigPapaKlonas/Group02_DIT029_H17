@@ -65,8 +65,8 @@ public class ShowStudents : MonoBehaviour
     private void SubscribingStudents_Handler(object sender, MqttMsgPublishEventArgs e)
     {
         // Verifies the message's topic
-        if (e.Topic == "root/" + coordinator.GetInstructor() + "/" +
-                 coordinator.GetRoom() + "/students")
+        if (e.Topic == "root/" + coordinator.GetInstructor().ToLower() + "/" +
+                 coordinator.GetRoom().ToLower() + "/students")
         {
             studentList.Add(System.Text.Encoding.UTF8.GetString(e.Message)); // Adds message to list
         }

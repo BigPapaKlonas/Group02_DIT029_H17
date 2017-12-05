@@ -1,0 +1,107 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1088353991451896}
+  m_IsPrefabParent: 1
+--- !u!1 &1088353991451896
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4256897775311710}
+  - component: {fileID: 114855347412945960}
+  - component: {fileID: 114096870521341304}
+  - component: {fileID: 114282458459027138}
+  - component: {fileID: 114162127410373238}
+  - component: {fileID: 114040509678544200}
+  m_Layer: 0
+  m_Name: GameManagement_Student_Main
+  m_TagString: game_management
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4256897775311710
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1088353991451896}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114040509678544200
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1088353991451896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00d1ff74d0a695e41b3c41b793714f9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114096870521341304
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1088353991451896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8379f03cc052407ebe620033b48c756, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activationBoxPrefab: {fileID: 1726380902892590, guid: ea0e9491cf6e8a14da7abe2c58da28ad,
+    type: 2}
+--- !u!114 &114162127410373238
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1088353991451896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49dac438fd636814181963399535686e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  classHousePrefab: {fileID: 1965477269194642, guid: 757593c4cfe28e64e89605e3059ca341,
+    type: 2}
+--- !u!114 &114282458459027138
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1088353991451896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84fc4d9e0f8344da1a2606a5c1c08177, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  systemBoxPrefab: {fileID: 1550830525836188, guid: 5dfe543d50a65dc4fb869305d8a4b0a1,
+    type: 2}
+--- !u!114 &114855347412945960
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1088353991451896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75e8e5d52be1bb549bf6210b16a1a53b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

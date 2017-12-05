@@ -94,19 +94,12 @@ public class RenderButtons : MonoBehaviour {
 				true
 			);
             
-            /*
-			coordinator.Subscribe (
-				"root/" + coordinator.GetInstructor () + "/" +
-				coordinator.GetRoom ()+ "/#"
-			);
-            **/
-
 			Cursor<string> result = R.Db ("root").Table ("diagrams")
 				.Filter (R.HashMap ("name", coordinator.GetRoom ()))
 				.GetField ("type")
 				.RunCursor<string> (conn);
 									
-			SceneManager.LoadScene ("Main");
+			SceneManager.LoadScene ("Student");
 
 			break;
 		default:
