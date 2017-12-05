@@ -64,25 +64,33 @@ public class Login : MonoBehaviour
         string hash = System.Text.Encoding.ASCII.GetString(data);
         
         // Compare username to password hash, returns a confirmation bool.
-        bool confirmation = ConnectionManager.R.Db("root")
-            .Table("instructors")
-            .Contains(row => row.G("name").Eq(username.text.ToLower())
-            .And(row.G("password").Eq(hash))).Run(ConnectionManager.conn);
-        yield return confirmation;
-
-        if (confirmation == true && password.text != "" && username.text != "")
+        if (password.text != "" && username.text != "")
         {
-            ConnectionManager.auth = true;
-            ConnectionManager.coordinator.SetInstructor(username.text.ToLower());
+            bool confirmation = ConnectionManager.R.Db("root")
+                .Table("instructors")
+                .Contains(row => row.G("name").Eq(username.text.ToLower())
+                .And(row.G("password").Eq(hash))).Run(ConnectionManager.conn);
+            yield return confirmation;
 
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            if (confirmation == true)
+            {
+                ConnectionManager.auth = true;
+                ConnectionManager.coordinator.SetInstructor(username.text.ToLower());
 
-            Destroy(gameObject);
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+                Destroy(gameObject);
+            }
+            else
+            {
+                StartCoroutine(ShowInvalidText());
+            }
         }
         else
         {
             StartCoroutine(ShowInvalidText());
         }
+
     }
 
     /*

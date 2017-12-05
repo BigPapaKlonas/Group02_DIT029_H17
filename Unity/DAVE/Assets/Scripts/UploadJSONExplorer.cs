@@ -17,6 +17,7 @@ public class UploadJSONExplorer : MonoBehaviour
     public string Extension = "json";
     public bool Multiselect = true;
     private Button button;
+    private int fileCounter = 0;
 
     void Start()
     {
@@ -27,15 +28,18 @@ public class UploadJSONExplorer : MonoBehaviour
     private void OnClick()
     {
         var paths = StandaloneFileBrowser.OpenFilePanel(Title, Directory, Extension, Multiselect);
+         
         foreach (var file in paths)
         {
             if (file.Length > 0)
             {
+                fileCounter++;
                 // Starts a new routine with the path to the selected file as argument
                 AddJson(new Uri(file).AbsoluteUri);
             }
         }
-        if (SceneManager.GetActiveScene().name == "Start")
+        // Only loads the "Main" scene in case file counter is not zero and active scene is "Start"
+        if (SceneManager.GetActiveScene().name == "Start" && fileCounter != 0)
         {
             SceneManager.LoadScene("Main");
         }

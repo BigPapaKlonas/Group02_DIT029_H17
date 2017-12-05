@@ -15,7 +15,7 @@ public class LoadScene : MonoBehaviour {
 	}
 	
 	void OnClick(){
-		if (!ConnectionManager.coordinator.GetInstructorBool()) {
+		if (ConnectionManager.auth == false) {
 			SceneManager.LoadScene (sceneName);
 		} else {
 			SceneManager.LoadScene ("Start");

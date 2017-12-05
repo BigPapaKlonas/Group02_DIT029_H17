@@ -104,14 +104,12 @@ public class Router : MonoBehaviour {
 		{
             if (ConnectionManager.auth == false)
             {
-                Debug.Log("IF");
                 GameObject login = Instantiate(loginPanel);
                 login.transform.SetParent(canvas.transform, false);
                 startPanel.SetActive(false);
             }
             else
             {
-                Debug.Log("ELSE");
                 ConnectionManager.coordinator.SetInstructorBool(true);
                 buttonPressed.gameObject.SetActive(false);
             }
@@ -122,14 +120,6 @@ public class Router : MonoBehaviour {
 				ConnectionManager.coordinator.SetRoom (roomName.text);
 				buttonPressed.gameObject.SetActive (false);
                 roomName.gameObject.SetActive (false);
-            
-				// Publish to the broker.
-				ConnectionManager.coordinator.Publish (
-					"root/" + ConnectionManager.coordinator.GetInstructor () + "/" +
-					ConnectionManager.coordinator.GetRoom (), 
-					"Init room", 
-					true    
-				);
 			} else {
                 StartCoroutine(ShowInvalidText("You have to enter a diagram name"));
             }
