@@ -15,7 +15,7 @@ public class SSDSpawner : MonoBehaviour {
     public GameObject systemBoxPrefab;
     public bool newSystem;
     public string systemBoxName;
-    public int size = 20;
+    public int size;
 
     private int p = 0;
     //Messages
@@ -42,6 +42,8 @@ public class SSDSpawner : MonoBehaviour {
     public string systemName;
 
     void Start () {
+
+        size = 15;
 
         this.name = "root/shaun/diagram";
 

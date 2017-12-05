@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33638839688925668}
   - component: {fileID: 65140024854285198}
   - component: {fileID: 23760460800808094}
-  - component: {fileID: 114138985637070884}
+  - component: {fileID: 114063854085720226}
   m_Layer: 0
   m_Name: ActivationBox
   m_TagString: Activation_Box
@@ -52,6 +52,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -67,6 +68,7 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -94,7 +96,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114138985637070884
+--- !u!114 &114063854085720226
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -102,7 +104,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1726380902892590}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 520313abe12ea2943b9673d90f9a5410, type: 3}
+  m_Script: {fileID: 11500000, guid: 5a5eca22fba55b64d852ad66637167e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   messagePrefab: {fileID: 1407313045017626, guid: 3a79c4399fcae6c47921e9e11c4a70b7,
@@ -110,7 +112,9 @@ MonoBehaviour:
   emptyTarget: {fileID: 1248533151736012, guid: 288663dd66643d84db0aad19ab827f01,
     type: 2}
   current: {fileID: 0}
+  sent: 0
   messageText: {fileID: 1437364483429642, guid: adf0234177d97b24aa23c4dc7a80ac74,
     type: 2}
+  y: 0
   speed: 0.5
   endSize: 0
