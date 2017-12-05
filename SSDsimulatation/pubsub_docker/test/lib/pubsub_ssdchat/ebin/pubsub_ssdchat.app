@@ -1,0 +1,11 @@
+{application,pubsub_ssdchat,
+             [{description,"An OTP application"},
+              {vsn,"0.1.0"},
+              {registered,[]},
+              {mod,{pubsub_ssdchat_app,[]}},
+              {applications,[kernel,stdlib,emqttc]},
+              {env,[]},
+              {modules,[pubsub_ssdchat,pubsub_ssdchat_app,pubsub_ssdchat_sup]},
+              {maintainers,[]},
+              {licenses,["Apache 2.0"]},
+              {links,[]}]}.
