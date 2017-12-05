@@ -35,10 +35,9 @@ stop() ->
 
 init(_Args) ->
     {ok, C} = emqttc:start_link([{host, "13.59.108.164"},
-                                 {client_id, <<"coordinator">>},
+                                 {client_id, float_to_binary(rand:normal())},
                                  {reconnect, 3},
                                  {logger, {console, info}}]),
-    %% The pending subscribe
     {ok, C}.
 
 handle_call(stop, _From, State) ->
@@ -58,24 +57,15 @@ handle_cast(_Msg, State) ->
 %    {noreply, C};
 
 %% Receive Messages
-handle_info({publish, Topic, JSON}, C) ->
-    %%forward it to parser.
-    case jsx:is_json(JSON) of
-      true  -> jsx:decode(JSON),
-               case parser:get_format(JSON) of
-               true ->io:format("Message forward to parser from ~s: ~p~n", [Topic, JSON]);
-                    %emqttc:publish(C, Topic, Payload, [{qos, 1}]),
-               false ->io:format("JSON ERROR: Not DIT029 format\n")
-             end;
-      false ->io:format("JSON ERROR: Not a valid JSON\n")
-    end,
+handle_info({publish, Topic, Room}, C) ->
+    io:format("~n Room ~n~p", [Room]),
+    diagram_executer:start(Room),
     {noreply, C};
 
 %% Client connected
 handle_info({mqttc, C, connected}, C) ->
     io:format("Client ~p is connected~n", [C]),
-    emqttc:subscribe(C, <<"TopicA">>, 1),
-    self() ! publish,
+    emqttc:subscribe(C, <<"root/newdiagram">>),
     {noreply, C};
 
 %% Client disconnected

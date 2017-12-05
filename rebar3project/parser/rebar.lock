@@ -17,8 +17,4 @@
  {<<"lager">>,
   {git,"https://github.com/basho/lager.git",
        {ref,"81eaef0ce98fdbf64ab95665e3bc2ec4b24c7dac"}},
-  2},
- {<<"mqttc">>,
-  {git,"https://github.com/emqtt/emqttc",
-       {ref,"d43c110f7f39a8faa3d38f781638639f01fc6cb0"}},
-  0}].
+  2}].
