@@ -95,6 +95,7 @@ public class StartMessages : MonoBehaviour
                 }
                 MessageData[] tmpData = new MessageData[messageDataList.Count];
                 messageDataList.CopyTo(tmpData, 0);
+                Debug.Log("I run parallelism \n");
                 GetComponent<RenderConnections>().CreateConnections(new ArrayList(tmpData));
                 GetComponent<DeploymentAnimation>().StartCommunication();
                 StartMessageChain(destList, offset);

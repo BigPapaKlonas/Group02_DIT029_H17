@@ -14,6 +14,7 @@ public class RenderDevices : MonoBehaviour
     public static ArrayList Devices = new ArrayList();
     ArrayList DeviceNames = new ArrayList();
     public Vector3 center;
+    GameObject process;
 
 
     public void CreateDevices(JSONDeployment json)
@@ -21,7 +22,6 @@ public class RenderDevices : MonoBehaviour
         // Create devices containing their processes
         int i;
         float yPos = 4.890001F;
-        int biggest = 1;
         // Go through the parsed JSON
         foreach (var pair in json.Mapping)
         {
@@ -36,17 +36,12 @@ public class RenderDevices : MonoBehaviour
 
                 Device tmp = (Device)Devices[i];
                 tmp.AddProcess(pair.Process);
-                if(tmp.GetProcesses().Count > biggest)
-                {
-                    biggest++;
-                    yPos += 1; 
-                }
                 Devices[i] = tmp;
             }
         }
 
         i = 0;
-        center = new Vector3(0, yPos, 9.880002F);
+        center = new Vector3(0, Devices.Count + 3, 9.880002F);//yPos, 9.880002F);
 
         foreach (Device device in Devices)
         {
@@ -92,16 +87,16 @@ public class RenderDevices : MonoBehaviour
             {
 
                 pos += new Vector3(0.1F, -0.15F, 0);
-                GameObject newProcess = (GameObject)Instantiate(
+                process = (GameObject)Instantiate(
                     processPrefab,
                     pos,
                     this.transform.rotation
                 );
-                newProcess.name = newDevice.name + ":multi";
-                newProcess.transform.localScale += new Vector3(0, 
-                    newDevice.transform.localScale.y - (newProcess.transform.localScale.y + 1), 
-                    newDevice.transform.localScale.z - (0.6F + newProcess.transform.localScale.z));
-                TextMesh old = newProcess.GetComponentInChildren<TextMesh>();
+                process.name = newDevice.name + ":multi";
+                process.transform.localScale += new Vector3(0, 
+                    newDevice.transform.localScale.y - (process.transform.localScale.y + 1), 
+                    newDevice.transform.localScale.z - (0.6F + process.transform.localScale.z));
+                TextMesh old = process.GetComponentInChildren<TextMesh>();
                 old.text = "";
                 multiplicity = (TextMesh)Instantiate(
                     multiplicityPrefab,
@@ -110,6 +105,12 @@ public class RenderDevices : MonoBehaviour
                 multiplicity.name = newDevice.name + ":multiText";
                 multiplicity.text = "9...*";
 
+                process.AddComponent<BoxCollider>();
+                process.GetComponentInChildren<BoxCollider>().isTrigger = true;
+                process.AddComponent<ShowProcess>();
+                process.GetComponent<ShowProcess>().GetNameText(multiplicity);
+                process.GetComponent<ShowProcess>().GetDevice(device);
+    
             }
             else
             {
@@ -127,7 +128,6 @@ public class RenderDevices : MonoBehaviour
         }
 
     }
-
 
     void PlaceProcessBoxes(Device device, Vector3 pos, GameObject newDevice)
     {

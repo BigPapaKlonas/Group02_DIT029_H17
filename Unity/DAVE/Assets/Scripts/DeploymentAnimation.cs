@@ -5,10 +5,11 @@ public class DeploymentAnimation : MonoBehaviour {
     public GameObject communicationPrefab;
 
     GameObject fromDevice, toDevice, communication, fromProcess, toProcess = null;
-    public string From, To, FromDevice, ToDevice; 
+    //public string From, To, FromDevice, ToDevice; 
     float speed = 0.5f;
     Device from, to;
     StartMessages.MessageData msg;
+    public Material activeMaterial, inactiveMaterial;
     public bool send;
     bool start;
     // Update is called once per frame
@@ -20,8 +21,12 @@ public class DeploymentAnimation : MonoBehaviour {
             if (communication.transform.position.Equals(fromDevice.transform.position))
             {
                 fromProcess.GetComponentInChildren<Light>().intensity = 10;
+                fromProcess.GetComponent<Renderer>().material = activeMaterial;
                 if (from.GetProcesses().Count > 8)
-                    GetComponent<RenderDevices>().ChangeProcessText(msg.from);      // Attached?
+                {
+                    GetComponent<RenderDevices>().ChangeProcessText(msg.from);
+                    fromProcess.GetComponentInChildren<Light>().intensity = 100;
+                }
 
             }
             // Communication light moving from the device sending a message to the device recieving the message
@@ -32,9 +37,10 @@ public class DeploymentAnimation : MonoBehaviour {
             // Turn off process light 
             if (communication.transform.position.Equals(toDevice.transform.position))
             {
+                fromProcess.GetComponent<Renderer>().material = inactiveMaterial;
                 fromProcess.GetComponentInChildren<Light>().intensity = 0;
                 if (from.GetProcesses().Count > 8)
-                    GetComponent<RenderDevices>().ChangeProcessText("9...*");       // Attached?
+                    GetComponent<RenderDevices>().ChangeProcessText("9...*"); 
                 send = false;
             }
 
@@ -43,12 +49,13 @@ public class DeploymentAnimation : MonoBehaviour {
         }
 	}
 
-    public void StartCommunication()//StartMessages.MessageData message)
+    public void StartCommunication()// StartMessages.MessageData message)
     {
-        //msg = message;
-        // Get the name of the devices the processes are mapped to
-        from = GetComponent<RenderConnections>().FindDevice(From);//msg.from);
-        to = GetComponent<RenderConnections>().FindDevice(To);//msg.to);
+        if (!start) {
+            //msg = message;
+            // Get the name of the devices the processes are mapped to
+            from = GetComponent<RenderConnections>().FindDevice(msg.from);
+        to = GetComponent<RenderConnections>().FindDevice(msg.to);
         // Find the gameobject with the name of the device
         fromDevice = GameObject.Find(from.GetName());
         toDevice = GameObject.Find(to.GetName());
@@ -59,17 +66,18 @@ public class DeploymentAnimation : MonoBehaviour {
             fromDevice.transform.position,
             this.transform.rotation);
 
-        // Find the process
-        if (from.GetProcesses().Count < 8)
-            fromProcess = GameObject.Find("proc:" + From);// msg.from);
-         else
-          fromProcess = GameObject.Find(from + ":multi");
+            // Find the process
+            if (from.GetProcesses().Count < 8)
+                fromProcess = GameObject.Find("proc:" + msg.from);
+            else
+                fromProcess = GameObject.Find(from.GetName() + ":multi");
 
         if (from.GetProcesses().Count < 8)
-            toProcess = GameObject.Find("proc:" + To);// msg.to);
+            toProcess = GameObject.Find("proc:" + msg.to);
          else
-         toProcess = GameObject.Find(to + ":multi");
+         toProcess = GameObject.Find(to.GetName() + ":multi");
         start = true;
+        }
 
     }
     // Needs the distance of the activation boxes as arguments

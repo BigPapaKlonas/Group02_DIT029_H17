@@ -12,14 +12,10 @@ public class RenderConnections : MonoBehaviour
     ArrayList devices;
     public void CreateConnections(ArrayList msgs)
     {
-        // Assign vertices & size matrix
         devices = RenderDevices.Devices;
         int nrOfProcesses = 0;
         foreach (Device d in devices)
             nrOfProcesses += d.GetProcesses().Count;
-
-        Debug.Log(nrOfProcesses + " Yeah this is what you want");
-
 
         foreach (StartMessages.MessageData msg in msgs)
         {
