@@ -71,7 +71,7 @@ MonoBehaviour:
   from: 
   to: 
   message: 
-  activationBoxPrefab: {fileID: 1726380902892590, guid: ea0e9491cf6e8a14da7abe2c58da28ad,
+  activationBoxPrefab: {fileID: 1029934179124762, guid: 16c0d38c4dc59ce488280852a78131e5,
     type: 2}
   newActivation: 0
   stop: 0

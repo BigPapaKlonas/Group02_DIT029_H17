@@ -17,7 +17,7 @@ public class ProcessAnimation : MonoBehaviour {
     public GameObject messageText;
     public float y;
 
-    private string room;
+    public string room;
 
 
     public float speed = 0.01f;
@@ -35,7 +35,6 @@ public class ProcessAnimation : MonoBehaviour {
         endScale = originalScale;
         counter = 0;
         sent = false;
-        room = "root/shaun/diagram";
 
     }
 

@@ -22,6 +22,8 @@ public class MessageAnimation : MonoBehaviour {
     GameObject arrowhead;
     public bool left = false;
 
+    public string room;
+
 
     // Use this for initialization
     void Start () {
@@ -86,6 +88,7 @@ public class MessageAnimation : MonoBehaviour {
         ProcessAnimationOnRecieve p = activationBoxGO.GetComponent<ProcessAnimationOnRecieve>();
         
         p.current = current;
+        p.room = room;
         
         
 

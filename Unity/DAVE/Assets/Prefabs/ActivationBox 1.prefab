@@ -116,5 +116,6 @@ MonoBehaviour:
   messageText: {fileID: 1437364483429642, guid: adf0234177d97b24aa23c4dc7a80ac74,
     type: 2}
   y: 0
+  room: 
   speed: 0.5
   endSize: 0

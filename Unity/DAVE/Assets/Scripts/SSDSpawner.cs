@@ -45,9 +45,8 @@ public class SSDSpawner : MonoBehaviour {
 
         size = 15;
 
-        this.name = "root/shaun/diagram";
+        this.name = room;
 
-        room = "root/shaun/diagram";
 
         myPos = this.transform.position;
 
@@ -102,6 +101,7 @@ public class SSDSpawner : MonoBehaviour {
         ProcessAnimation p = activationBoxGO.GetComponent<ProcessAnimation>();
         p.name = message + systemName;
         p.current = systemBox;
+        p.room = room;
 
     }
 
@@ -135,6 +135,7 @@ public class SSDSpawner : MonoBehaviour {
 
         m.origin = empty.transform;
         m.destination = emptyGO.transform;
+        m.room = room;
 
         m.current = next;
 

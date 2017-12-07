@@ -3,6 +3,9 @@ using UnityEngine.UI;
 
 public class PlayDiagram : MonoBehaviour {
 
+    public GameObject ssdSpawnerPrefab;
+    public GameObject player;
+
 	private Button button;
     ConnectionManager coordinator = ConnectionManager.coordinator;
 
@@ -23,22 +26,34 @@ public class PlayDiagram : MonoBehaviour {
         while (coordinator.GetSelectedJsons().Count > 0)
         {
             var jsonStruct = coordinator.GetSelectedJsons().Dequeue();
-            
+
+            if (jsonStruct.diagramType == "sequence_diagram") {
+
+                string ssdRoom = "root/" + coordinator.GetInstructor() + "/" +
+                    coordinator.GetRoom() + "/sequence_diagram";
+                coordinator.Publish(
+                    "root/newdiagram",
+                    ssdRoom,
+                    true
+                );
+                GameObject SSDGO = (GameObject)Instantiate(
+                    ssdSpawnerPrefab,
+                    player.transform.position,
+                    player.transform.rotation
+                );
+                SSDSpawner spawner = SSDGO.GetComponent<SSDSpawner>();
+                spawner.room = ssdRoom;
+                Debug.Log(ssdRoom);
+            } 
+
             coordinator.Publish(
-            "root/" + coordinator.GetInstructor() + "/" +
-            coordinator.GetRoom() + "/" + jsonStruct.diagramType,
-            jsonStruct.json,
-            true
-        );
+                "root/" + coordinator.GetInstructor() + "/" +
+                coordinator.GetRoom() + "/" + jsonStruct.diagramType,
+                jsonStruct.json,
+                true
+            );
         }
         
-		coordinator.Publish (
-			"root/" + coordinator.GetInstructor () + "/" + 
-			coordinator.GetRoom () + "/nodes",
-			"init_diagram",
-			true
-		);
-
         gameObject.SetActive(false);
 	}
 }

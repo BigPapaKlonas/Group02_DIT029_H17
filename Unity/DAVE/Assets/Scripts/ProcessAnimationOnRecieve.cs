@@ -17,7 +17,7 @@ public class ProcessAnimationOnRecieve : MonoBehaviour {
     public GameObject messageText;
     public float y;
 
-    private string room;
+    public string room;
 
 
     public float speed = 0.5f;
@@ -36,7 +36,6 @@ public class ProcessAnimationOnRecieve : MonoBehaviour {
         endScale = originalScale;
         counter = 0;
         sent = false;
-        room = "root/shaun/diagram";
 
     }
 

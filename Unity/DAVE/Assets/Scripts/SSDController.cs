@@ -23,7 +23,9 @@ public class SSDController : MonoBehaviour {
     // Use this for initialization
     void Start() {
 
-        GameObject go = GameObject.Find("root/shaun/diagram");
+        Debug.Log(room);
+
+        GameObject go = GameObject.Find(room);
         spawner = (SSDSpawner)go.GetComponent(typeof(SSDSpawner));
 
         // create client instance 
@@ -36,7 +38,7 @@ public class SSDController : MonoBehaviour {
         client.Connect(clientId);
 
         // subscribe to the topic "/home/temperature" with QoS 2 
-        client.Subscribe(new string[] { "root/shaun/diagram" }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
+        client.Subscribe(new string[] { room }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
 
     }
     void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e) {
