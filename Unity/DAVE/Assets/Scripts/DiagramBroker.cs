@@ -1,59 +1,80 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+using uPLibrary.Networking.M2Mqtt.Messages;
 
-public class DiagramBroker
+public class DiagramBroker : MonoBehaviour
 {
-    private Button uplButton;
+    ConnectionManager coordinator = ConnectionManager.coordinator;
+    float houseOffset = -50;                         // offset used to position house "districts"
 
-    public DiagramBroker(string nJson, float houseOffset)
+    //Queues of received JSON strings.
+    public static Queue<String> classDiagramQueue = new Queue<String>();
+    public static Queue<String> deploymentDiagramQueue = new Queue<String>();
+
+    private void Start()
     {
-        // Creates a JsonParser for the parsing.
-        JsonParser jsonParser = new JsonParser(nJson);
-        uplButton = GameObject.Find("Upload").GetComponent<Button>();
+        // Assign handler for handling the receiving messages
+        coordinator.GetMqttClient().MqttMsgPublishReceived += Client_MqttMsgPublishReceived;
 
-        Debug.Log("Diagram type: " + jsonParser.GetDiagramType());
-
-        //ConnectionManager.coordinator.SetDiagramType(jsonParser.GetDiagramType());
-
-        Debug.Log(nJson);
-        
-        /*
-        nJson = jsonParser.AddMetaToSequence("root/" +
-            ConnectionManager.coordinator.GetInstructor().Replace(" ", "").ToLower() + "/" +
-            ConnectionManager.coordinator.GetDiagram().Replace(" ", "").ToLower()
+        // Subscribes to choosen intructor's room 
+        coordinator.Subscribe(
+            "root/" + coordinator.GetInstructor() + "/" +
+            coordinator.GetRoom() + "/#"
         );
-        **/
+    }
 
-        // ConnectionManager.coordinator.SetSessionJson(nJson);
-
-        // Insert();
-
-        if (SceneManager.GetActiveScene().name == "Start")
+    private void Update()
+    {   //Dequeues and render the diagrams
+        if (classDiagramQueue.Count > 0)
         {
-            SceneManager.LoadScene("class_diagram");
+            Debug.Log("Dequeued: " + classDiagramQueue.Peek());
+            JsonParser parser = new JsonParser(classDiagramQueue.Dequeue());
+            RenderClassDiagram(parser.ParseClass(), houseOffset);
+            houseOffset += 40;
         }
-
-        switch (jsonParser.GetDiagramType())
+        else if (deploymentDiagramQueue.Count > 0)
         {
-            case "sequence_diagram":
-                Debug.Log("Sequence");
-                RenderSequence(jsonParser.ParseSequence());
-                break;
-            case "class_diagram":
-                Debug.Log("Class");
-                RenderClassDiagram(jsonParser.ParseClass(), houseOffset);
-                break;
-            case "deployment_diagram":
-                Debug.Log("deployment");
-                RenderDeployment(jsonParser.ParseDeployment());
-                break;
-            default:
-                Debug.Log("Invalid diagram type");
-                break;
+            Debug.Log("Dequeued: " + deploymentDiagramQueue.Peek());
+            JsonParser parser = new JsonParser(deploymentDiagramQueue.Dequeue());
+            // CODE FOR RENDERING DEPLOYMENT DIAGRAMS HERE
+        }
+    }
+
+
+    // Handler that gets received messages from subscribed topics
+    void Client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
+    {
+        Debug.Log("Received\r\n" + "Topic: " + e.Topic + "\r\n" + "Message: " +
+            System.Text.Encoding.UTF8.GetString(e.Message));
+
+        CheckReceived(e);
+    }
+
+    // Method checks if received message should be added to the queue that will be animated
+    private void CheckReceived(MqttMsgPublishEventArgs e)
+    {
+        if (e.Topic == coordinator.GetParentTopic() + "/class_diagram")          // Checks topic
+        {
+            String payload = System.Text.Encoding.UTF8.GetString(e.Message);
+
+            // Checks if payload is a valid JSON and of valid type
+            if (IsValidJson(payload) && IsValidDiagramType(payload))
+            {
+                Debug.Log("Class diagram JSON received, verified and queued");
+                classDiagramQueue.Enqueue(payload);             // Adds payload (JSON) to the queue
+            }
+        }
+        else if (e.Topic == coordinator.GetParentTopic() + "/deployment_diagram")
+        {
+            String payload = System.Text.Encoding.UTF8.GetString(e.Message);
+            Debug.Log("Deployment diagram JSON received, verified and queued");
+            if (IsValidJson(payload))
+            {
+                deploymentDiagramQueue.Enqueue(payload);
+            }
         }
     }
 
@@ -77,79 +98,62 @@ public class DiagramBroker
 
     private void RenderSystemBoxes(JSONSequence JSONSequence)
     {
-        uplButton.GetComponent<RenderSystemBoxes>().CreateSystemBoxes(JSONSequence);
+        gameObject.GetComponent<RenderSystemBoxes>().CreateSystemBoxes(JSONSequence);
     }
 
     private void RenderMessages(JSONSequence JSONSequence)
     {
-        uplButton.GetComponent<StartMessages>().NewMessage(JSONSequence);
+        gameObject.GetComponent<StartMessages>().NewMessage(JSONSequence);
     }
 
     public void RenderClasses(JSONClass JSONClass, string id, float offset)
     {
-        uplButton.GetComponent<RenderClasses>().AddHouse(JSONClass, id, offset);
+        gameObject.GetComponent<RenderClasses>().AddHouse(JSONClass, id, offset);
     }
 
     public void RenderRelationships(JSONClass JSONClass, string id)
     {
-        uplButton.GetComponent<RenderClassRelationship>().AddRelationship(JSONClass, id);
+        gameObject.GetComponent<RenderClassRelationship>().AddRelationship(JSONClass, id);
     }
 
-    /* 
-     * Insert to the Database.
-     * when ran in a Coroutine The full ConnectionManager.<variable> needs to be present.
-     */
-    void Insert()
+    // Source: https://goo.gl/n89LoF
+    private bool IsValidJson(string strInput)
     {
-
-        string instructor = ConnectionManager.coordinator.GetInstructor();
-        string diagram = ConnectionManager.coordinator.GetDiagram();
-        string diagramType = ConnectionManager.coordinator.GetDiagramType();
-
-        /* 
-		 * If database contains the instructor name: 
-		 * Update instructors.diagrams
-		 * and add the diagram to diagrams table.
-		 * Else:
-		 * Add both to instructors and diagrams tables.
-		*/
-        if (ConnectionManager.R.Db("root").Table("instructors").GetField("name")
-            .Contains(instructor).Run(ConnectionManager.conn))
+        strInput = strInput.Trim();
+        if ((strInput.StartsWith("{") && strInput.EndsWith("}")) || //For object
+            (strInput.StartsWith("[") && strInput.EndsWith("]"))) //For array
         {
-            ConnectionManager.R.Db("root")
-                .Table("diagrams").Insert(ConnectionManager.R.Array(
-                    ConnectionManager.R.HashMap("name", diagram)
-                    .With("type", diagramType)
-                    .With("instructor", instructor)
-                ))
-                .Run(ConnectionManager.conn);
-
-            ConnectionManager.R.Db("root")
-                .Table("instructors")
-                .Filter(row => row.G("name").Eq(instructor))
-                .Update(ConnectionManager.R.HashMap("diagrams", ConnectionManager.R.Array(diagram)))
-                .Run(ConnectionManager.conn);
-
+            try
+            {
+                var obj = JToken.Parse(strInput);
+                obj.Equals(obj); //Could not suppress warning so this prevents the error message
+                return true;
+            }
+            catch (JsonReaderException jex) //Exception in parsing json
+            {
+                Debug.Log(jex.Message);
+                return false;
+            }
+            catch (Exception ex) //some other exception
+            {
+                Debug.Log(ex.ToString());
+                return false;
+            }
         }
         else
         {
-
-            ConnectionManager.R.Db("root")
-                .Table("diagrams").Insert(ConnectionManager.R.Array(
-                    ConnectionManager.R.HashMap("name", diagram)
-                    .With("type", diagramType)
-                    .With("instructor", instructor)
-                ))
-                .Run(ConnectionManager.conn);
-
-            ConnectionManager.R.Db("root")
-                .Table("instructors").Insert(ConnectionManager.R.Array(
-                    ConnectionManager.R.HashMap("name", instructor)
-                    .With("diagrams", ConnectionManager.R.Array())
-                )
-                )
-                .Run(ConnectionManager.conn);
+            return false;
         }
     }
-}
 
+    // Checks if the json is either a sequence, class or a deployment diagram
+    private bool IsValidDiagramType(string json)
+    {
+        string[] allowedDiagramTypes = { "sequence_diagram", "class_diagram", "deployment_diagram" };
+        string diagramType = new JsonParser(json).GetDiagramType(); // Gets the diagram type
+        // Checks if allowedDiagramTypes contains diagram type of the string json
+        if ((((IList<string>)allowedDiagramTypes).Contains(diagramType)))
+            return true;
+        return false;
+    }
+}

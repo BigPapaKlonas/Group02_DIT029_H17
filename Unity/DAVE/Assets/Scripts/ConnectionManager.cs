@@ -1,15 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
-using uPLibrary.Networking.M2Mqtt.Messages;
 using uPLibrary.Networking.M2Mqtt;
 using System;
 using RethinkDb.Driver;
 using RethinkDb.Driver.Net;
+using System.Collections.Generic;
 
 public class ConnectionManager : MonoBehaviour
 {
     private Button uplButton;
-    private string parentTopic;
 
     private MqttClient client;
     private MqttClientDAVE daveClient;
@@ -28,11 +27,24 @@ public class ConnectionManager : MonoBehaviour
 	 * during the lifecycle of the application.
 	 */
 	private string instructor;
-	private string diagram;
-	private string student;
-	private string sessionJSON;
-	private string diagramType;
+	private string room;
+    private string student;
+	private string roomType;
 	private bool instructorBool;
+    private string parentTopic;
+    private Queue<JsonObject> selectedJSONS = new Queue<JsonObject>();
+
+    public struct JsonObject        // JsonObject structure  
+    {
+        public string json;
+        public string diagramType;
+    }
+
+    /*
+     * Authentication for instructor.
+     */
+    public static bool auth;
+
 
     void Start()
     {
@@ -89,7 +101,16 @@ public class ConnectionManager : MonoBehaviour
 		daveClient.Subscribe(SubscribeTopic.Replace(" ", "").ToLower());
 	}
 
-	public MqttClient GetMqttClient(){
+    /*
+    * Unsubscribe to topic
+    */
+    public void Unsubscribe(string UnsubscribeTopic)
+    {
+        Debug.Log("Unsubscribed from topic: " + UnsubscribeTopic.Replace(" ", "").ToLower());
+        daveClient.Unsubscribe(UnsubscribeTopic.Replace(" ", "").ToLower());
+    }
+
+    public MqttClient GetMqttClient(){
 		return this.client;
 	}
 
@@ -98,123 +119,83 @@ public class ConnectionManager : MonoBehaviour
 	}
 
 
-	public void EstablishConnection()
-	{
+    public void EstablishConnection()
+    {
 
-		// Creates a MqttClientDAVE with the following credentials
-		// Change IP when deployed to AWS.
-		this.daveClient = new MqttClientDAVE("13.59.108.164", 1883, System.Guid.NewGuid().ToString());
+        // Creates a MqttClientDAVE with the following credentials
+        // Change IP when deployed to AWS.
+        this.daveClient = new MqttClientDAVE("13.59.108.164", 1883, Guid.NewGuid().ToString());
 
-		this.client = this.daveClient.GetMqttClient();
-		// Assign handler for handling the receiving messages
-		this.daveClient.GetMqttClient().MqttMsgPublishReceived += Client_MqttMsgPublishReceived;
+        this.client = this.daveClient.GetMqttClient();
+    }
 
-	}
 
-	void Client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
-	{
-		Debug.Log("Received\r\n" + "Topic: " + e.Topic + "\r\n" + "Message: " +
-			System.Text.Encoding.UTF8.GetString(e.Message));
-
-		CheckReceived(e);
-	}
-
-	/* 
-	 * Calls helper methods to check the received message
-	 */
-	private void CheckReceived(MqttMsgPublishEventArgs e)
-	{
-		State(e);
-		Processes(e);
-		Diagram(e);
-		Students(e);
-	}
-	void State(MqttMsgPublishEventArgs e)
-	{
-		if (e.Topic == parentTopic + "/state" && System.Text.Encoding.UTF8.GetString(e.Message) == "start")
-			Debug.Log("State: " + System.Text.Encoding.UTF8.GetString(e.Message));
-		//Start animation and simulation
-
-		else if (e.Topic == parentTopic + "/state" && System.Text.Encoding.UTF8.GetString(e.Message) == "pause")
-			Debug.Log("State: " + System.Text.Encoding.UTF8.GetString(e.Message));
-		//Pause animation and simulation
-
-	}
-	void Processes(MqttMsgPublishEventArgs e)
-	{
-		if (e.Topic == parentTopic + "/processes")
-		{
-			Debug.Log("Processes: " + System.Text.Encoding.UTF8.GetString(e.Message));
-			//Render systemboxes
-		}
-	}
-	void Diagram(MqttMsgPublishEventArgs e)
-	{
-		if (e.Topic == parentTopic + "/diagram")
-		{
-			Debug.Log("Messages: " + System.Text.Encoding.UTF8.GetString(e.Message));
-			//Render message
-		}
-	}
-	void Students(MqttMsgPublishEventArgs e)
-	{
-		if (e.Topic == parentTopic + "/students")
-		{
-			Debug.Log("Students: " + System.Text.Encoding.UTF8.GetString(e.Message));
-			//Add student name to scene
-		}
-	}
-		
-	/* 
+    /* 
 	 * get/set methods 
 	 */
-	public void SetInstructor (string instructor)
+    public void SetInstructor (string instructor)
 	{
 		this.instructor = instructor;
-	}
-	public string GetInstructor ()
+        UpdateParentTopic();
+    }
+    public string GetInstructor ()
 	{
 		return this.instructor;
 	}
-	public void SetDiagram (string diagram)
+	public void SetRoom (string room)
 	{
-		this.diagram = diagram;
-	}
-	public string GetDiagram ()
+		this.room = room;
+        UpdateParentTopic();
+    }
+    public string GetRoom ()
 	{
-		return this.diagram;
+		return this.room;
 	}
 	public void SetStudent (string student)
 	{
 		this.student = student;
-	}
-	public string GetStudent ()
+    }
+    public string GetStudent ()
 	{
 		return this.student;
 	}
-	public void SetSessionJson (string json)
+	public void AddSelectedJson (string json)
 	{
-		this.sessionJSON = json;
+        selectedJSONS.Enqueue(
+            new JsonObject()
+            {
+                json = json,
+                diagramType = new JsonParser(json).GetDiagramType() // Gets the diagram type
+            });
+    }
+    public Queue<JsonObject> GetSelectedJsons ()
+	{
+		return selectedJSONS;
 	}
-	public string GetSessionJson ()
+    public string GetDiagramType ()
 	{
-		return this.sessionJSON;
-	}
-	public void SetDiagramType (string type)
-	{
-		this.diagramType = type;
-	}
-	public string GetDiagramType ()
-	{
-		return this.diagramType;
+		return this.roomType;
 	}
 	public void SetInstructorBool (bool instructorBool) 
 	{
 		this.instructorBool = instructorBool;
-	}
+    }
 	public bool GetInstructorBool ()
 	{
 		return this.instructorBool;
 	}
+    public string GetParentTopic()
+    {
+        return parentTopic;
+    }
 
+    //Updates the ParentTopic when either the room or the instructor are updated
+    private void UpdateParentTopic ()
+    {
+        if (coordinator.GetInstructor() != null && coordinator.GetRoom() != null)
+        {
+            parentTopic = "root/" + coordinator.GetInstructor().ToLower() + "/"
+                        + coordinator.GetRoom().ToLower();
+        }
+    }
 }

@@ -1,41 +1,44 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 
 public class PlayDiagram : MonoBehaviour {
 
 	private Button button;
+    ConnectionManager coordinator = ConnectionManager.coordinator;
 
-	// Use this for initialization
-	void Start () 
+    // Use this for initialization
+    void Start () 
 	{
-		button = GetComponent<Button>();
+        button = GetComponent<Button>();
 		button.onClick.AddListener(OnClick);
 
-		if (ConnectionManager.coordinator.GetInstructorBool () == false) {
+		if (coordinator.GetInstructorBool () == false) {
 			button.gameObject.SetActive (false);
 		}
 	}
 
-	void OnClick() 
+     void OnClick() 
 	{
-		ConnectionManager.coordinator.Publish (
-			"root/" + 
-			ConnectionManager.coordinator.GetInstructor () + "/" + 
-			ConnectionManager.coordinator.GetDiagram (),
-			ConnectionManager.coordinator.GetSessionJson (),
-			true
-		);
-
-		ConnectionManager.coordinator.Publish (
-			"root/" + 
-			ConnectionManager.coordinator.GetInstructor () + "/" + 
-			ConnectionManager.coordinator.GetDiagram () + "/nodes",
+        // Iterates through the selected JSONS and publishes them to the MQTT broker
+        while (coordinator.GetSelectedJsons().Count > 0)
+        {
+            var jsonStruct = coordinator.GetSelectedJsons().Dequeue();
+            
+            coordinator.Publish(
+            "root/" + coordinator.GetInstructor() + "/" +
+            coordinator.GetRoom() + "/" + jsonStruct.diagramType,
+            jsonStruct.json,
+            true
+        );
+        }
+        
+		coordinator.Publish (
+			"root/" + coordinator.GetInstructor () + "/" + 
+			coordinator.GetRoom () + "/nodes",
 			"init_diagram",
 			true
 		);
+
+        gameObject.SetActive(false);
 	}
 }

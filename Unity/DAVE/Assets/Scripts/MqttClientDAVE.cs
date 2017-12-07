@@ -29,6 +29,12 @@ public class MqttClientDAVE
         client.Subscribe(new string[]{ SubscribeTopic } , new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
     }
 
+    // Unsubscribes from UnsubscribeTopic
+    public void Unsubscribe(String UnsubscribeTopic)
+    {
+        client.Unsubscribe(new string[] { UnsubscribeTopic });
+    }
+
     // Publishes PublicMsg to PublishTopic
     public void Publish(String PublishTopic, String PublishMsg, Boolean retainMsg)
     {
