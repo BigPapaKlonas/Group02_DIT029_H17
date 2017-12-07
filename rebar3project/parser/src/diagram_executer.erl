@@ -67,7 +67,10 @@ handle_info({publish, Topic, Payload}, S) when Topic =:= S#state.topic ->
 handle_info({publish, Topic, Payload}, S) when Topic =:= S#state.mainroom ->
     WholeSSD = parser:get_parsed_diagram(Payload),
     NodeList = hd(tl(WholeSSD)),
+    NodeListBinary = term_to_binary(NodeList),
+    emqttc:publish(S#state.c, <<"root/processes">>, NodeListBinary),
     emqttc:unsubscribe(S#state.c, S#state.mainroom),
+    timer:sleep(30000),
     SSD = hd(hd(lists:reverse(tl(lists:reverse(WholeSSD))))),
     io:format("SSD: ~n~p", [SSD]),
     Room = S#state.mainroom,
