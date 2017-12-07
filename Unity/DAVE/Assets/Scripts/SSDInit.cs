@@ -6,6 +6,10 @@ public class SSDInit : MonoBehaviour {
 
 	public GameObject player;
 	public GameObject ssdSpawnerPrefab;
+	public bool spawnSpawner;
+	public string room;
+	public int size;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -13,10 +17,14 @@ public class SSDInit : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if (spawnSpawner)
+		{
+			SpawnSSDSpawner();
+			spawnSpawner = false;
+		}
 	}
 
-	public void SpawnSSDSpawner (string room, int size) {
+	public void SpawnSSDSpawner () {
 
 		GameObject SSDGO = (GameObject)Instantiate(
                     ssdSpawnerPrefab,

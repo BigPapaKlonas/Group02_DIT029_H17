@@ -261,6 +261,11 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 809e8e3ee2ac26045bcdcd6bea86a75d, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &539807594 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1985227105241032, guid: 809e8e3ee2ac26045bcdcd6bea86a75d,
+    type: 2}
+  m_PrefabInternal: {fileID: 539807593}
 --- !u!1001 &836462309
 Prefab:
   m_ObjectHideFlags: 0
@@ -305,6 +310,11 @@ Prefab:
       propertyPath: ssdSpawnerPrefab
       value: 
       objectReference: {fileID: 1261651902}
+    - target: {fileID: 114855347412945960, guid: 3dacbfad479de354f84732fdbc5ff338,
+        type: 2}
+      propertyPath: ssdSpawnerSpawner
+      value: 
+      objectReference: {fileID: 1261651902}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3dacbfad479de354f84732fdbc5ff338, type: 2}
   m_IsPrefabParent: 0
@@ -335,8 +345,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17fb4bb87a7a04a928bc608c4a76505d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  ssdSpawnerPrefab: {fileID: 0}
+  player: {fileID: 539807594}
+  ssdSpawnerPrefab: {fileID: 1027825051582646, guid: 7c0ce6b47b8075441b39d02dbfeaa56e,
+    type: 2}
+  spawnSpawner: 0
+  room: 
+  size: 0
 --- !u!4 &1261651904
 Transform:
   m_ObjectHideFlags: 0
