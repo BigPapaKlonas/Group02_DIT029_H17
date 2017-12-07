@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -36,7 +36,7 @@ public class StartMessages : MonoBehaviour
 
             // Add parallel box
             GameObject parBox = (GameObject)Instantiate(Resources.Load("ParallelBox"));
-            
+
             foreach (var content in json.Diagram.Content)
             {
                 Queue destList = new Queue();
@@ -66,7 +66,7 @@ public class StartMessages : MonoBehaviour
                         size++;
                     }
 
-                    else 
+                    else
                     {
 
 
@@ -93,7 +93,10 @@ public class StartMessages : MonoBehaviour
                     rand = Random.Range(0.5f, 1.5f);
                     actSizeList.Enqueue(rand);
                 }
-
+                MessageData[] tmpData = new MessageData[messageDataList.Count];
+                messageDataList.CopyTo(tmpData, 0);
+                Debug.Log("I run parallelism \n");
+                GetComponent<RenderConnections>().CreateConnections(new ArrayList(tmpData));
                 StartMessageChain(destList, offset);
                 StartParMessageChain(destListPar, offset);
                 //offset += json.Diagram.Content.Count + 0.5f;
@@ -136,10 +139,14 @@ public class StartMessages : MonoBehaviour
 
                     //s}
                 }
+                MessageData[] tmpData = new MessageData[messageDataList.Count];
+                messageDataList.CopyTo(tmpData, 0);
+                GetComponent<RenderConnections>().CreateConnections(new ArrayList(tmpData));
                 StartMessageChain(destList, 0f);
             }
         }
     }
+
 
     void StartMessageChain(Queue queue, float yOffset)
     {
@@ -204,11 +211,14 @@ public class StartMessages : MonoBehaviour
         {
             sum = sum + a;
         }
-        if(sum > list.Count) {
+        if (sum > list.Count)
+        {
             return actSizeList.Dequeue() / 2;
-        } else {
+        }
+        else
+        {
             return actSizeList.Dequeue();
-        }  
+        }
     }
 
     void PlaceParLine(JSONSequence json, float positionY,

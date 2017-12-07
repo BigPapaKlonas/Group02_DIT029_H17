@@ -13,6 +13,8 @@ public class DiagramBroker : MonoBehaviour
     //Queues of received JSON strings.
     public static Queue<String> classDiagramQueue = new Queue<String>();
     public static Queue<String> deploymentDiagramQueue = new Queue<String>();
+    public static Queue<String> sequenceDiagramQueue = new Queue<String>();
+
 
     public GameObject ssdSpawnerSpawner;
     private SSDInit ssdInit;
@@ -51,11 +53,14 @@ public class DiagramBroker : MonoBehaviour
         {
             Debug.Log("Dequeued: " + deploymentDiagramQueue.Peek());
             JsonParser parser = new JsonParser(deploymentDiagramQueue.Dequeue());
-            parser.ParseDeployment();
-            // CODE FOR RENDERING DEPLOYMENT DIAGRAMS HERE
+            RenderDeployment(parser.ParseDeployment());
+        }
+        else if (sequenceDiagramQueue.Count > 0)
+        {
+            JsonParser parser = new JsonParser(sequenceDiagramQueue.Dequeue());
+            RenderDeploymentConnections(parser.ParseSequence());
         }
 
-        
     }
 
 
@@ -107,6 +112,10 @@ public class DiagramBroker : MonoBehaviour
                 coordinator.Unsubscribe(ssdRoom);
             }
 
+            if (IsValidJson(payload))
+            {
+                sequenceDiagramQueue.Enqueue(payload);
+            }
         }
     }
 
@@ -125,7 +134,7 @@ public class DiagramBroker : MonoBehaviour
 
     public void RenderDeployment(JSONDeployment JSONDeployment)
     {
-        //Placeholder
+        RenderDevices(JSONDeployment);
     }
 
     private void RenderSystemBoxes(JSONSequence JSONSequence)
@@ -146,6 +155,16 @@ public class DiagramBroker : MonoBehaviour
     public void RenderRelationships(JSONClass JSONClass, string id)
     {
         gameObject.GetComponent<RenderClassRelationship>().AddRelationship(JSONClass, id);
+    }
+
+    private void RenderDevices(JSONDeployment JSONDeployment)
+    {
+        gameObject.GetComponent<RenderDevices>().CreateDevices(JSONDeployment);
+    }
+
+    private void RenderDeploymentConnections(JSONSequence JSONSequence)
+    {
+        gameObject.GetComponent<FindDeploymentConnections>().NewMessage(JSONSequence);
     }
 
     // Source: https://goo.gl/n89LoF

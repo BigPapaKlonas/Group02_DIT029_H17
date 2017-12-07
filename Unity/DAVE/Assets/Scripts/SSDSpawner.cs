@@ -109,6 +109,8 @@ public class SSDSpawner : MonoBehaviour {
 
         next = GameObject.Find(to);
         current = GameObject.Find(from);
+        GetComponent<DeploymentAnimation>().StartCommunication(from,to);
+        GetComponent<DeploymentAnimation>().SetSpeed(current, next);
 
         thisPos = new Vector3(
           current.transform.position.x,
