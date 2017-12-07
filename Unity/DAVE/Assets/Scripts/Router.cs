@@ -76,7 +76,8 @@ public class Router : MonoBehaviour {
             else
             {
                 ConnectionManager.auth = false;
-s            }
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
 
         }
 		
