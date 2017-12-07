@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
+  - enabled: 0
     path: Assets/NewScene/ExperimentalBG.unity
     guid: b40250737293431478445a5d03d294d9
   - enabled: 1
@@ -29,9 +29,12 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
-    path: Assets/Scenes/Main.unity
+  - enabled: 0
+    path: Assets/Scenes/class_diagram.unity
     guid: c58474734858dcd44baf933d6e154873
   - enabled: 1
     path: Assets/Scenes/Student.unity
     guid: 2b001c1b723362b46b4e71b3f7fc06a6
+  - enabled: 1
+    path: Assets/Scenes/Main.unity
+    guid: fff412be7c5bc0946b40107da829b11e

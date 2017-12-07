@@ -1211,7 +1211,7 @@ MonoBehaviour:
   FileName: 
   Directory: 
   Extension: json
-  Multiselect: 0
+  Multiselect: 1
   playBtnPrefab: {fileID: 1213485105957446}
 --- !u!114 &114586639799906444
 MonoBehaviour:

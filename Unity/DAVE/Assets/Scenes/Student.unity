@@ -266,6 +266,19 @@ GameObject:
   m_PrefabParentObject: {fileID: 1985227105241032, guid: 809e8e3ee2ac26045bcdcd6bea86a75d,
     type: 2}
   m_PrefabInternal: {fileID: 539807593}
+--- !u!1 &539807595 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1622617988463172, guid: 809e8e3ee2ac26045bcdcd6bea86a75d,
+    type: 2}
+  m_PrefabInternal: {fileID: 539807593}
+--- !u!45 &539807596
+Skybox:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 539807595}
+  m_Enabled: 1
+  m_CustomSkybox: {fileID: 2100000, guid: ae40de6cc2432b84681e7c7238873cc1, type: 2}
 --- !u!1001 &836462309
 Prefab:
   m_ObjectHideFlags: 0
@@ -983,7 +996,7 @@ Prefab:
     - target: {fileID: 224479826058569704, guid: 1f9d1ee9ab4ff8d44a88f85d872fc917,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 450
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1f9d1ee9ab4ff8d44a88f85d872fc917, type: 2}
