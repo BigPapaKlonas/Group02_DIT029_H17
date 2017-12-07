@@ -14,6 +14,8 @@ public class DiagramBroker : MonoBehaviour
     public static Queue<String> classDiagramQueue = new Queue<String>();
     public static Queue<String> deploymentDiagramQueue = new Queue<String>();
 
+    public GameObject ssdSpawnerPrefab;
+
     private void Start()
     {
         // Assign handler for handling the receiving messages
@@ -41,6 +43,8 @@ public class DiagramBroker : MonoBehaviour
             JsonParser parser = new JsonParser(deploymentDiagramQueue.Dequeue());
             // CODE FOR RENDERING DEPLOYMENT DIAGRAMS HERE
         }
+
+        
     }
 
 
@@ -75,6 +79,29 @@ public class DiagramBroker : MonoBehaviour
             {
                 deploymentDiagramQueue.Enqueue(payload);
             }
+        }
+        else if(e.Topic == coordinator.GetParentTopic() + "/sequence_diagram")
+        {
+            String payload = System.Text.Encoding.UTF8.GetString(e.Message);
+            string[] array = payload.Split(' ');
+            if(array[1] == "size")
+            {
+                  string ssdRoom = "root/" + coordinator.GetInstructor() + "/" +
+                    coordinator.GetRoom() + "/sequence_diagram";
+                
+                GameObject SSDGO = (GameObject)Instantiate(
+                    ssdSpawnerPrefab,
+                    this.transform.position,
+                    this.transform.rotation
+                );
+                SSDSpawner spawner = SSDGO.GetComponent<SSDSpawner>();
+                spawner.room = ssdRoom;
+                spawner.size = int.Parse(array[0]);
+                Debug.Log(ssdRoom);
+
+                coordinator.Unsubscribe(ssdRoom);
+            }
+
         }
     }
 

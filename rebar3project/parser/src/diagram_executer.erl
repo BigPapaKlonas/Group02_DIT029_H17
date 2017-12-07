@@ -109,6 +109,8 @@ create_node(S, Worker) when length(S#state.nodelist) =:= 1 ->
     {_Title, Name} = hd(tl(hd(S#state.nodelist))),
     BinName = binary:list_to_bin(Name ++ lists:flatten(NodeNumber)),
     Room = S#state.room,
+
+    emqttc:publish(S#state.c, Room, <<"15 size">>),
     UserRoom = <<Room/binary, <<"/">>/binary, BinName/binary>>,
     emqttc:publish(S#state.c, UserRoom, <<"initial">>, [{qos, 1}, {retain, true}]),
     emqttc:publish(S#state.c, Worker, UserRoom, [{qos, 1}, {retain, true}]),
