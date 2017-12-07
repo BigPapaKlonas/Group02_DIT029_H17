@@ -22,7 +22,13 @@ public class DiagramBroker : MonoBehaviour
         // Subscribes to choosen intructor's room 
         coordinator.Subscribe(
             "root/" + coordinator.GetInstructor() + "/" +
-            coordinator.GetRoom() + "/#"
+            coordinator.GetRoom() + "/class_diagram"
+        );
+
+        // Subscribes to choosen intructor's room 
+        coordinator.Subscribe(
+            "root/" + coordinator.GetInstructor() + "/" +
+            coordinator.GetRoom() + "/deployment_diagram"
         );
     }
 
@@ -39,6 +45,7 @@ public class DiagramBroker : MonoBehaviour
         {
             Debug.Log("Dequeued: " + deploymentDiagramQueue.Peek());
             JsonParser parser = new JsonParser(deploymentDiagramQueue.Dequeue());
+            parser.ParseDeployment();
             // CODE FOR RENDERING DEPLOYMENT DIAGRAMS HERE
         }
     }

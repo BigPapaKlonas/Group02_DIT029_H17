@@ -89,7 +89,7 @@ public class RenderButtons : MonoBehaviour {
 			coordinator.SetRoom (name);
 			coordinator.Publish (
 				"root/" + coordinator.GetInstructor () + "/" +
-				coordinator.GetRoom () + "/students/", 
+				coordinator.GetRoom () + "/students", 
 				coordinator.GetStudent (),
 				true
 			);
