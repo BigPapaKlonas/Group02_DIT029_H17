@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using uPLibrary.Networking.M2Mqtt.Messages;
@@ -36,6 +37,12 @@ public class DiagramBroker : MonoBehaviour
             coordinator.GetRoom() + "/deployment_diagram"
         );
 
+        // Subscribes to choosen intructor's room 
+        coordinator.Subscribe(
+            "root/" + coordinator.GetInstructor() + "/" +
+            coordinator.GetRoom() + "/sequence_diagram"
+        );
+
         ssdInit = ssdSpawnerSpawner.GetComponent<SSDInit>();
 
     }
@@ -58,9 +65,8 @@ public class DiagramBroker : MonoBehaviour
         else if (sequenceDiagramQueue.Count > 0)
         {
             JsonParser parser = new JsonParser(sequenceDiagramQueue.Dequeue());
-            RenderDeploymentConnections(parser.ParseSequence());
+            StartCoroutine(RenderDeploymentConnections(parser.ParseSequence()));
         }
-
     }
 
 
@@ -91,7 +97,7 @@ public class DiagramBroker : MonoBehaviour
         {
             String payload = System.Text.Encoding.UTF8.GetString(e.Message);
             Debug.Log("Deployment diagram JSON received, verified and queued");
-            if (IsValidJson(payload))
+            if (IsValidJson(payload) && IsValidDiagramType(payload))
             {
                 deploymentDiagramQueue.Enqueue(payload);
             }
@@ -112,17 +118,11 @@ public class DiagramBroker : MonoBehaviour
                 coordinator.Unsubscribe(ssdRoom);
             }
 
-            if (IsValidJson(payload))
+            if (IsValidJson(payload) && IsValidDiagramType(payload))
             {
                 sequenceDiagramQueue.Enqueue(payload);
             }
         }
-    }
-
-    public void RenderSequence(JSONSequence JSONSequence)
-    {
-        RenderSystemBoxes(JSONSequence);
-        RenderMessages(JSONSequence);
     }
 
     public void RenderClassDiagram(JSONClass JSONClass, float houseOffset)
@@ -142,11 +142,6 @@ public class DiagramBroker : MonoBehaviour
         gameObject.GetComponent<RenderSystemBoxes>().CreateSystemBoxes(JSONSequence);
     }
 
-    private void RenderMessages(JSONSequence JSONSequence)
-    {
-        gameObject.GetComponent<StartMessages>().NewMessage(JSONSequence);
-    }
-
     public void RenderClasses(JSONClass JSONClass, string id, float offset)
     {
         gameObject.GetComponent<RenderClasses>().AddHouse(JSONClass, id, offset);
@@ -162,10 +157,14 @@ public class DiagramBroker : MonoBehaviour
         gameObject.GetComponent<RenderDevices>().CreateDevices(JSONDeployment);
     }
 
-    private void RenderDeploymentConnections(JSONSequence JSONSequence)
+    private IEnumerator RenderDeploymentConnections(JSONSequence JSONSequence)
     {
+        print(Time.time);
+        yield return new WaitForSeconds(1.5f);
+        print(Time.time);
         gameObject.GetComponent<FindDeploymentConnections>().NewMessage(JSONSequence);
     }
+
 
     // Source: https://goo.gl/n89LoF
     private bool IsValidJson(string strInput)

@@ -93,5 +93,6 @@ public class FindDeploymentConnections : MonoBehaviour
                 GetComponent<RenderConnections>().CreateConnections(new ArrayList(tmpData));
             }
         }
+        Debug.Log("message data  " + messageData.message);
     }
 }

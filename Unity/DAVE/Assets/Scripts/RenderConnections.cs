@@ -17,15 +17,14 @@ public class RenderConnections : MonoBehaviour
         foreach (Device d in devices)
             nrOfProcesses += d.GetProcesses().Count;
 
-        foreach (StartMessages.MessageData msg in msgs)
+        foreach (FindDeploymentConnections.MessageData msg in msgs)
         {
-
 
             int i = processes.IndexOf(msg.from);
             int j = processes.IndexOf(msg.to);
             if (i < 0)
             {
-                processes.Add(msg.from);
+                processes.Add( msg.from);
                 deviceList.Add(FindDevice(msg.from));
             }
 
@@ -38,7 +37,7 @@ public class RenderConnections : MonoBehaviour
 
         if (nrOfProcesses == processes.Count)
         {
-            foreach (StartMessages.MessageData msg in msgs)
+            foreach (FindDeploymentConnections.MessageData msg in msgs)
                 DrawConnection(FindDevice(msg.from).GetName(), FindDevice(msg.to).GetName());
         }
     }
@@ -63,7 +62,6 @@ public class RenderConnections : MonoBehaviour
         connection.SetWidth(0.1F, 0.1F);
         connection.SetPosition(0, df.transform.position);
         connection.SetPosition(1, dt.transform.position);
-
 
 
     }
