@@ -23,7 +23,7 @@ public class SSDInit : MonoBehaviour {
 
 	public void SpawnSSDSpawner (float offset, string SSDroom) {
 
-		Vector3 pos = new Vector3(offset + 15, 15, offset + 30);
+		Vector3 pos = new Vector3(offset + 15, 50, offset + 30);
 
 		GameObject SSDGO = (GameObject)Instantiate(
                     ssdSpawnerPrefab,
