@@ -21,7 +21,7 @@ public class SSDInit : MonoBehaviour {
 		
 	}
 
-	public void SpawnSSDSpawner (float offset) {
+	public void SpawnSSDSpawner (float offset, string SSDroom) {
 
 		Vector3 pos = new Vector3(offset + 15, 10, offset + 15);
 
@@ -32,9 +32,9 @@ public class SSDInit : MonoBehaviour {
                 );
 
 		SSDSpawner spawner = SSDGO.GetComponent<SSDSpawner>();
-		spawner.room = room;
+		spawner.room = SSDroom;
 		spawner.size = size;
-		Debug.Log(room);
+		Debug.Log(SSDroom);
 
 	}
 }

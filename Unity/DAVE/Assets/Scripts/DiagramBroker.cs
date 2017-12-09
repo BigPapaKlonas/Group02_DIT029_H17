@@ -19,32 +19,25 @@ public class DiagramBroker : MonoBehaviour
 
     public GameObject ssdSpawnerSpawner;
     private SSDInit ssdInit;
+    private string topic;
 
     private void Start()
     {
         // Assign handler for handling the receiving messages
         coordinator.GetMqttClient().MqttMsgPublishReceived += Client_MqttMsgPublishReceived;
 
-        // Subscribes to choosen intructor's room 
-        coordinator.Subscribe(
-            "root/" + coordinator.GetInstructor() + "/" +
-            coordinator.GetRoom() + "/class_diagram"
-        );
+        topic = "root/" + coordinator.GetInstructor() + "/" + coordinator.GetRoom();
 
         // Subscribes to choosen intructor's room 
-        coordinator.Subscribe(
-            "root/" + coordinator.GetInstructor() + "/" +
-            coordinator.GetRoom() + "/deployment_diagram"
-        );
+        coordinator.Subscribe(topic + "/class_diagram");
 
         // Subscribes to choosen intructor's room 
-        coordinator.Subscribe(
-            "root/" + coordinator.GetInstructor() + "/" +
-            coordinator.GetRoom() + "/sequence_diagram"
-        );
+        coordinator.Subscribe(topic + "/deployment_diagram");
+        
+        // Subscribes to choosen intructor's room 
+        coordinator.Subscribe(topic + "/sequence_diagram");
 
         ssdInit = ssdSpawnerSpawner.GetComponent<SSDInit>();
-
     }
 
     private void Update()
@@ -109,14 +102,10 @@ public class DiagramBroker : MonoBehaviour
             string[] array = payload.Split(' ');
             if(array[1] == "size")
             {
-                string ssdRoom = "root/" + coordinator.GetInstructor() + "/" +
-                    coordinator.GetRoom() + "/sequence_diagram";
-
-                ssdInit.room = ssdRoom;
                 ssdInit.size = int.Parse(array[0]);
                 ssdInit.spawnSpawner = true;
 
-                coordinator.Unsubscribe(ssdRoom);
+                coordinator.Unsubscribe(topic + "/sequence_diagram");
             }
 
             if (IsValidJson(payload) && IsValidDiagramType(payload))
@@ -128,11 +117,8 @@ public class DiagramBroker : MonoBehaviour
 
     public void PlaceSSD(JSONSequence JSONSeq, float offset)
     {
-        string ssdRoom = "root/" + coordinator.GetInstructor() + "/" +
-                    coordinator.GetRoom() + "/sequence_diagram";
         SSDInit init = ssdSpawnerSpawner.GetComponent<SSDInit>();
-        init.SpawnSSDSpawner(offset);
-        init.room = ssdRoom;
+        init.SpawnSSDSpawner(offset, topic + "/sequence_diagram");
     }
 
     public void RenderClassDiagram(JSONClass JSONClass, float houseOffset)
