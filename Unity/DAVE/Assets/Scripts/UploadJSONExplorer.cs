@@ -26,10 +26,10 @@ public class UploadJSONExplorer : MonoBehaviour
     {
         button = GetComponent<Button>();
         button.onClick.AddListener(OnClick);
-        offset = -50;
+        offset = -110;
         if(SceneManager.GetActiveScene().name == "Main")
         {
-            offset =+ 40;
+            offset =+ 20;
         }
     }
 
@@ -47,7 +47,7 @@ public class UploadJSONExplorer : MonoBehaviour
             }
             
         }
-        offset += 40;
+        offset += 20;
         // Only loads the "Main" scene in case file counter is not zero and active scene is "Start"
         if (SceneManager.GetActiveScene().name == "Start" && fileCounter != 0)
         {

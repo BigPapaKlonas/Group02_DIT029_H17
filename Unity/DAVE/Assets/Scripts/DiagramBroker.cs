@@ -9,7 +9,8 @@ using uPLibrary.Networking.M2Mqtt.Messages;
 public class DiagramBroker : MonoBehaviour
 {
     ConnectionManager coordinator = ConnectionManager.coordinator;
-    float houseOffset = -50;                         // offset used to position house "districts"
+    // offset used to position house "districts"
+    float houseOffset = -110; 
 
     //Queues of received JSON strings.
     public static Queue<String> classDiagramQueue = new Queue<String>();

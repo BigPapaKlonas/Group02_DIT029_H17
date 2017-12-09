@@ -21,7 +21,7 @@ public class LoadScene : MonoBehaviour {
         if (SceneManager.GetActiveScene().name == "Main" | SceneManager.GetActiveScene().name == "Student")
         {
             coordinator.Unsubscribe("root/" + coordinator.GetInstructor() + "/" +
-                coordinator.GetRoom() + "/#"
+                coordinator.GetRoom()
         );
         }
 

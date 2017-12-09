@@ -144,6 +144,7 @@ public class ConnectionManager : MonoBehaviour
 	}
 	public void SetRoom (string room)
 	{
+		room.Replace(" ", "").ToLower();
 		this.room = room;
         UpdateParentTopic();
     }
