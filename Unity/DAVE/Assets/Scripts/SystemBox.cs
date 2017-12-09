@@ -56,6 +56,7 @@ public class SystemBox : MonoBehaviour {
 
 		GameObject lifeLineGO = (GameObject)Instantiate(lineSegmentPrefab, this.transform.position, this.transform.rotation);
 		LineSegment l = lifeLineGO.GetComponent<LineSegment>();
+        l.transform.parent = transform;
 		l.target = t.transform;
         l.parentSystem = this.gameObject;
         lifeLine.Add(lifeLineGO);

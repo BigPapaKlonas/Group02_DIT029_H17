@@ -41,7 +41,7 @@ public class RenderDevices : MonoBehaviour
         }
 
         i = 0;
-        center = new Vector3(offSet + 15, Devices.Count + 5, offSet + 15);//yPos, 9.880002F);
+        center = new Vector3(offSet + 15, Devices.Count + 10, offSet + 15);//yPos, 9.880002F);
 
         foreach (Device device in Devices)
         {

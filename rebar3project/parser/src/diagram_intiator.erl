@@ -60,6 +60,7 @@ handle_cast(_Msg, State) ->
 handle_info({publish, Topic, Room}, C) ->
     io:format("~n Room ~n~p", [Room]),
     worker_coordinator:start(),
+    timer:sleep(30000),
     diagram_executer:start(Room),
     {noreply, C};
 
