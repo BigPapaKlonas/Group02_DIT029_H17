@@ -128,7 +128,11 @@ public class DiagramBroker : MonoBehaviour
 
     public void PlaceSSD(JSONSequence JSONSeq, float offset)
     {
-        ssdSpawnerSpawner.GetComponent<SSDInit>().SpawnSSDSpawner(offset);
+        string ssdRoom = "root/" + coordinator.GetInstructor() + "/" +
+                    coordinator.GetRoom() + "/sequence_diagram";
+        SSDInit init = ssdSpawnerSpawner.GetComponent<SSDInit>();
+        init.SpawnSSDSpawner(offset);
+        init.room = ssdRoom;
     }
 
     public void RenderClassDiagram(JSONClass JSONClass, float houseOffset)
