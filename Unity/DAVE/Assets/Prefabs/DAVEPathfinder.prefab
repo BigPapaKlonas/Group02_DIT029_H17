@@ -57,8 +57,8 @@ MonoBehaviour:
   HeuristicAggression: 1
   HighestPoint: 10
   LowestPoint: -5
-  MapStartPosition: {x: -60, y: -60}
-  MapEndPosition: {x: 60, y: 60}
+  MapStartPosition: {x: -120, y: -120}
+  MapEndPosition: {x: 120, y: 120}
   DisallowedTags:
   - Road
   - Wall

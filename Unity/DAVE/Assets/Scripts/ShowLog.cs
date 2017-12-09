@@ -105,11 +105,8 @@ public class ShowLog : MonoBehaviour
             // Creates button that executes the if statement on click
             if (GUILayout.Button(log.message, logBtnStyle))
             {
-                player.GetComponent<CameraModeController>().SetNoClipBool(true);
-                cameraOrbitScript = (CameraOrbit)Camera.main.GetComponent(typeof(CameraOrbit));
-
                 // Sets camera position to targetPosition
-                cameraOrbitScript.SetPosition(log.targetPosition);
+                player.GetComponent<CameraModeController>().SetPosition(log.targetPosition);
             }
         }
 

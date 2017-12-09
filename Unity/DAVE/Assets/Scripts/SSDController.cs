@@ -20,6 +20,7 @@ public class SSDController : MonoBehaviour {
     private string message;
     private bool awaitMessage;
     private MqttClient client;
+
     // Use this for initialization
     void Start() {
 
@@ -53,6 +54,7 @@ public class SSDController : MonoBehaviour {
             spawner.systemName = array[0];
             spawner.message = array[3];
             spawner.newActivation = true;
+            
         } else if (array[1] == "idle") {
             spawner.systemName = array[0];
             spawner.stop = true;

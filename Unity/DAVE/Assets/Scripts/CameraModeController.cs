@@ -11,6 +11,7 @@ public class CameraModeController : MonoBehaviour
 
     // Player Object
     public GameObject playerObject;
+    public bool logEnabled = false;
 
     // Bools used to monitor between the different camera controll modes
     private bool eagleVision = false;
@@ -135,7 +136,7 @@ public class CameraModeController : MonoBehaviour
     /*
      * Used to enable the player to fly around
      **/
-    void NoClipMode()
+    public void NoClipMode()
     {
 
         if (!noClip)
@@ -158,7 +159,10 @@ public class CameraModeController : MonoBehaviour
 
             // Add camera orbiting script and reinitialize the camera's position and rotation
             // to face the way it faced before swapping to no clip
-            cameraChild.gameObject.AddComponent<CameraOrbit>();
+            if (cameraChild.gameObject.GetComponent<CameraOrbit>() == null)
+            {
+                cameraChild.gameObject.AddComponent<CameraOrbit>();
+            }
 
             cameraChild.gameObject.GetComponent<CameraOrbit>().initialPosition
                = playerObject.transform.position;
@@ -198,7 +202,7 @@ public class CameraModeController : MonoBehaviour
         {
             playerObject.GetComponent<PlayerMovement>().enabled = false;
             cameraChild.GetComponent<MouseLook>().enabled = false;
-            cameraChild.gameObject.GetComponent<CameraOrbit>().enabled = false;
+            cameraChild.GetComponent<CameraOrbit>().enabled = false;
         }
     }
 
@@ -268,7 +272,14 @@ public class CameraModeController : MonoBehaviour
     {
         noClip = state;
     }
+    public void SetPosition(Vector3 targetPosition)
+    {
+        noClip = false;
+        NoClipMode();
 
+        playerObject.transform.position = targetPosition;
+        cameraChild.rotation = Quaternion.Euler(0, 90, 0);  // Resets rotation
+    }
     public bool GetNoClipBool()
     {
         return noClip;
