@@ -53,14 +53,13 @@ public class DiagramBroker : MonoBehaviour
         {
             Debug.Log("Dequeued: " + classDiagramQueue.Peek());
             JsonParser parser = new JsonParser(classDiagramQueue.Dequeue());
-            RenderClassDiagram(parser.ParseClass(), houseOffset);
-            houseOffset += 40;
+            RenderClassDiagram(parser.ParseClass(), int.Parse(parser.GetMeta()));
         }
         else if (deploymentDiagramQueue.Count > 0)
         {
             Debug.Log("Dequeued: " + deploymentDiagramQueue.Peek());
             JsonParser parser = new JsonParser(deploymentDiagramQueue.Dequeue());
-            RenderDeployment(parser.ParseDeployment());
+            RenderDeployment(parser.ParseDeployment(), int.Parse(parser.GetMeta()));
         }
         else if (sequenceDiagramQueue.Count > 0)
         {
@@ -132,15 +131,16 @@ public class DiagramBroker : MonoBehaviour
         RenderRelationships(JSONClass, id);
     }
 
-    public void RenderDeployment(JSONDeployment JSONDeployment)
+    public void RenderDeployment(JSONDeployment JSONDeployment, float offset)
     {
-        RenderDevices(JSONDeployment);
+        RenderDevices(JSONDeployment, offset);
     }
 
     private void RenderSystemBoxes(JSONSequence JSONSequence)
     {
         gameObject.GetComponent<RenderSystemBoxes>().CreateSystemBoxes(JSONSequence);
     }
+
 
     public void RenderClasses(JSONClass JSONClass, string id, float offset)
     {
@@ -152,9 +152,9 @@ public class DiagramBroker : MonoBehaviour
         gameObject.GetComponent<RenderClassRelationship>().AddRelationship(JSONClass, id);
     }
 
-    private void RenderDevices(JSONDeployment JSONDeployment)
+    private void RenderDevices(JSONDeployment JSONDeployment, float offset)
     {
-        gameObject.GetComponent<RenderDevices>().CreateDevices(JSONDeployment);
+        gameObject.GetComponent<RenderDevices>().CreateDevices(JSONDeployment, offset);
     }
 
     private IEnumerator RenderDeploymentConnections(JSONSequence JSONSequence)

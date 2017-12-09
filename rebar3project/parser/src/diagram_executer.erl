@@ -66,8 +66,9 @@ handle_info({publish, Topic, Payload}, S) when Topic =:= S#state.topic ->
 
 handle_info({publish, Topic, Payload}, S) when Topic =:= S#state.mainroom ->
     WholeSSD = parser:get_parsed_diagram(Payload),
+    Proc = parser:get_processes(parser:decode_map(Payload)),
     NodeList = hd(tl(WholeSSD)),
-    NodeListBinary = term_to_binary(NodeList),
+    NodeListBinary = term_to_binary(Proc),
     emqttc:publish(S#state.c, <<"root/processes">>, NodeListBinary),
     emqttc:unsubscribe(S#state.c, S#state.mainroom),
     timer:sleep(30000),

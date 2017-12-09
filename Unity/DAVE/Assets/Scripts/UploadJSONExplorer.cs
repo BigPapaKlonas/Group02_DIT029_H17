@@ -17,6 +17,7 @@ public class UploadJSONExplorer : MonoBehaviour
     public string Extension = "json";
     public bool Multiselect = true;
     private Button button;
+    private int offset;
 
     public GameObject playBtnPrefab;
     private int fileCounter = 0;
@@ -25,6 +26,11 @@ public class UploadJSONExplorer : MonoBehaviour
     {
         button = GetComponent<Button>();
         button.onClick.AddListener(OnClick);
+        offset = -50;
+        if(SceneManager.GetActiveScene().name == "Main")
+        {
+            offset =+ 40;
+        }
     }
 
     private void OnClick()
@@ -39,7 +45,9 @@ public class UploadJSONExplorer : MonoBehaviour
                 // Starts a new routine with the path to the selected file as argument
                 AddJson(new Uri(file).AbsoluteUri);
             }
+            
         }
+        offset += 40;
         // Only loads the "Main" scene in case file counter is not zero and active scene is "Start"
         if (SceneManager.GetActiveScene().name == "Start" && fileCounter != 0)
         {
@@ -67,6 +75,10 @@ public class UploadJSONExplorer : MonoBehaviour
             if (IsValidDiagramType(output))     // Checks if the json, output, is of a valid type
 
             {
+                JsonParser parser = new JsonParser(output);
+                output = parser.AddMetaToSequence(offset.ToString());
+                //parser = new JsonParser(output);
+                Debug.Log(output.ToString());
                 // Adds the JSON diagram to the queue of strings to be ready to be uploaded
                 ConnectionManager.coordinator.AddSelectedJson(output);
                 // Coroutine for uploading data to Database

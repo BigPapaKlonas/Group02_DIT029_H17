@@ -17,7 +17,7 @@ public class RenderDevices : MonoBehaviour
     GameObject process;
 
 
-    public void CreateDevices(JSONDeployment json)
+    public void CreateDevices(JSONDeployment json, float offSet)
     {
         // Create devices containing their processes
         int i;
@@ -41,7 +41,7 @@ public class RenderDevices : MonoBehaviour
         }
 
         i = 0;
-        center = new Vector3(0, Devices.Count + 3, 9.880002F);//yPos, 9.880002F);
+        center = new Vector3(offSet + 15, Devices.Count + 5, offSet + 15);//yPos, 9.880002F);
 
         foreach (Device device in Devices)
         {

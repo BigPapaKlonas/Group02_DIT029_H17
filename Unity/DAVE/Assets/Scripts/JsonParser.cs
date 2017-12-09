@@ -7,12 +7,19 @@ using Newtonsoft.Json;
 
     private string JSONString;
     private string type;
+    private string meta;
 
     // JsonParser constructor.
     public JsonParser(string nJson)
     {
             JSONString = nJson;
             type = JsonConvert.DeserializeObject<JSON>(JSONString, Converter.Settings).Type;
+    }
+
+    public string GetMeta()
+    {
+        meta = JsonConvert.DeserializeObject<JSON>(JSONString, Converter.Settings).Meta.Extensions[0];
+        return meta;
     }
 
     public string GetDiagramType()
@@ -38,10 +45,28 @@ using Newtonsoft.Json;
 
 	public string AddMetaToSequence (string addition)
 	{
-		JSONSequence seq = JsonConvert.DeserializeObject<JSONSequence>(JSONString, Converter.Settings);
-		seq.Meta.Extensions.Add (addition);
+        switch (type)
+        {
+        case "class_diagram":
+            JSONClass classD = JsonConvert.DeserializeObject<JSONClass>(JSONString, Converter.Settings);
+		    classD.Meta.Extensions.Add (addition);
+		    return JsonConvert.SerializeObject(classD, Converter.Settings);
+            break;
+        case "deployment_diagram":
+            JSONDeployment deployment = JsonConvert.DeserializeObject<JSONDeployment>(JSONString, Converter.Settings);
+		    deployment.Meta.Extensions.Add (addition);
+		    return JsonConvert.SerializeObject(deployment, Converter.Settings);
+            break;
+        case "sequence_diagram":
+            JSONSequence seq = JsonConvert.DeserializeObject<JSONSequence>(JSONString, Converter.Settings);
+		    seq.Meta.Extensions.Add (addition);
+		    return JsonConvert.SerializeObject(seq, Converter.Settings);
+            break;
+        default:
+            return "whoops";
+            break;
+        }
 
-		return JsonConvert.SerializeObject(seq, Converter.Settings);
 	}
 
 }
@@ -89,7 +114,7 @@ public partial class Meta
     public string Format { get; set; }
 
     [JsonProperty("extensions")]
-    public List<object> Extensions { get; set; }
+    public List<string> Extensions { get; set; }
 
     [JsonProperty("version")]
     public string Version { get; set; }
