@@ -175,7 +175,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1001 &218664387
 Prefab:
@@ -328,6 +328,11 @@ Prefab:
       propertyPath: ssdSpawnerSpawner
       value: 
       objectReference: {fileID: 1261651902}
+    - target: {fileID: 114664001399783174, guid: 3dacbfad479de354f84732fdbc5ff338,
+        type: 2}
+      propertyPath: ssdSpawnerSpawner
+      value: 
+      objectReference: {fileID: 1261651902}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3dacbfad479de354f84732fdbc5ff338, type: 2}
   m_IsPrefabParent: 0
@@ -364,6 +369,7 @@ MonoBehaviour:
   spawnSpawner: 0
   room: 
   size: 0
+  offset: 0
 --- !u!4 &1261651904
 Transform:
   m_ObjectHideFlags: 0
@@ -996,7 +1002,7 @@ Prefab:
     - target: {fileID: 224479826058569704, guid: 1f9d1ee9ab4ff8d44a88f85d872fc917,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 450
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1f9d1ee9ab4ff8d44a88f85d872fc917, type: 2}

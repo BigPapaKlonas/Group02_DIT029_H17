@@ -65,6 +65,8 @@ public class DiagramBroker : MonoBehaviour
         {
             JsonParser parser = new JsonParser(sequenceDiagramQueue.Dequeue());
             StartCoroutine(RenderDeploymentConnections(parser.ParseSequence()));
+
+            PlaceSSD(parser.ParseSequence(), int.Parse(parser.GetMeta()));
         }
     }
 
@@ -122,6 +124,11 @@ public class DiagramBroker : MonoBehaviour
                 sequenceDiagramQueue.Enqueue(payload);
             }
         }
+    }
+
+    public void PlaceSSD(JSONSequence JSONSeq, float offset)
+    {
+        ssdSpawnerSpawner.GetComponent<SSDInit>().SpawnSSDSpawner(offset);
     }
 
     public void RenderClassDiagram(JSONClass JSONClass, float houseOffset)
