@@ -50,7 +50,7 @@ public class SSDSpawner : MonoBehaviour {
 
         myPos = this.transform.position;
 
-        y = size + myPos - 1f;
+        y = size + myPos.y - 1f;
 
         GameObject ssdControllerGO = (GameObject)Instantiate(
           ssdControllerPrefab,
