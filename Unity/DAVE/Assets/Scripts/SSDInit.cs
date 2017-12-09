@@ -9,6 +9,7 @@ public class SSDInit : MonoBehaviour {
 	public bool spawnSpawner;
 	public string room;
 	public int size;
+	public int offset;
 
 	// Use this for initialization
 	void Start () {
@@ -17,18 +18,16 @@ public class SSDInit : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (spawnSpawner)
-		{
-			SpawnSSDSpawner();
-			spawnSpawner = false;
-		}
+		
 	}
 
-	public void SpawnSSDSpawner () {
+	public void SpawnSSDSpawner (float offset) {
+
+		Vector3 pos = new Vector3(offset + 15, 10, offset + 15);
 
 		GameObject SSDGO = (GameObject)Instantiate(
                     ssdSpawnerPrefab,
-                    player.transform.position,
+                    pos,
                     player.transform.rotation
                 );
 
