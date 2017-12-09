@@ -29,8 +29,9 @@ public class UploadJSONExplorer : MonoBehaviour
         offset = -110;
         if(SceneManager.GetActiveScene().name == "Main")
         {
-            offset =+ 20;
+            offset += 35;
         }
+        Debug.Log("im start " + offset);
     }
 
     private void OnClick()
@@ -47,7 +48,10 @@ public class UploadJSONExplorer : MonoBehaviour
             }
             
         }
-        offset += 20;
+        Debug.Log("on click before adding " + offset);
+        offset += 35;
+        Debug.Log("on click after adding " + offset);
+
         // Only loads the "Main" scene in case file counter is not zero and active scene is "Start"
         if (SceneManager.GetActiveScene().name == "Start" && fileCounter != 0)
         {

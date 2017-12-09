@@ -10,7 +10,6 @@ public class DiagramBroker : MonoBehaviour
 {
     ConnectionManager coordinator = ConnectionManager.coordinator;
     // offset used to position house "districts"
-    float houseOffset = -110; 
 
     //Queues of received JSON strings.
     public static Queue<String> classDiagramQueue = new Queue<String>();
