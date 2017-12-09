@@ -36,11 +36,12 @@ public class ShowLog : MonoBehaviour
     private GUIContent clearLabel = new GUIContent("Clear", "Clear the contents of the console.");
     // Allows for repositioning the camera
     private CameraOrbit cameraOrbitScript;
+    GameObject player;
 
     // Gets objects and sets click listener
     private void Start()
     {
-        cameraOrbitScript = (CameraOrbit)Camera.main.GetComponent(typeof(CameraOrbit));
+        player = GameObject.FindGameObjectWithTag("Player");
         GetComponent<Button>().onClick.AddListener(OnClick);
         Arrow = GameObject.FindGameObjectWithTag("arrow_log").GetComponent<Image>();
     }
@@ -104,6 +105,9 @@ public class ShowLog : MonoBehaviour
             // Creates button that executes the if statement on click
             if (GUILayout.Button(log.message, logBtnStyle))
             {
+                player.GetComponent<CameraModeController>().SetNoClipBool(true);
+                cameraOrbitScript = (CameraOrbit)Camera.main.GetComponent(typeof(CameraOrbit));
+
                 // Sets camera position to targetPosition
                 cameraOrbitScript.SetPosition(log.targetPosition);
             }

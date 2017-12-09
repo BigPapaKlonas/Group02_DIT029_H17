@@ -263,4 +263,14 @@ public class CameraModeController : MonoBehaviour
             cameraChild.gameObject.GetComponent<MouseLook>().enabled = true;
         }
     }
+
+    public void SetNoClipBool(bool state)
+    {
+        noClip = state;
+    }
+
+    public bool GetNoClipBool()
+    {
+        return noClip;
+    }
 }
