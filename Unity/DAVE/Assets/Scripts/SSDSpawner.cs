@@ -50,7 +50,7 @@ public class SSDSpawner : MonoBehaviour {
 
         myPos = this.transform.position;
 
-        y = size - 1f;
+        y = size + myPos - 1f;
 
         GameObject ssdControllerGO = (GameObject)Instantiate(
           ssdControllerPrefab,
@@ -152,7 +152,7 @@ public class SSDSpawner : MonoBehaviour {
     private void SpawnSystem() {
 
 
-        Vector3 position = new Vector3(myPos.x, this.transform.position.y + size, myPos.z + p);
+        Vector3 position = new Vector3(myPos.x, y, myPos.z + p);
         GameObject box = (GameObject)Instantiate(
           systemBoxPrefab,
           position,
