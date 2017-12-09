@@ -113,7 +113,7 @@ create_node(S, Worker) when length(S#state.nodelist) =:= 1 ->
     BinName = <<ActName/binary, <<":">>/binary, Uid/binary>>,
     Room = S#state.room,
 
-    emqttc:publish(S#state.c, Room, <<"15 size">>),
+    emqttc:publish(S#state.c, Room, <<"40 size">>),
     UserRoom = <<Room/binary, <<"/">>/binary, BinName/binary>>,
     emqttc:publish(S#state.c, UserRoom, <<"initial">>, [{qos, 1}, {retain, true}]),
     emqttc:publish(S#state.c, Worker, UserRoom, [{qos, 1}, {retain, true}]),
