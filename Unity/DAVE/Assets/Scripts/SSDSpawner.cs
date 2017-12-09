@@ -152,7 +152,7 @@ public class SSDSpawner : MonoBehaviour {
     private void SpawnSystem() {
 
 
-        Vector3 position = new Vector3(myPos.x, size, myPos.z + p);
+        Vector3 position = new Vector3(myPos.x, this.transform.position.y + size, myPos.z + p);
         GameObject box = (GameObject)Instantiate(
           systemBoxPrefab,
           position,
