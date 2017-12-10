@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayDiagram : MonoBehaviour {
+public class PublishDiagram : MonoBehaviour {
 
     public GameObject ssdSpawnerPrefab;
     public GameObject player;

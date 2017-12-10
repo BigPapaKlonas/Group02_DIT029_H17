@@ -4,7 +4,7 @@ using RethinkDb.Driver;
 using RethinkDb.Driver.Net;
 using UnityEngine.SceneManagement;
 
-public class RenderButtons : MonoBehaviour {
+public class RenderRoomNames : MonoBehaviour {
 
 	public Button buttonPrefab;
 	public ScrollRect scroll;

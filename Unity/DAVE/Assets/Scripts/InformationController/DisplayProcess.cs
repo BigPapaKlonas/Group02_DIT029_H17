@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Windows.Forms;
 using UnityEngine;
 
-public class ShowProcess : MonoBehaviour {
+public class DisplayProcess : MonoBehaviour {
 
     private bool processesVisible;
     private TextMesh text;

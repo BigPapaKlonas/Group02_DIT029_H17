@@ -1,7 +1,7 @@
 ﻿using UnityEngine.UI;
 using UnityEngine;
 
-public class ShowControls : MonoBehaviour {
+public class DisplayControls : MonoBehaviour {
 
     public GameObject CameraControlPanel;
     private Image Arrow;

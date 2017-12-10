@@ -10,7 +10,7 @@ using UnityEngine.UI;
  * Based on: https://gist.github.com/mminer/975374
  **/
 
-public class ShowLog : MonoBehaviour
+public class DisplayLog : MonoBehaviour
 {
     // Structure used for each log item 
     private struct Log
@@ -35,7 +35,7 @@ public class ShowLog : MonoBehaviour
     // Label for clear button
     private GUIContent clearLabel = new GUIContent("Clear", "Clear the contents of the console.");
     // Allows for repositioning the camera
-    private CameraOrbit cameraOrbitScript;
+    private CameraMover cameraOrbitScript;
     GameObject player;
 
     // Gets objects and sets click listener

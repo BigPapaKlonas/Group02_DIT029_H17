@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 
-public class AddParallelLine : MonoBehaviour {
+public class RenderParallelBox : MonoBehaviour {
 
     //public Transform parallelBox;
     public Mesh cube;

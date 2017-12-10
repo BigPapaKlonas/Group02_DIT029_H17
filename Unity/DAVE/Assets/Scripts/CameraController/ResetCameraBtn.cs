@@ -1,31 +1,27 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
-
-public class ResetCameraBtn : MonoBehaviour, IPointerDownHandler
+public class ResetCamera : MonoBehaviour
 {
     private Button resetCameraBtn;
-    private CameraOrbit cameraOrbitScript;
-
+    private CameraMover cameraMoverScript;
 
     void Start()
     {
         resetCameraBtn = GetComponent<Button>();
         resetCameraBtn.onClick.AddListener(OnClick);
-        Camera mainCamera = Camera.main;                                                // Gets main camera
-        cameraOrbitScript = (CameraOrbit)mainCamera.GetComponent(typeof(CameraOrbit));  // Gets the cameraOrbit script
-
+        // Gets main camera
+        Camera mainCamera = Camera.main;
+        // Gets the cameraMover script
+        cameraMoverScript = (CameraMover)mainCamera.GetComponent(typeof(CameraMover));  
     }
-
-    public void OnPointerDown(PointerEventData eventData) { }
 
     private void OnClick()
     {
         // Reset the camera when the R key is pressed
         if (Input.GetKeyDown(KeyCode.R))
         {
-            cameraOrbitScript.ResetCamera();    // Calls if the button is clicked
+            cameraMoverScript.ResetCamera();    // Calls if the button is clicked
         }
     }
 }

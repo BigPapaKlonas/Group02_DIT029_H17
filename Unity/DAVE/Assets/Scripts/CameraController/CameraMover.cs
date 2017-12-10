@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class CameraOrbit : MonoBehaviour
+public class CameraMover : MonoBehaviour
 {
     public Vector3 initialPosition;         // Initial camera position
 

@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
-public class UploadJSONExplorer : MonoBehaviour
+public class DiagramSelector : MonoBehaviour
 {
     // The following variables dictates the file explorer's behaviour and looks
     public string Title = "Select the your diagram file..";

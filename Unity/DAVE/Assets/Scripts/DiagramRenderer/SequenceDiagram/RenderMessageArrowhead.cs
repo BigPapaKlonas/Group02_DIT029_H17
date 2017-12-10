@@ -1,30 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Arrowhead : MonoBehaviour {
+public class RenderMessageArrowhead : MonoBehaviour {
     
     private LineRenderer cachedLineRenderer;
    
     // Use this for initialization
     void Start () {
-
-        
-
         cachedLineRenderer = this.GetComponent<LineRenderer>();
         cachedLineRenderer.SetPosition(0, new Vector3());
         cachedLineRenderer.SetPosition(1, new Vector3());
-
-
-        
-
-    }
-    
-	
-	// Update is called once per frame
-	void Update () {
-        
-        
     }
 
     public void changePos(bool left, Vector3 newPos) {

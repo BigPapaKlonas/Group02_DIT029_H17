@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class Router : MonoBehaviour {
+public class MenuScreenRouter : MonoBehaviour {
 
 	/* 
 	 * This class handles the routing of buttons on the 

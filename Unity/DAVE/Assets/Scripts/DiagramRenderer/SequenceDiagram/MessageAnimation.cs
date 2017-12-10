@@ -65,7 +65,7 @@ public class MessageAnimation : MonoBehaviour {
             distThisFrame = Vector3.Lerp(origin.position, destination.position, counter);
             messageLine.SetPosition(1, distThisFrame);
             //Debug.Log(left);
-            arrowhead.GetComponent<Arrowhead>().changePos(left, distThisFrame);
+            arrowhead.GetComponent<RenderMessageArrowhead>().changePos(left, distThisFrame);
            
 
         }else if(sent == false) {

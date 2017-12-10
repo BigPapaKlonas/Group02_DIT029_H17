@@ -107,9 +107,9 @@ public class RenderDevices : MonoBehaviour
 
                 process.AddComponent<BoxCollider>();
                 process.GetComponentInChildren<BoxCollider>().isTrigger = true;
-                process.AddComponent<ShowProcess>();
-                process.GetComponent<ShowProcess>().GetNameText(multiplicity);
-                process.GetComponent<ShowProcess>().GetDevice(device);
+                process.AddComponent<DisplayProcess>();
+                process.GetComponent<DisplayProcess>().GetNameText(multiplicity);
+                process.GetComponent<DisplayProcess>().GetDevice(device);
     
             }
             else

@@ -125,9 +125,9 @@ public class CameraModeController : MonoBehaviour
         {
             playerObject.GetComponent<PlayerMovement>().enabled = false;
             cameraChild.GetComponent<MouseLook>().enabled = false;
-            if(cameraChild.gameObject.GetComponent<CameraOrbit>() != null)
+            if(cameraChild.gameObject.GetComponent<CameraMover>() != null)
             {
-                Destroy(cameraChild.gameObject.GetComponent<CameraOrbit>());
+                Destroy(cameraChild.gameObject.GetComponent<CameraMover>());
             }
         }
 
@@ -159,12 +159,12 @@ public class CameraModeController : MonoBehaviour
 
             // Add camera orbiting script and reinitialize the camera's position and rotation
             // to face the way it faced before swapping to no clip
-            if (cameraChild.gameObject.GetComponent<CameraOrbit>() == null)
+            if (cameraChild.gameObject.GetComponent<CameraMover>() == null)
             {
-                cameraChild.gameObject.AddComponent<CameraOrbit>();
+                cameraChild.gameObject.AddComponent<CameraMover>();
             }
 
-            cameraChild.gameObject.GetComponent<CameraOrbit>().initialPosition
+            cameraChild.gameObject.GetComponent<CameraMover>().initialPosition
                = playerObject.transform.position;
         }
 
@@ -190,7 +190,7 @@ public class CameraModeController : MonoBehaviour
             // Reseting rotation in case rotate was used
             playerObject.transform.rotation = playerRotation;
 
-            Destroy(cameraChild.gameObject.GetComponent<CameraOrbit>());
+            Destroy(cameraChild.gameObject.GetComponent<CameraMover>());
 
             // Adding script that rotates camera with mouse movement
             cameraChild.gameObject.GetComponent<MouseLook>().enabled = true;
@@ -202,7 +202,7 @@ public class CameraModeController : MonoBehaviour
         {
             playerObject.GetComponent<PlayerMovement>().enabled = false;
             cameraChild.GetComponent<MouseLook>().enabled = false;
-            cameraChild.GetComponent<CameraOrbit>().enabled = false;
+            cameraChild.GetComponent<CameraMover>().enabled = false;
         }
     }
 
@@ -223,7 +223,7 @@ public class CameraModeController : MonoBehaviour
             // Removing script that rotates camera with mouse movement and moves player
             cameraChild.GetComponent<MouseLook>().enabled = false;
             playerObject.GetComponent<PlayerMovement>().enabled = false;
-            Destroy(cameraChild.gameObject.GetComponent<CameraOrbit>());
+            Destroy(cameraChild.gameObject.GetComponent<CameraMover>());
         }
 
         // If swapping to birdsview enable movement controll
@@ -243,9 +243,9 @@ public class CameraModeController : MonoBehaviour
 
             // Add camera orbiting script and reinitialize the camera's position and rotation
             // to face the way it faced before swapping to no clip
-            cameraChild.gameObject.AddComponent<CameraOrbit>();
+            cameraChild.gameObject.AddComponent<CameraMover>();
 
-            cameraChild.gameObject.GetComponent<CameraOrbit>().initialPosition
+            cameraChild.gameObject.GetComponent<CameraMover>().initialPosition
                = playerObject.transform.position;
         }
 
@@ -258,9 +258,9 @@ public class CameraModeController : MonoBehaviour
             // Adding 1st Person movement contols
             playerObject.GetComponent<PlayerMovement>().enabled = true;
 
-            if (cameraChild.gameObject.GetComponent<CameraOrbit>() != null)
+            if (cameraChild.gameObject.GetComponent<CameraMover>() != null)
             {
-                Destroy(cameraChild.gameObject.GetComponent<CameraOrbit>());
+                Destroy(cameraChild.gameObject.GetComponent<CameraMover>());
             }
 
             // Adding script that rotates camera with mouse movement

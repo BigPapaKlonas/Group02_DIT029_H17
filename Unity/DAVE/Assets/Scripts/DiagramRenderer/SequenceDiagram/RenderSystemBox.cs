@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class SystemBox : MonoBehaviour {
+public class RenderSystemBox : MonoBehaviour {
 
 	public GameObject lTarget;
 	public GameObject lineSegmentPrefab;
@@ -55,20 +54,20 @@ public class SystemBox : MonoBehaviour {
 	void newLifeLine(GameObject t){
 
 		GameObject lifeLineGO = (GameObject)Instantiate(lineSegmentPrefab, this.transform.position, this.transform.rotation);
-		LineSegment l = lifeLineGO.GetComponent<LineSegment>();
+		RenderLifeline l = lifeLineGO.GetComponent<RenderLifeline>();
 		l.target = t.transform;
         l.parentSystem = this.gameObject;
         lifeLine.Add(lifeLineGO);
 	}
     void pauseLifeline(){
         foreach (GameObject segment in lifeLine){
-            segment.GetComponent<LineSegment>().pause = true;
+            segment.GetComponent<RenderLifeline>().pause = true;
             activeLifeLine = false;
         }
     }
     void startLifeline(){
         foreach (GameObject segment in lifeLine){
-            segment.GetComponent<LineSegment>().pause = false;
+            segment.GetComponent<RenderLifeline>().pause = false;
             activeLifeLine = true;
         }
     }

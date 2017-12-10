@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class PlaceParallelism : MonoBehaviour
+public class PositionParallelBox : MonoBehaviour
 {
 
     private Transform parallelBox;

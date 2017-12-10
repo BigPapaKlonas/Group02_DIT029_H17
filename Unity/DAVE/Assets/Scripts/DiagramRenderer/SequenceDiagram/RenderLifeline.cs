@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class LineSegment : MonoBehaviour {
+public class RenderLifeline : MonoBehaviour {
 
 	float speed = 2.5f;
 	public Transform target;
@@ -20,7 +18,7 @@ public class LineSegment : MonoBehaviour {
             float distThisFrame = speed * Time.deltaTime;
             if (dir.magnitude <= distThisFrame)
             {
-                parentSystem.GetComponent<SystemBox>().lifeLine.Remove(gameObject);
+                parentSystem.GetComponent<RenderSystemBox>().lifeLine.Remove(gameObject);
                 Destroy(gameObject);
             }
             else

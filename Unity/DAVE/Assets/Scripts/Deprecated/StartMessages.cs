@@ -231,7 +231,7 @@ public class StartMessages : MonoBehaviour
 
         if (json.Diagram.Node.Equals("par"))
         {
-            AddParallelLine line = parBox.GetComponent<AddParallelLine>();
+            RenderParallelBox line = parBox.GetComponent<RenderParallelBox>();
             line.cube = parBox.GetComponent<MeshFilter>().mesh;
 
             line.AddLine(positionY, parBox.transform);

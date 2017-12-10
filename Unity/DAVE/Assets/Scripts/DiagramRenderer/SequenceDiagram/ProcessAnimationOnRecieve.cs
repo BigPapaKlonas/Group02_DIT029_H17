@@ -44,7 +44,7 @@ public class ProcessAnimationOnRecieve : MonoBehaviour {
 
         if (transform.localScale.y < endSize) {
             // Debug.Log(transform.localScale);
-            current.GetComponent<SystemBox>().lightSwitch = true;
+            current.GetComponent<RenderSystemBox>().lightSwitch = true;
             counter++;
             place = transform.localScale;
             place.y = Mathf.MoveTowards(transform.localScale.y, endScale, Time.deltaTime * speed);
@@ -53,7 +53,7 @@ public class ProcessAnimationOnRecieve : MonoBehaviour {
             endScale = maxScale;
 
         } else  {
-            current.GetComponent<SystemBox>().lightSwitch = false;
+            current.GetComponent<RenderSystemBox>().lightSwitch = false;
             y = transform.position.y - transform.localScale.y / 2;
             y = y + 0.1f;
             GameObject go = GameObject.Find(room);

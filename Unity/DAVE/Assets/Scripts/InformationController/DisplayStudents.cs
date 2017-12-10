@@ -3,7 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using uPLibrary.Networking.M2Mqtt.Messages;
 
-public class ShowStudents : MonoBehaviour
+public class DisplayStudents : MonoBehaviour
 {
     private Image Arrow;                                                    // Arrow image on button
     public Sprite downArrow;
