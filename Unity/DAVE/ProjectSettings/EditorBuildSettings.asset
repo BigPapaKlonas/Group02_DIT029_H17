@@ -21,7 +21,7 @@ EditorBuildSettings:
     path: 
     guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Scenes/DiagramChoice.unity
+    path: Assets/Scenes/RoomChoice.unity
     guid: 2e8130f0324574c8d844174e0ff070c2
   - enabled: 1
     path: Assets/Scenes/InstructorChoice.unity
@@ -30,8 +30,8 @@ EditorBuildSettings:
     path: 
     guid: 00000000000000000000000000000000
   - enabled: 0
-    path: Assets/Scenes/class_diagram.unity
-    guid: c58474734858dcd44baf933d6e154873
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/Student.unity
     guid: 2b001c1b723362b46b4e71b3f7fc06a6

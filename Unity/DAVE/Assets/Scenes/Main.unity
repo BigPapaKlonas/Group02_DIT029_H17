@@ -844,6 +844,11 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114781307138859500, guid: 25eac7d2014f1d94a9a126d6df829030,
+        type: 2}
+      propertyPath: sceneName
+      value: RoomChoice
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 25eac7d2014f1d94a9a126d6df829030, type: 2}
   m_IsPrefabParent: 0

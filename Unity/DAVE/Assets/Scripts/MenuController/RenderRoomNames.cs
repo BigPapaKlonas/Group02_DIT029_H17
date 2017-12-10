@@ -83,7 +83,7 @@ public class RenderRoomNames : MonoBehaviour {
 		{
 		case "instructors":
 			coordinator.SetInstructor (name);
-			SceneManager.LoadScene ("DiagramChoice");
+			SceneManager.LoadScene ("RoomChoice");
 			break;
 		case "diagrams":
 			coordinator.SetRoom (name);
