@@ -73,7 +73,7 @@ public class SSDController : MonoBehaviour {
             spawner.newMessage = true;
             awaitMessage = false;
         } else if (array[1] == "finished") {
-            client.Disconnect();
+            
         }
     }
 }

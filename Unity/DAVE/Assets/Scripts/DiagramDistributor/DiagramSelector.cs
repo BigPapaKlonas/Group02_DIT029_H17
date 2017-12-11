@@ -22,15 +22,20 @@ public class DiagramSelector : MonoBehaviour
     public GameObject playBtnPrefab;
     private int fileCounter = 0;
 
+	private int numberOfUploads = 0;
+
     void Start()
     {
         button = GetComponent<Button>();
         button.onClick.AddListener(OnClick);
         offset = -110;
-        if(SceneManager.GetActiveScene().name == "Main")
-        {
-            offset += 35;
-        }
+		if (SceneManager.GetActiveScene ().name == "Main") 
+		{
+			offset += 35;
+			button.GetComponent<Button> ().interactable = false;
+		}
+
+
         Debug.Log("im start " + offset);
     }
 
@@ -65,6 +70,19 @@ public class DiagramSelector : MonoBehaviour
             playBtn.SetActive(true);
             GameObject canvas = GameObject.Find("Canvas_Show_Reset_Upload_Play");
             playBtn.transform.SetParent(canvas.transform, false);
+
+
+			if (numberOfUploads >= 2) 
+			{
+				playBtn.GetComponent<PublishDiagram> ().SetMaxUploads(true);
+				button.interactable = false;
+				button.GetComponentInChildren<Text>().text = "Max uploads";
+			}
+			else
+			{
+				button.interactable = false;
+				numberOfUploads++;
+			}
         }
     }
 
@@ -106,28 +124,28 @@ public class DiagramSelector : MonoBehaviour
         string room = ConnectionManager.coordinator.GetRoom();
         string diagramType = ConnectionManager.coordinator.GetDiagramType();
 
-		bool existingDiagramName = ConnectionManager.R.Db("root").Table("diagrams").GetField("name")
-			.Contains(room.ToLower()).Run(ConnectionManager.conn);
+		bool existingRoomName = ConnectionManager.R.Db("root")
+			.Table("diagrams").Filter(Row => Row.G("instructor").Eq(instructor)).GetField("name")
+			.Contains(room.ToLower ()).Run(ConnectionManager.conn);
 
-		if (existingDiagramName == false) {
+		if (existingRoomName == false) {
 			var update = ConnectionManager.R.Db ("root")
-				.Table ("diagrams").Insert (ConnectionManager.R.Array (
-					ConnectionManager.R.HashMap ("name", room)
-					.With ("type", diagramType)
-					.With ("instructor", instructor)
-				))
-				.Run (ConnectionManager.conn);
+            .Table ("diagrams").Insert (ConnectionManager.R.Array (
+				                  ConnectionManager.R.HashMap ("name", room)
+                .With ("type", diagramType)
+                .With ("instructor", instructor)
+			                  ))
+            .Run (ConnectionManager.conn);
+
 			yield return update;
-		} 
-		else 
-		{
-			yield return null; 
-			Debug.Log ("Name in use, no new room needed.");
+			Debug.Log ("Successful insert and update of the " + room + " table, for instructor: "
+			+ instructor);
 		}
-        
-        Debug.Log("Successful insert and update of the " + room + " table, for instructor: "
-            + instructor);
-    }
+		else
+		{
+			Debug.Log ("No new diagram needed.");
+		}
+	}
 
     // Checks if the json is either a sequence, class or a deployment diagram
     private bool IsValidDiagramType(string json)
