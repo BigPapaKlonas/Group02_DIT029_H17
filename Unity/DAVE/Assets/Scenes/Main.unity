@@ -272,12 +272,12 @@ Prefab:
     - target: {fileID: 224146069401772906, guid: 25eac7d2014f1d94a9a126d6df829030,
         type: 2}
       propertyPath: m_LocalPosition.x
-      value: 317
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 224146069401772906, guid: 25eac7d2014f1d94a9a126d6df829030,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: 174.5
+      value: 125
       objectReference: {fileID: 0}
     - target: {fileID: 224146069401772906, guid: 25eac7d2014f1d94a9a126d6df829030,
         type: 2}
@@ -530,12 +530,12 @@ Prefab:
     - target: {fileID: 224401877747312020, guid: 3ac538b8f8f911e4caf4414691f80df9,
         type: 2}
       propertyPath: m_LocalPosition.x
-      value: 317
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 224401877747312020, guid: 3ac538b8f8f911e4caf4414691f80df9,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: 174.5
+      value: 125
       objectReference: {fileID: 0}
     - target: {fileID: 224401877747312020, guid: 3ac538b8f8f911e4caf4414691f80df9,
         type: 2}
@@ -772,6 +772,11 @@ Prefab:
       propertyPath: CameraControlPanel
       value: 
       objectReference: {fileID: 12039298}
+    - target: {fileID: 114486927748898156, guid: 3ac538b8f8f911e4caf4414691f80df9,
+        type: 2}
+      propertyPath: ssdSpawnerSpawner
+      value: 
+      objectReference: {fileID: 1926139443}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3ac538b8f8f911e4caf4414691f80df9, type: 2}
   m_IsPrefabParent: 0

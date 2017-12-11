@@ -169,7 +169,8 @@ public class ConnectionManager : MonoBehaviour
 	 */
     public void SetInstructor (string instructor)
 	{
-		this.instructor = instructor;
+        instructor.Replace(" ", "").ToLower();
+        this.instructor = instructor;
         UpdateParentTopic();
     }
     public string GetInstructor ()

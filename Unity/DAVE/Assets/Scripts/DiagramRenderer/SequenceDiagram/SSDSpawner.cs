@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
-public class SSDSpawner : MonoBehaviour {
+public class SSDSpawner : MonoBehaviour
+{
 
     public string room;
     public bool endAct;
@@ -34,6 +34,8 @@ public class SSDSpawner : MonoBehaviour {
     private GameObject next;
     private GameObject current;
 
+    public string uName;
+
     //Activationboxes
     public GameObject activationBoxPrefab;
     public bool newActivation;
@@ -41,11 +43,12 @@ public class SSDSpawner : MonoBehaviour {
     public GameObject systemBox;
     public string systemName;
 
-    void Start () {
+    void Start()
+    {
 
         size = 15;
-
-        this.name = room;
+        uName = room + Guid.NewGuid().ToString();
+        this.name = uName;
 
 
         myPos = this.transform.position;
@@ -60,29 +63,46 @@ public class SSDSpawner : MonoBehaviour {
 
         SSDController ssdController = ssdControllerGO.GetComponent<SSDController>();
         ssdController.room = room;
+        ssdController.uName = uName;
+
 
     }
-	
-	// Update is called once per frame
-	void Update () {
 
-        if (newSystem) {
+    // Update is called once per frame
+    void Update()
+    {
+
+        if (newSystem)
+        {
             SpawnSystem();
             newSystem = false;
-        } else if (newActivation) {
+        }
+        else if (newActivation)
+        {
             SpawnActivation();
             newActivation = false;
-        } else if (newMessage) {
+        }
+        else if (newMessage)
+        {
             SpawnMsg();
             newMessage = false;
-        } else if (endAct) {
+        }
+        else if (endAct)
+        {
             GameObject.Find(message + systemName).SendMessage("Stop");
             endAct = false;
         }
+        else if (true)
+        {
+            int it = transform.childCount;
+            while (it > 0)
+            {
 
+            }
+        }
     }
-
-    private void SpawnActivation() {
+    private void SpawnActivation()
+    {
 
         systemBox = GameObject.Find(systemName);
 
@@ -101,11 +121,12 @@ public class SSDSpawner : MonoBehaviour {
         ProcessAnimation p = activationBoxGO.GetComponent<ProcessAnimation>();
         p.name = message + systemName;
         p.current = systemBox;
-        p.room = room;
+        p.room = uName;
 
     }
 
-    private void SpawnMsg() {
+    private void SpawnMsg()
+    {
 
         next = GameObject.Find(to);
         current = GameObject.Find(from);
@@ -135,7 +156,7 @@ public class SSDSpawner : MonoBehaviour {
 
         m.origin = empty.transform;
         m.destination = emptyGO.transform;
-        m.room = room;
+        m.room = uName;
 
         m.current = next;
 
@@ -147,12 +168,11 @@ public class SSDSpawner : MonoBehaviour {
         mT.method = message;
 
 
-        
+
     }
 
-    private void SpawnSystem() {
-
-
+    private void SpawnSystem()
+    {
         Vector3 position = new Vector3(myPos.x, y, myPos.z + p);
         GameObject box = (GameObject)Instantiate(
           systemBoxPrefab,
@@ -165,6 +185,5 @@ public class SSDSpawner : MonoBehaviour {
         p = p + 3;
 
         box.GetComponentInChildren<TextMesh>().text = systemBoxName.Split(':')[0];
-
     }
 }

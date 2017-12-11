@@ -58,7 +58,6 @@ public class DiagramBroker : MonoBehaviour
         {
             JsonParser parser = new JsonParser(sequenceDiagramQueue.Dequeue());
             StartCoroutine(RenderDeploymentConnections(parser.ParseSequence()));
-
             PlaceSSD(parser.ParseSequence(), int.Parse(parser.GetMeta()));
         }
     }
@@ -105,7 +104,6 @@ public class DiagramBroker : MonoBehaviour
                 ssdInit.size = int.Parse(array[0]);
                 ssdInit.spawnSpawner = true;
 
-                coordinator.Unsubscribe(topic + "/sequence_diagram");
             }
 
             if (IsValidJson(payload) && IsValidDiagramType(payload))

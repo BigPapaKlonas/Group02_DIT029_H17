@@ -14,6 +14,7 @@ public class SSDController : MonoBehaviour {
     
 
     public string room;
+    public string uName;
 
     private string sendee;
     private string reciever;
@@ -21,12 +22,13 @@ public class SSDController : MonoBehaviour {
     private bool awaitMessage;
     private MqttClient client;
 
+
     // Use this for initialization
     void Start() {
 
         Debug.Log(room);
 
-        GameObject go = GameObject.Find(room);
+        GameObject go = GameObject.Find(uName);
         spawner = (SSDSpawner)go.GetComponent(typeof(SSDSpawner));
 
         // create client instance 
@@ -71,8 +73,7 @@ public class SSDController : MonoBehaviour {
             spawner.newMessage = true;
             awaitMessage = false;
         } else if (array[1] == "finished") {
-            spawner.y = spawner.size - 1f;
-
+            client.Disconnect();
         }
     }
 }
