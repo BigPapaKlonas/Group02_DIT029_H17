@@ -61,20 +61,6 @@ handle_call(terminate, _From, S) ->
 
 handle_cast({return, _From}, S=#state{}) ->
     {noreply, S#state{}}.
-%%input is latin1 :(
-%handle_info({publish, <<"root/initiate">>, Payload}, {S, P}) ->
-	%%RealBin = unicode:characters_to_binary(Payload),
-	%%FindBin = string:find(RealBin, "/"),
-	%%io:format("new room?: ~n~p", [FindBin]),
-%	io:format("username: ~n~p", [binary:match(Payload, <<"root/shaun">>, [])]),
-%	Reg2 = binary:split(Payload, <<"/">>, [global]),
- %   io:format("new room?: ~n~p", [Reg2]),
-  %  Username = binary:bin_to_list((lists:last(Reg2))),
-   % io:format("username: ~n~p", [Username]),
-    %emqttc:subscribe(P#publisher.client, Payload, 1),
-    %emqttc:publish(P#publisher.client, Payload, lists:last(Reg2)),
-    %NewP = P#publisher{topic=Payload},
-    %{noreply, {S, NewP}};
 
 handle_info({publish, <<"root/initiate">>, Payload}, {S, P}) ->
     io:format("new room?: ~n~p", [Payload]),
@@ -92,6 +78,10 @@ handle_info({publish, <<"root/initiate">>, Payload}, {S, P}) ->
   %  emqttc:publish(P#publisher.client, <<"root/initiate">>, <<"next">>),
 
    % {noreply, {S, P}};
+handle_info({publish, Topic, <<"status">>}, {S, P}) when P#publisher.origin =:= Topic ->
+    timer:sleep(2000),
+    emqttc:publish(P#publisher.client, <<"root/workers">>, Topic),
+    {noreply, {S, P}};
 
 handle_info({publish, Topic, Payload}, {S, P}) when P#publisher.origin =:= Topic ->
     NewP = P#publisher{topic=Payload, origin="finished"},
@@ -115,10 +105,12 @@ handle_info({publish, Topic, <<"initial">>}, {S, P}) ->
   %  {noreply, S#state{}};
 
 handle_info({publish, Topic, <<"finished">>}, {S, P}) ->
-	NewS = S#state{stat3= <<"finished">>},
-	publish_state(NewS, P),
-	stop(),
-    {noreply, {S, P}};
+	UniqueName = float_to_binary(rand:normal()),
+    OrignalRoom = << <<"root/workers/">>/binary, UniqueName/binary>>,
+    emqttc:subscribe(P#publisher.client, OrignalRoom),
+    emqttc:publish(P#publisher.client, <<"root/workers">>, OrignalRoom),
+    NewP=P#publisher{origin=OrignalRoom},
+    {noreply, {S, NewP}};
 
 handle_info({publish, Topic, <<"idle">>}, {S, P}) ->
 	NewS = S#state{stat3= <<"idle">>},
@@ -150,6 +142,16 @@ handle_info({publish, Topic, Payload}, {S, P}) when Payload /= <<"taken">> ->
 		end,
     {noreply, {NewS, P}};
 
+%% Client connected
+handle_info({mqttc, C, connected}, {S, P}) ->
+    io:format("Client ~p is connected~n", [C]),
+    emqttc:subscribe(C, P#publisher.origin),
+    {noreply, {S, P}};
+
+%% Client disconnected
+handle_info({mqttc, C,  disconnected}, {S, P}) ->
+    io:format("Client ~p is disconnected~n", [C]),
+    {noreply, {S, P}};
 
 handle_info(Msg, S) ->
     io:format("what is this?! ~p~n",[Msg]),
