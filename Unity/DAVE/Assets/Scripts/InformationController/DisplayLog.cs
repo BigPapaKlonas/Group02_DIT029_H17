@@ -126,7 +126,7 @@ public class DisplayLog : MonoBehaviour
             logs.Add(new Log()                          // Adds a new Log to the list of logs
             {
                 message = message.Split('*')[3],        // Assigns the Log structure's message 
-                targetPosition = new Vector3(0, y, z)   // Creates and assigns a Vector3 based on y and z
+                targetPosition = new Vector3(4, y, z)   // Creates and assigns a Vector3 based on y and z
             });
         }
     }
