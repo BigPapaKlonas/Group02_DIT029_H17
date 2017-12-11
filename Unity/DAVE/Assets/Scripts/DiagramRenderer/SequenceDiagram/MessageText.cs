@@ -18,10 +18,7 @@ public class MessageText : MonoBehaviour {
 
         midPoint = Vector3.Lerp(origin, target, 0.5f);
 
-        Vector3 distanceBetween = Vector3.Lerp(origin, target, 0);
-
-
-        Debug.Log("logmsg" + "*"+ distanceBetween.y + "*" + distanceBetween.z + "*" + "To: " + to + "\r\nFrom: " + from + "\r\nMessage: " + method);
+        Debug.Log("logmsg" + "*"+ midPoint.y + "*" + midPoint.z + "*" + "To: " + to + "\r\nFrom: " + from + "\r\nMessage: " + method);
     }
 
     void Update()
