@@ -184,9 +184,5 @@ public class CameraMover : MonoBehaviour
             // Move camera down along Y axis by inverting Vector3.up
             cameraParent.position -= Vector3.up * movingSpeed * 2.5f * Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.R))
-        {
-            ResetCamera();
-        }
     }
 }

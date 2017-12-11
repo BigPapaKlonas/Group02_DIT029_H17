@@ -24,7 +24,7 @@ public class CameraModeController : MonoBehaviour
     public Camera logCamera;
     private bool logCameraEnabled;
 
-    // ToggleKey for resetting camera mode
+    // ToggleKey for disabling camera mode
     public KeyCode toggleKey = KeyCode.L;
 
     // Original player rotation
@@ -41,10 +41,10 @@ public class CameraModeController : MonoBehaviour
 
     private void Update()
     {
-        //
+        // Check when logCameraEnabled is true
         if (logCameraEnabled)
         {
-            if (Input.GetKeyDown(toggleKey))    // Disable log camrea mode on toggle key pressed
+            if (Input.GetKeyDown(toggleKey))    // Disable log camera mode on toggle key pressed
             {
                 playerObject.GetComponentInChildren<Camera>().enabled = true;
                 logCamera.enabled = false;
@@ -55,13 +55,13 @@ public class CameraModeController : MonoBehaviour
 
 
         // Change camera position and rotation only on button click
-        if (Input.GetKeyDown(KeyCode.V) && !noClip)
+        if (Input.GetKeyDown(KeyCode.B) && !noClip)
         {
             BirdsView();
         }
 
         // Change camera position and rotation only on button click
-        if (Input.GetKeyDown(KeyCode.N))
+        if (Input.GetKeyDown(KeyCode.I))
         {
             // Reseting camera position/rotation when going to No clip from Birds View
             cameraChild.localPosition = new Vector3(
@@ -233,6 +233,7 @@ public class CameraModeController : MonoBehaviour
         // Showing cursor
         if (!cursorEnabled)
         {
+            Debug.Log("!cursorEnabled");
             cursorEnabled = true;
             Cursor.visible = true;
 
@@ -248,6 +249,8 @@ public class CameraModeController : MonoBehaviour
         // If swapping to birdsview enable movement controll
         else if (cursorEnabled && eagleVision)
         {
+            Debug.Log("cursorEnabled && eagleVision");
+
             cursorEnabled = false;
             Cursor.visible = false;
 
@@ -257,6 +260,8 @@ public class CameraModeController : MonoBehaviour
         // If swapping to noClip disable camera orbit script
         else if (cursorEnabled && noClip)
         {
+            Debug.Log("cursorEnabled && noClip");
+
             cursorEnabled = false;
             Cursor.visible = false;
 
@@ -271,6 +276,8 @@ public class CameraModeController : MonoBehaviour
         // Remove cursor from screen
         else
         {
+            Debug.Log("else");
+
             cursorEnabled = false;
             Cursor.visible = false;
 
