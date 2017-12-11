@@ -112,6 +112,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &12039298 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1111905439531270, guid: 3ac538b8f8f911e4caf4414691f80df9,
+    type: 2}
+  m_PrefabInternal: {fileID: 1079364449}
 --- !u!1 &90127740
 GameObject:
   m_ObjectHideFlags: 0
@@ -272,7 +277,7 @@ Prefab:
     - target: {fileID: 224146069401772906, guid: 25eac7d2014f1d94a9a126d6df829030,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: 194.5
+      value: 174.5
       objectReference: {fileID: 0}
     - target: {fileID: 224146069401772906, guid: 25eac7d2014f1d94a9a126d6df829030,
         type: 2}
@@ -530,7 +535,7 @@ Prefab:
     - target: {fileID: 224401877747312020, guid: 3ac538b8f8f911e4caf4414691f80df9,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: 194.5
+      value: 174.5
       objectReference: {fileID: 0}
     - target: {fileID: 224401877747312020, guid: 3ac538b8f8f911e4caf4414691f80df9,
         type: 2}
@@ -762,6 +767,11 @@ Prefab:
       propertyPath: m_LocalPosition.y
       value: 259.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114278820762352698, guid: 3ac538b8f8f911e4caf4414691f80df9,
+        type: 2}
+      propertyPath: CameraControlPanel
+      value: 
+      objectReference: {fileID: 12039298}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3ac538b8f8f911e4caf4414691f80df9, type: 2}
   m_IsPrefabParent: 0

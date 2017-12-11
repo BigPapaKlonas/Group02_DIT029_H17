@@ -27,6 +27,7 @@ public class PublishDiagram : MonoBehaviour
         {
             var jsonStruct = coordinator.GetSelectedJsons().Dequeue();
 
+            // If the diagram is a sequence diagram, it is retained for the simulation to work
             if (jsonStruct.diagramType == "sequence_diagram")
             {
 
@@ -34,29 +35,23 @@ public class PublishDiagram : MonoBehaviour
                     coordinator.GetRoom() + "/sequence_diagram";
                 coordinator.Publish(
                     "root/newdiagram",
-                    ssdRoom,
+                    ssdRoom.ToLower(),
                     false
                 );
-            }
 
-            // If the diagram is a sequence diagram, it is retained for the simulation to work
-            if (jsonStruct.diagramType == "sequence_diagram")
-            {
                 coordinator.Publish(
                 "root/" + coordinator.GetInstructor() + "/" +
                 coordinator.GetRoom() + "/" + jsonStruct.diagramType,
                 jsonStruct.json,
                 true);
             }
-            else
-            {
-                coordinator.Publish(
-                "root/" + coordinator.GetInstructor() + "/" +
-                coordinator.GetRoom() + "/" + jsonStruct.diagramType,
-                jsonStruct.json,
-                false
-                );
-            }
+
+            coordinator.Publish(
+            "root/" + coordinator.GetInstructor() + "/" +
+            coordinator.GetRoom() + "/" + jsonStruct.diagramType,
+            jsonStruct.json,
+            false
+            );
         }
 
         gameObject.SetActive(false);

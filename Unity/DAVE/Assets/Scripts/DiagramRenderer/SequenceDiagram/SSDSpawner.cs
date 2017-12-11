@@ -139,7 +139,8 @@ public class SSDSpawner : MonoBehaviour {
 
         m.current = next;
 
-        GameObject messageTextGO = (GameObject)Instantiate(messageText, thisPos, this.transform.rotation);
+        Quaternion rotationTextMesh = Quaternion.Euler(0, -90, 0);
+        GameObject messageTextGO = (GameObject)Instantiate(messageText, thisPos, rotationTextMesh);
         MessageText mT = messageTextGO.GetComponent<MessageText>();
         mT.target = emptyGO.transform.position;
         mT.origin = empty.transform.position;
@@ -163,8 +164,7 @@ public class SSDSpawner : MonoBehaviour {
         // Changes the Z position
         p = p + 3;
 
-        box.GetComponentInChildren<TextMesh>().text = systemBoxName;
-
+        box.GetComponentInChildren<TextMesh>().text = systemBoxName.Split(':')[0];
 
     }
 }

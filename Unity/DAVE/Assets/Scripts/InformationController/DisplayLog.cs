@@ -30,7 +30,7 @@ public class DisplayLog : MonoBehaviour
     private bool showLogWindow = true;              // True on start
 
     // Creates and positions the rectangle for the log
-    private Rect windowRect = new Rect(Screen.width - 179f, 30, 179f, Screen.height);
+    private Rect windowRect = new Rect(Screen.width - 179f, 30, 179f, Screen.height - 30);
     // Label for clear button
     private GUIContent clearLabel = new GUIContent("Clear", "Clear the contents of the console.");
     // Allows for repositioning the camera
@@ -122,11 +122,12 @@ public class DisplayLog : MonoBehaviour
             message = message.Remove(0, 6);             // Removes 'logmsg'
             var y = float.Parse(message.Split('*')[1]); // Get coordinates from string array
             var z = float.Parse(message.Split('*')[2]); // and parses to floats
+            var x = float.Parse(message.Split('*')[3]);
 
             logs.Add(new Log()                          // Adds a new Log to the list of logs
             {
-                message = message.Split('*')[3],        // Assigns the Log structure's message 
-                targetPosition = new Vector3(4, y, z)   // Creates and assigns a Vector3 based on y and z
+                message = message.Split('*')[4],        // Assigns the Log structure's message 
+                targetPosition = new Vector3(x, y, z)   // Creates and assigns a Vector3 based on y and z
             });
         }
     }
