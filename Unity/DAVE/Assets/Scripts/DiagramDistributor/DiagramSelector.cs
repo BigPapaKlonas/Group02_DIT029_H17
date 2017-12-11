@@ -22,15 +22,20 @@ public class DiagramSelector : MonoBehaviour
     public GameObject playBtnPrefab;
     private int fileCounter = 0;
 
+	private int numberOfUploads = 0;
+
     void Start()
     {
         button = GetComponent<Button>();
         button.onClick.AddListener(OnClick);
         offset = -110;
-        if(SceneManager.GetActiveScene().name == "Main")
-        {
-            offset += 35;
-        }
+		if (SceneManager.GetActiveScene ().name == "Main") 
+		{
+			offset += 35;
+			button.GetComponent<Button> ().interactable = false;
+		}
+
+
         Debug.Log("im start " + offset);
     }
 
@@ -65,6 +70,19 @@ public class DiagramSelector : MonoBehaviour
             playBtn.SetActive(true);
             GameObject canvas = GameObject.Find("Canvas_Show_Reset_Upload_Play");
             playBtn.transform.SetParent(canvas.transform, false);
+
+
+			if (numberOfUploads >= 2) 
+			{
+				playBtn.GetComponent<PublishDiagram> ().SetMaxUploads(true);
+				button.interactable = false;
+				button.GetComponentInChildren<Text>().text = "Max uploads";
+			}
+			else
+			{
+				button.interactable = false;
+				numberOfUploads++;
+			}
         }
     }
 

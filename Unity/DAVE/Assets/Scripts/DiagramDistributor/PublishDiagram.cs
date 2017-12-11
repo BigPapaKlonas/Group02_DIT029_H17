@@ -8,9 +8,13 @@ public class PublishDiagram : MonoBehaviour
     private Button button;
     ConnectionManager coordinator = ConnectionManager.coordinator;
 
+	private GameObject uploadBtn;
+	private bool maxUploads;
+
     // Use this for initialization
     void Start()
     {
+		uploadBtn = GameObject.Find ("UploadBtn");
         button = GetComponent<Button>();
         button.onClick.AddListener(OnClick);
 
@@ -54,6 +58,16 @@ public class PublishDiagram : MonoBehaviour
             );
         }
 
+		if (maxUploads == false) 
+		{
+			uploadBtn.GetComponent<Button>().interactable = true;
+		}
+
         gameObject.SetActive(false);
     }
+
+	public void SetMaxUploads(bool max)
+	{
+		maxUploads = max;
+	}
 }
