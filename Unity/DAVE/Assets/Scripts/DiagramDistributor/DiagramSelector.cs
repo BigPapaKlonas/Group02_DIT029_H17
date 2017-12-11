@@ -106,23 +106,25 @@ public class DiagramSelector : MonoBehaviour
         string room = ConnectionManager.coordinator.GetRoom();
         string diagramType = ConnectionManager.coordinator.GetDiagramType();
 
-        /* 
-		 * If database contains the instructor name: 
-		 * Update instructors.diagrams
-		 * and add the diagram to diagrams table.
-		 * Else:
-		 * Add both to instructors and diagrams tables.
-		*/
+		bool existingDiagramName = ConnectionManager.R.Db("root").Table("diagrams").GetField("name")
+			.Contains(room.ToLower()).Run(ConnectionManager.conn);
 
-        var update = ConnectionManager.R.Db("root")
-            .Table("diagrams").Insert(ConnectionManager.R.Array(
-                ConnectionManager.R.HashMap("name", room)
-                .With("type", diagramType)
-                .With("instructor", instructor)
-            ))
-            .Run(ConnectionManager.conn);
-
-        yield return update;
+		if (existingDiagramName == false) {
+			var update = ConnectionManager.R.Db ("root")
+				.Table ("diagrams").Insert (ConnectionManager.R.Array (
+					ConnectionManager.R.HashMap ("name", room)
+					.With ("type", diagramType)
+					.With ("instructor", instructor)
+				))
+				.Run (ConnectionManager.conn);
+			yield return update;
+		} 
+		else 
+		{
+			yield return null; 
+			Debug.Log ("Name in use, no new room needed.");
+		}
+        
         Debug.Log("Successful insert and update of the " + room + " table, for instructor: "
             + instructor);
     }

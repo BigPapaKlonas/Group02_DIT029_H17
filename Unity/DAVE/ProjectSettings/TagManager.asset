@@ -24,6 +24,12 @@ TagManager:
   - arrow_log
   - arrow_students
   - game_management
+  - WPPathfinder
+  - Waypoint
+  - Obst
+  - Enemy
+  - StartButtons
+  - DeactivateOnNoCon
   layers:
   - Default
   - TransparentFX

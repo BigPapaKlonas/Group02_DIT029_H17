@@ -83,7 +83,6 @@ public class MenuScreenRouter : MonoBehaviour {
 		
 		if (buttonPressed == studentBtn)
 		{
-			ConnectionManager.coordinator.SetInstructorBool(false);
 			buttonPressed.gameObject.SetActive(false);
 		}
 
@@ -110,7 +109,6 @@ public class MenuScreenRouter : MonoBehaviour {
             }
             else
             {
-                ConnectionManager.coordinator.SetInstructorBool(true);
                 buttonPressed.gameObject.SetActive(false);
             }
         }

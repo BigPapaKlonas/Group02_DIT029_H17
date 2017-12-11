@@ -2,9 +2,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using uPLibrary.Networking.M2Mqtt;
 using System;
+using System.Collections;
+using System.Net.Sockets;
 using RethinkDb.Driver;
 using RethinkDb.Driver.Net;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class ConnectionManager : MonoBehaviour
 {
@@ -30,9 +33,15 @@ public class ConnectionManager : MonoBehaviour
 	private string room;
     private string student;
 	private string roomType;
-	private bool instructorBool;
     private string parentTopic;
     private Queue<JsonObject> selectedJSONS = new Queue<JsonObject>();
+
+	/*
+	 * Inactive buttons until connected.
+	 */ 
+
+	private GameObject[] startButtons;
+	private GameObject[] deactivateOnNoCon;
 
     public struct JsonObject        // JsonObject structure  
     {
@@ -45,36 +54,69 @@ public class ConnectionManager : MonoBehaviour
      */
     public static bool auth;
 
+	void Awake ()
+	{
+		MakeThisTheOnlyCoordinator();
 
-    void Start()
-    {
-		// RethinkDB
-		DatabaseConnection ();
-		// Mqtt
-        EstablishConnection();
-    }
+		// Saving player and DAVEPathfinder to avoid errors when loading CD 
+		DontDestroyOnLoad(GameObject.FindGameObjectWithTag("Map"));
+		DontDestroyOnLoad(GameObject.FindGameObjectWithTag("Terrain"));
+
+		startButtons = GameObject.FindGameObjectsWithTag ("StartButtons");
+		deactivateOnNoCon = GameObject.FindGameObjectsWithTag ("DeactivateOnNoCon");
+
+		try
+		{
+			// RethinkDB
+			DatabaseConnection ();
+			// Mqtt
+			EstablishConnection();
+		} 
+		catch (SocketException e)
+		{
+			foreach (var btn in startButtons)
+			{
+				btn.GetComponent<Button> ().interactable = false;
+			}
+
+			foreach (var obj in deactivateOnNoCon)
+			{
+				obj.SetActive (false);
+			}
+
+			GameObject warning = GameObject.Find ("Warning");
+			warning.GetComponent<Text> ().text = "No internet connection";
+			warning.GetComponent<Transform>().localPosition = new Vector3 (0, -180f, 0);
+			warning.AddComponent<Button> ();
+			warning.GetComponent<Button> ()
+				.onClick.AddListener (() => SceneManager.LoadScene (SceneManager.GetActiveScene ().name));
+
+			Debug.LogError (e.Message);
+		}
+	}
 
     void DatabaseConnection ()
     {
-      Debug.Log ("--- Starting Connection ---");
-	  // Setup of variables for database connection.
-	  R = RethinkDB.R;
-	  // Change IP when deployed to AWS.
+	    Debug.Log ("--- Starting Connection ---");
+		// Setup of variables for database connection.
+		R = RethinkDB.R;
+		// Change IP when deployed to AWS.
 		conn = R.Connection ().Hostname ("54.93.235.175").Port (28015).Timeout (60).Connect ();
 
-      var result = R.Now().Run<DateTimeOffset>(conn);
+	    var result = R.Now().Run<DateTimeOffset>(conn);
 
-      Debug.Log ("--- Connection with result: " + result + " ---");
-
+	    Debug.Log ("--- Connection with result: " + result + " ---");	
     }
 
-	void Awake(){
-		MakeThisTheOnlyCoordinator();
-            
-        // Saving player and DAVEPathfinder to avoid errors when loading CD 
-        DontDestroyOnLoad(GameObject.FindGameObjectWithTag("Map"));
-        DontDestroyOnLoad(GameObject.FindGameObjectWithTag("Terrain"));
-    }
+	void EstablishConnection()
+	{
+	
+		// Creates a MqttClientDAVE with the following credentials
+		// Change IP when deployed to AWS.
+		this.daveClient = new MqttClientDAVE("13.59.108.164", 1883, Guid.NewGuid().ToString());
+
+		this.client = this.daveClient.GetMqttClient();
+	}
 
 	void MakeThisTheOnlyCoordinator() {
 		if (coordinator == null) {
@@ -119,15 +161,7 @@ public class ConnectionManager : MonoBehaviour
 	}
 
 
-    public void EstablishConnection()
-    {
-
-        // Creates a MqttClientDAVE with the following credentials
-        // Change IP when deployed to AWS.
-        this.daveClient = new MqttClientDAVE("13.59.108.164", 1883, Guid.NewGuid().ToString());
-
-        this.client = this.daveClient.GetMqttClient();
-    }
+    
 
 
     /* 
@@ -176,14 +210,6 @@ public class ConnectionManager : MonoBehaviour
     public string GetDiagramType ()
 	{
 		return this.roomType;
-	}
-	public void SetInstructorBool (bool instructorBool) 
-	{
-		this.instructorBool = instructorBool;
-    }
-	public bool GetInstructorBool ()
-	{
-		return this.instructorBool;
 	}
     public string GetParentTopic()
     {
