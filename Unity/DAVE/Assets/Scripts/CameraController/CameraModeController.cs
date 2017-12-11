@@ -301,7 +301,7 @@ public class CameraModeController : MonoBehaviour
         playerObject.GetComponentInChildren<Camera>().enabled = false;
         logCamera.enabled = true;
         logCamera.transform.position = targetPosition;
-        logCamera.transform.rotation = Quaternion.Euler(0, 90, 0); // Resets rotation
+        logCamera.transform.rotation = Quaternion.Euler(0, -90, 0); // Resets rotation
 
         logCameraEnabled = true;
     }

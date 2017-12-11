@@ -804,6 +804,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 114664001399783174, guid: 3dacbfad479de354f84732fdbc5ff338,
+        type: 2}
+      propertyPath: ssdSpawnerSpawner
+      value: 
+      objectReference: {fileID: 1926139443}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3dacbfad479de354f84732fdbc5ff338, type: 2}
   m_IsPrefabParent: 0
@@ -896,6 +901,11 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 294764ba269979a49b58aa9b8504eae7, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1926139443 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1222436833793196, guid: 294764ba269979a49b58aa9b8504eae7,
+    type: 2}
+  m_PrefabInternal: {fileID: 1926139442}
 --- !u!1001 &1982608944
 Prefab:
   m_ObjectHideFlags: 0
