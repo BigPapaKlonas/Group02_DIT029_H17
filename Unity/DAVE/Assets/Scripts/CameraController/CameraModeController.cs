@@ -11,7 +11,6 @@ public class CameraModeController : MonoBehaviour
 
     // Player Object
     public GameObject playerObject;
-    public bool logEnabled = false;
 
     // Bools used to monitor between the different camera controll modes
     private bool eagleVision = false;
@@ -20,6 +19,13 @@ public class CameraModeController : MonoBehaviour
 
     // Player's child camera 
     private Transform cameraChild;
+
+    // LogCamera
+    public Camera logCamera;
+    private bool logCameraEnabled;
+
+    // ToggleKey for resetting camera mode
+    public KeyCode toggleKey = KeyCode.L;
 
     // Original player rotation
     private Quaternion playerRotation;
@@ -35,6 +41,19 @@ public class CameraModeController : MonoBehaviour
 
     private void Update()
     {
+        //
+        if (logCameraEnabled)
+        {
+            if (Input.GetKeyDown(toggleKey))    // Disable log camrea mode on toggle key pressed
+            {
+                playerObject.GetComponentInChildren<Camera>().enabled = true;
+                logCamera.enabled = false;
+                playerObject.GetComponent<Detection>().enabled = true;
+                logCameraEnabled = false;
+            }
+        }
+
+
         // Change camera position and rotation only on button click
         if (Input.GetKeyDown(KeyCode.V) && !noClip)
         {
@@ -268,20 +287,16 @@ public class CameraModeController : MonoBehaviour
         }
     }
 
-    public void SetNoClipBool(bool state)
-    {
-        noClip = state;
-    }
+ 
     public void SetPosition(Vector3 targetPosition)
     {
-        noClip = false;
-        NoClipMode();
+        playerObject.GetComponent<Detection>().enabled = false;
+        playerObject.GetComponentInChildren<Camera>().enabled = false;
+        logCamera.enabled = true;
+        logCamera.transform.position = targetPosition;
+        logCamera.transform.rotation = Quaternion.Euler(0, 90, 0); // Resets rotation
 
-        playerObject.transform.position = targetPosition;
-        cameraChild.rotation = Quaternion.Euler(0, 90, 0);  // Resets rotation
+        logCameraEnabled = true;
     }
-    public bool GetNoClipBool()
-    {
-        return noClip;
-    }
+
 }

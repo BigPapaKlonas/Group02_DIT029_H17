@@ -25,7 +25,6 @@ public class DisplayLog : MonoBehaviour
     public Sprite downArrow;                
     public Sprite upArrow;                  
 
-    public KeyCode toggleKey = KeyCode.L;           // The hotkey to show and hide the log window
     private List<Log> logs = new List<Log>();       // List of Log structures
     private Vector2 scrollPosition;                 // Used to place ScrollView
     private bool showLogWindow = true;              // True on start
@@ -65,12 +64,6 @@ public class DisplayLog : MonoBehaviour
             Arrow.sprite = downArrow;   // Make drop down arrow point downwards
         else
             Arrow.sprite = upArrow;
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(toggleKey))    // Disable/enables the log on toggle key pressed
-            showLogWindow = !showLogWindow;
     }
 
     private void OnGUI()
