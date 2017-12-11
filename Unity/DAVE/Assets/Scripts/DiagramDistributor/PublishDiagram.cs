@@ -18,7 +18,7 @@ public class PublishDiagram : MonoBehaviour
         button = GetComponent<Button>();
         button.onClick.AddListener(OnClick);
 
-        if (coordinator.GetInstructorBool() == false)
+        if (ConnectionManager.auth == false)
         {
             button.gameObject.SetActive(false);
         }
