@@ -2,7 +2,6 @@
 
 public class MessageText : MonoBehaviour {
 
-    public new Camera camera;
     float speed = 1f;
     public Vector3 target;
     public Vector3 origin;
@@ -10,13 +9,12 @@ public class MessageText : MonoBehaviour {
     public string from;
     public string method;
     Vector3 midPoint;
-    
+    private GameObject player;
 
     void Start()
     {
         GetComponent<TextMesh>().text = method;
-        camera = Camera.main;
-        
+        player = GameObject.FindGameObjectWithTag("Player");
 
         midPoint = Vector3.Lerp(origin, target, 0.5f);
 
@@ -25,8 +23,8 @@ public class MessageText : MonoBehaviour {
 
     void Update()
     {
-        transform.LookAt(transform.position + camera.transform.rotation * Vector3.forward,
-            camera.transform.rotation * Vector3.up);
+        transform.LookAt(transform.position + player.transform.rotation * Vector3.forward,
+            player.transform.rotation * Vector3.up);
         Vector3 dir = midPoint - this.transform.localPosition;
         //dir.y = dir.y + 0.5f;
         //dir.z = dir.z / 2;

@@ -21,7 +21,8 @@ public class RenderSystemBox : MonoBehaviour {
         lightSwitch = false;
         systemLight = GetComponent<Light>();
         systemLight.enabled = false;
-		Vector3 v = new Vector3(this.transform.position.x, transform.parent.transform.position.y, this.transform.position.z);
+		Vector3 v = new Vector3(this.transform.position.x, transform.parent.transform.position.y, 
+            this.transform.position.z);
 		target = (GameObject)Instantiate(lTarget, v, this.transform.rotation);
 		
 	}
@@ -53,7 +54,8 @@ public class RenderSystemBox : MonoBehaviour {
 
 	void newLifeLine(GameObject t){
 
-		GameObject lifeLineGO = (GameObject)Instantiate(lineSegmentPrefab, this.transform.position, this.transform.rotation);
+		GameObject lifeLineGO = (GameObject)Instantiate(lineSegmentPrefab, this.transform.position, 
+            this.transform.rotation);
 		RenderLifeline l = lifeLineGO.GetComponent<RenderLifeline>();
 		l.target = t.transform;
         l.parentSystem = this.gameObject;
