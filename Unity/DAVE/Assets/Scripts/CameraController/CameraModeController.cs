@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 /*
  * Script use to swap between different camera modes; 1st person, Birds View, and No Clip.
@@ -44,8 +45,15 @@ public class CameraModeController : MonoBehaviour
         // Check when logCameraEnabled is true
         if (logCameraEnabled)
         {
+			// Change color depending on press
+			GameObject buttonColor = GameObject.Find ("LKeyImage");
+			buttonColor.GetComponent<Image> ().color = Color.green;
+
             if (Input.GetKeyDown(toggleKey))    // Disable log camera mode on toggle key pressed
             {
+				// Change color depending on press
+				buttonColor.GetComponent<Image> ().color = Color.white;
+
                 playerObject.GetComponentInChildren<Camera>().enabled = true;
                 logCamera.enabled = false;
                 playerObject.GetComponent<Detection>().enabled = true;
@@ -92,6 +100,10 @@ public class CameraModeController : MonoBehaviour
             // Set bool to true (bird view mode)
             eagleVision = true;
 
+			// Change color depending on press
+			GameObject buttonColor = GameObject.Find ("BKeyImage");
+			buttonColor.GetComponent<Image> ().color = Color.green;
+
             // Adding a moving script in case swapping from Cursor mode
             playerObject.GetComponent<PlayerMovement>().enabled = true;
 
@@ -122,6 +134,11 @@ public class CameraModeController : MonoBehaviour
         {
             // Set bool to false (1st person mode)
             eagleVision = false;
+
+			// Change color depending on press
+			GameObject buttonColor = GameObject.Find ("BKeyImage");
+			buttonColor.GetComponent<Image> ().color = Color.white;
+
 
             // Setting the child position for the camera
             cameraChild.localPosition = new Vector3(
@@ -163,6 +180,10 @@ public class CameraModeController : MonoBehaviour
             // Set bool to true (currently in no clip mode)
             noClip = true;
 
+			// Change color depending on press
+			GameObject buttonColor = GameObject.Find ("IKeyImage");
+			buttonColor.GetComponent<Image> ().color = Color.green;
+
             // Removing forces from player object so it does not drift away
             playerObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
@@ -192,6 +213,11 @@ public class CameraModeController : MonoBehaviour
         {
             // Set bool to false (1st person mode)
             noClip = false;
+
+			// Change color depending on press
+			GameObject buttonColor = GameObject.Find ("IKeyImage");
+			buttonColor.GetComponent<Image> ().color = Color.white;
+
 
             // Adding trigger to disable going through house walls
             playerObject.GetComponent<Collider>().isTrigger = false;
@@ -237,6 +263,11 @@ public class CameraModeController : MonoBehaviour
             cursorEnabled = true;
             Cursor.visible = true;
 
+			// Change color depending on press
+			GameObject buttonColor = GameObject.Find ("CKeyImage");
+			buttonColor.GetComponent<Image> ().color = Color.green;
+
+
             // Removing forces from player object so it does not drift away
             playerObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
@@ -251,6 +282,10 @@ public class CameraModeController : MonoBehaviour
         {
             Debug.Log("cursorEnabled && eagleVision");
 
+			// Change color depending on press
+			GameObject buttonColor = GameObject.Find ("CKeyImage");
+			buttonColor.GetComponent<Image> ().color = Color.white;
+
             cursorEnabled = false;
             Cursor.visible = false;
 
@@ -261,6 +296,10 @@ public class CameraModeController : MonoBehaviour
         else if (cursorEnabled && noClip)
         {
             Debug.Log("cursorEnabled && noClip");
+
+			// Change color depending on press
+			GameObject buttonColor = GameObject.Find ("CKeyImage");
+			buttonColor.GetComponent<Image> ().color = Color.white;
 
             cursorEnabled = false;
             Cursor.visible = false;
@@ -276,6 +315,11 @@ public class CameraModeController : MonoBehaviour
         // Remove cursor from screen
         else
         {
+
+			// Change color depending on press
+			GameObject buttonColor = GameObject.Find ("CKeyImage");
+			buttonColor.GetComponent<Image> ().color = Color.white;
+
             Debug.Log("else");
 
             cursorEnabled = false;
