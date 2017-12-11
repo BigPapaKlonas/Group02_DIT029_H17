@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -185,6 +185,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -530,8 +531,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1437968386}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 317, y: 194.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1372905192}
   - {fileID: 1745902778}
@@ -715,6 +716,34 @@ Prefab:
         type: 2}
       propertyPath: m_SizeDelta.x
       value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 1442688432404338, guid: d7a99bfcf6ba0e34dba9496b9695da42, type: 2}
+      propertyPath: m_TagString
+      value: StartButtons
+      objectReference: {fileID: 0}
+    - target: {fileID: 1715661447113912, guid: d7a99bfcf6ba0e34dba9496b9695da42, type: 2}
+      propertyPath: m_TagString
+      value: StartButtons
+      objectReference: {fileID: 0}
+    - target: {fileID: 1980170429290438, guid: d7a99bfcf6ba0e34dba9496b9695da42, type: 2}
+      propertyPath: m_TagString
+      value: StartButtons
+      objectReference: {fileID: 0}
+    - target: {fileID: 1744075755079678, guid: d7a99bfcf6ba0e34dba9496b9695da42, type: 2}
+      propertyPath: m_TagString
+      value: DeactivateOnNoCon
+      objectReference: {fileID: 0}
+    - target: {fileID: 1774508625726826, guid: d7a99bfcf6ba0e34dba9496b9695da42, type: 2}
+      propertyPath: m_TagString
+      value: DeactivateOnNoCon
+      objectReference: {fileID: 0}
+    - target: {fileID: 1032747320550754, guid: d7a99bfcf6ba0e34dba9496b9695da42, type: 2}
+      propertyPath: m_TagString
+      value: DeactivateOnNoCon
+      objectReference: {fileID: 0}
+    - target: {fileID: 1492104968704460, guid: d7a99bfcf6ba0e34dba9496b9695da42, type: 2}
+      propertyPath: m_TagString
+      value: DeactivateOnNoCon
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d7a99bfcf6ba0e34dba9496b9695da42, type: 2}
