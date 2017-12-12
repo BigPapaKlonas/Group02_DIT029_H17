@@ -127,7 +127,7 @@ Prefab:
     - target: {fileID: 224812294525394764, guid: 6e6706b50e5ba4792a8ffd8fc4f6b975,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: -81.5
+      value: -166
       objectReference: {fileID: 0}
     - target: {fileID: 224812294525394764, guid: 6e6706b50e5ba4792a8ffd8fc4f6b975,
         type: 2}
@@ -217,6 +217,80 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224812294525394764, guid: 6e6706b50e5ba4792a8ffd8fc4f6b975,
     type: 2}
   m_PrefabInternal: {fileID: 87687131}
+--- !u!1 &230559853
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 230559854}
+  - component: {fileID: 230559856}
+  - component: {fileID: 230559855}
+  m_Layer: 5
+  m_Name: RoomChooseText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &230559854
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 230559853}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -15, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 842700291}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -161}
+  m_SizeDelta: {x: 160, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &230559855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 230559853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 20
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 2
+    m_MaxSize: 40
+    m_Alignment: 1
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Choose Room
+--- !u!222 &230559856
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 230559853}
 --- !u!1001 &243996692
 Prefab:
   m_ObjectHideFlags: 0
@@ -232,7 +306,7 @@ Prefab:
     - target: {fileID: 224111512726224862, guid: 145e2ab1a3f694f7ca078349ffb0eeb4,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: 168
+      value: 211
       objectReference: {fileID: 0}
     - target: {fileID: 224111512726224862, guid: 145e2ab1a3f694f7ca078349ffb0eeb4,
         type: 2}
@@ -464,7 +538,7 @@ Prefab:
     - target: {fileID: 224203909965266506, guid: bcd31524bc7d1467ab4c2901c232229d,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: -126.5
+      value: -211
       objectReference: {fileID: 0}
     - target: {fileID: 224203909965266506, guid: bcd31524bc7d1467ab4c2901c232229d,
         type: 2}
@@ -684,7 +758,7 @@ Prefab:
     - target: {fileID: 224513623627779664, guid: 02f6db4e987694ebc8e1b6571d4df05c,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: 174.5
+      value: 191
       objectReference: {fileID: 0}
     - target: {fileID: 224735025525148386, guid: 02f6db4e987694ebc8e1b6571d4df05c,
         type: 2}
@@ -694,7 +768,7 @@ Prefab:
     - target: {fileID: 224735025525148386, guid: 02f6db4e987694ebc8e1b6571d4df05c,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -30
       objectReference: {fileID: 0}
     - target: {fileID: 114204132546930138, guid: 02f6db4e987694ebc8e1b6571d4df05c,
         type: 2}
@@ -741,6 +815,16 @@ Prefab:
       propertyPath: m_FontData.m_MinSize
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 224513623627779664, guid: 02f6db4e987694ebc8e1b6571d4df05c,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224735025525148386, guid: 02f6db4e987694ebc8e1b6571d4df05c,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 02f6db4e987694ebc8e1b6571d4df05c, type: 2}
   m_IsPrefabParent: 0
@@ -761,6 +845,11 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 842700287}
   m_Script: {fileID: 1367256648, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+--- !u!224 &842700291 stripped
+RectTransform:
+  m_PrefabParentObject: {fileID: 224513623627779664, guid: 02f6db4e987694ebc8e1b6571d4df05c,
+    type: 2}
+  m_PrefabInternal: {fileID: 842700287}
 --- !u!1 &1177405081
 GameObject:
   m_ObjectHideFlags: 0
@@ -857,7 +946,7 @@ Skybox:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1177405081}
   m_Enabled: 1
-  m_CustomSkybox: {fileID: 2100000, guid: a4f78a684965a2d4bbc20a4b86231606, type: 2}
+  m_CustomSkybox: {fileID: 2100000, guid: 697dcc1a69e1a2c4ea5db483875ede85, type: 2}
 --- !u!1 &1751582340
 GameObject:
   m_ObjectHideFlags: 0
@@ -941,7 +1030,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1751582340}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 317, y: 194.5, z: 0}
+  m_LocalPosition: {x: 317, y: 211, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 243996693}
