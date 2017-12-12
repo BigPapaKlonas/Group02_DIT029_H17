@@ -1,4 +1,4 @@
-%% script generated at {2017,12,4} {8,11,8}
+%% script generated at {2017,12,11} {9,3,36}
 {script,
     {"pubsub_ssdchat","1.0.0"},
     [{preLoaded,

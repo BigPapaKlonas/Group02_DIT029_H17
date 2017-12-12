@@ -10,8 +10,9 @@ docker_client = docker.from_env()   # Gets the default socket and configuration 
 def start_containers(request):
 
     containers = int(request)
-    
-    for x in range(containers):                                       # Iterates over the decoded JSON
-        # Starts a container, detaches & removes it from daemon side when the container's process exits
-        docker_client.containers.run(image='sixonetwo/dave:latest', detach=True, auto_remove=True)
+
+    for x in range(containers):                                       # Iterate$
+        # Starts a container, detaches & removes it from daemon side when the c$
+        docker_client.containers.run('sixonetwo/dave:latest', detach=True)
+
 

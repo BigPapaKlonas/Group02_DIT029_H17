@@ -14,6 +14,7 @@ terminate/2, code_change/3]).
                 nodelist, 
                 nodemap,
                 ssd,
+                droom,
                 mainroom}).
 
 
@@ -27,18 +28,20 @@ init([Room]) ->
     {ok, C} = emqttc:start_link([{host, "13.59.108.164"},
                                  {client_id, float_to_binary(rand:normal())},
                                  {logger, info}]),
-    emqttc:subscribe(C, Room),
-    State=#state{c=C,mainroom=Room},
+    DRoom = <<Room/binary, <<"/">>/binary, <<"diagram">>/binary>>,
+    emqttc:subscribe(C, DRoom),
+    State=#state{c=C, mainroom=Room, droom=DRoom},
     {ok, State}.
 
 handle_info({publish, Topic, <<"next">>}, S) when length(S#state.ssd) =:= 0->
-    timer:sleep(4000),
+    timer:sleep(5000),
     io:format("CurrentMessage: ~n~p", [S#state.ssd]),
     timer:sleep(4000),
     L = maps:values(S#state.nodemap),
     lists:foreach(fun(X) ->
             emqttc:publish(S#state.c, X, <<"finished">>)
         end, L),
+    emqttc:publish(S#state.c, S#state.mainroom, <<"finished">>),
     stop(),
     {noreply, S};
 
@@ -64,13 +67,14 @@ handle_info({publish, Topic, Payload}, S) when Topic =:= S#state.topic ->
     NewS = create_node(S, Payload),
     {noreply, NewS};
 
-handle_info({publish, Topic, Payload}, S) when Topic =:= S#state.mainroom ->
+handle_info({publish, Topic, Payload}, S) when Topic =:= S#state.droom ->
     WholeSSD = parser:get_parsed_diagram(Payload),
     Proc = parser:get_processes(parser:decode_map(Payload)),
     NodeList = hd(tl(WholeSSD)),
     NodeListBinary = term_to_binary(Proc),
     %emqttc:publish(S#state.c, <<"root/processes">>, NodeListBinary),
     emqttc:unsubscribe(S#state.c, S#state.mainroom),
+    emqttc:unsubscribe(S#state.c, S#state.droom),
     SSD = hd(hd(lists:reverse(tl(lists:reverse(WholeSSD))))),
     io:format("SSD: ~n~p", [SSD]),
     Room = S#state.mainroom,
@@ -111,12 +115,13 @@ create_node(S, Worker) when length(S#state.nodelist) =:= 1 ->
     Uid = binary:list_to_bin(lists:flatten(NodeNumber)),
     BinName = <<ActName/binary, <<":">>/binary, Uid/binary>>,
     Room = S#state.room,
-
     emqttc:publish(S#state.c, Room, <<"40 size">>),
     UserRoom = <<Room/binary, <<"/">>/binary, BinName/binary>>,
     emqttc:publish(S#state.c, UserRoom, <<"initial">>, [{qos, 1}, {retain, true}]),
     emqttc:publish(S#state.c, Worker, UserRoom, [{qos, 1}, {retain, true}]),
     NewState = S#state{nodelist=tl(S#state.nodelist),nodemap=maps:put(Name, UserRoom, S#state.nodemap)},
+    NodeListBin = return_node_bin_list(maps:values(NewState#state.nodemap)),
+    emqttc:publish(S#state.c, Room, NodeListBin),
     emqttc:publish(S#state.c, NewState#state.topic, <<"next">>),
     emqttc:unsubscribe(S#state.c, <<"root/initiate">>),
     io:format("map: ~n~p", [NewState#state.nodemap]),
@@ -141,6 +146,17 @@ create_node(S, Worker) ->
     NewState.
 
 %%Coordinator
+
+return_node_bin_list([H|T]) ->
+    Name = lists:last(binary:split(H, <<"/">>, [global])),
+    return_node_bin_list(T, <<Name/binary>>).
+
+return_node_bin_list([], B) ->
+    B;
+
+return_node_bin_list([H|T], B) ->
+    Name = lists:last(binary:split(H, <<"/">>, [global])),
+    return_node_bin_list(T ,<<B/binary, <<" ">>/binary, Name/binary>>).
 
 
 
