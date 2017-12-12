@@ -155,11 +155,10 @@ public class DiagramBroker : MonoBehaviour
         gameObject.GetComponent<RenderDevices>().CreateDevices(JSONDeployment, offset);
     }
 
+    // Waits 1.5 seconds to let a potential deployment diagram to be rendered first
     private IEnumerator RenderDeploymentConnections(JSONSequence JSONSequence, float offset)
     {
-        print(Time.time);
-        yield return new WaitForSeconds(1.5f);
-        print(Time.time);
+        yield return new WaitForSeconds(1.5f);   
         gameObject.GetComponent<FindDeploymentConnections>().NewMessage(JSONSequence, offset);
     }
 
