@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 
 public class RenderDevices : MonoBehaviour
@@ -11,25 +9,26 @@ public class RenderDevices : MonoBehaviour
     public TextMesh namePrefab;
     public TextMesh multiplicityPrefab;
     TextMesh multiplicity;
-    public static ArrayList Devices = new ArrayList();
+    public ArrayList Devices = new ArrayList();
     ArrayList DeviceNames = new ArrayList();
     public Vector3 center;
     GameObject process;
-
+    int counter = 0;
 
     public void CreateDevices(JSONDeployment json, float offSet)
     {
         // Create devices containing their processes
         int i;
-        float yPos = 4.890001F;
+        int nrOfDevices = 0;
         // Go through the parsed JSON
         foreach (var pair in json.Mapping)
         {
-            i = DeviceNames.IndexOf(pair.Device);
+            i = DeviceNames.IndexOf(offSet + ";" + pair.Device);
             if (i == -1)
             {
-                Devices.Add(new Device(pair.Device, pair.Process));
-                DeviceNames.Add(pair.Device);
+                nrOfDevices++;
+                Devices.Add(new Device(pair.Device, pair.Process, offSet));
+                DeviceNames.Add(offSet + ";" + pair.Device);
             }
             else
             {
@@ -41,58 +40,61 @@ public class RenderDevices : MonoBehaviour
         }
 
         i = 0;
-        center = new Vector3(offSet + 15, Devices.Count + 10, offSet + 15);//yPos, 9.880002F);
+        center = new Vector3(offSet + 15, nrOfDevices + 10, offSet + 15);//yPos, 9.880002F);
 
         foreach (Device device in Devices)
         {
-            //Place the devices in a circle
-            Vector3 pos = PlaceInCircle(center, (float)(Devices.Count), (float)(360 / Devices.Count * i++));
-            GameObject newDevice = (GameObject)Instantiate(
-                devicePrefab,
-                pos,
-                this.transform.rotation);
+            if (device.GetOffset() == offSet) {
 
-            // Set the position of the Device name textmesh
-            Vector3 nPos = pos;
+                //Place the devices in a circle
+                Vector3 pos = PlaceInCircle(center, (float)(nrOfDevices), (float)(360 / nrOfDevices * i++));
+                GameObject newDevice = (GameObject)Instantiate(
+                   devicePrefab,
+                   pos,
+                   this.transform.rotation);
 
-            // Rezises the height of the device
-            int length = device.GetProcesses().Count;
-            if (length == 2)
-            {
-                newDevice.transform.localScale += new Vector3(0, 0, newDevice.transform.localScale.z);
-            }
-            else if(length > 6)
-            {
-                newDevice.transform.localScale += new Vector3(0, (float)(0.8 * 3), newDevice.transform.localScale.z);
-            }
-            else if(length > 2)
-                newDevice.transform.localScale += new Vector3(0, (float)(0.8 * (int)((length) / 2)), newDevice.transform.localScale.z);
-            nPos += new Vector3(0.5F, newDevice.transform.localScale.y / 2 - 0.5F, 0);
-            newDevice.name = device.GetName();
+                 // Set the position of the Device name textmesh
+                Vector3 nPos = pos;
 
-            // Places the name of the device
-            Quaternion rot = Quaternion.Euler(0, 270, 0);
-            TextMesh name = (TextMesh)Instantiate(
-                namePrefab,
-                nPos,
-                rot);
-            name.text = "<<Device>>\n" + device.GetName();
+                // Rezises the height of the device
+                int length = device.GetProcesses().Count;
+                if (length == 2)
+                {
+                    newDevice.transform.localScale += new Vector3(0, 0, newDevice.transform.localScale.z);
+                }
+                else if(length > 6)
+                {
+                   newDevice.transform.localScale += new Vector3(0, (float)(0.8 * 3), newDevice.transform.localScale.z);
+                }
+                else if(length > 2)
+                    newDevice.transform.localScale += new Vector3(0, (float)(0.8 * (int)((length) / 2)), newDevice.transform.localScale.z);
+                nPos += new Vector3(0.5F, newDevice.transform.localScale.y / 2 - 0.5F, 0);
+                newDevice.name = offSet + device.GetName();
 
-            // Resizes the width of the device
-            float width = GetWidth(name);
-            if (width > (newDevice.transform.localScale.z))
-                newDevice.transform.localScale += new Vector3(0, 0, width - newDevice.transform.localScale.z);
+                // Places the name of the device
+                Quaternion rot = Quaternion.Euler(0, 270, 0);
+                TextMesh name = (TextMesh)Instantiate(
+                 namePrefab,
+                  nPos,
+                  rot);
+                name.text = "<<Device>>\n" + device.GetName();
 
-            if(length > 8)
-            {
+                // Resizes the width of the device
+                float width = GetWidth(name);
+                if (width > (newDevice.transform.localScale.z))
+                   newDevice.transform.localScale += new Vector3(0, 0, width - newDevice.transform.localScale.z);
 
-                pos += new Vector3(0.1F, -0.15F, 0);
-                process = (GameObject)Instantiate(
-                    processPrefab,
-                    pos,
-                    this.transform.rotation
+                if(length > 8)
+                {
+
+                   pos += new Vector3(0.1F, -0.15F, 0);
+                   process = (GameObject)Instantiate(
+                   processPrefab,
+                   pos,
+                   this.transform.rotation
                 );
-                process.name = newDevice.name + ":multi";
+                process.GetComponentInChildren<Light>().intensity = 0;
+                    process.name = offSet + newDevice.name + ":multi";
                 process.transform.localScale += new Vector3(0, 
                     newDevice.transform.localScale.y - (process.transform.localScale.y + 1), 
                     newDevice.transform.localScale.z - (0.6F + process.transform.localScale.z));
@@ -102,7 +104,7 @@ public class RenderDevices : MonoBehaviour
                     multiplicityPrefab,
                     pos,
                     rot);
-                multiplicity.name = newDevice.name + ":multiText";
+                multiplicity.name = offSet + newDevice.name + ":multiText";
                 multiplicity.text = "9...*";
 
                 process.AddComponent<BoxCollider>();
@@ -126,14 +128,13 @@ public class RenderDevices : MonoBehaviour
             }
 
         }
-
+        }
     }
 
     void PlaceProcessBoxes(Device device, Vector3 pos, GameObject newDevice)
     {
         foreach (string process in device.GetProcesses())
         {
-
                 //Creating the processes
                 GameObject newProcess = (GameObject)Instantiate(
                     processPrefab,

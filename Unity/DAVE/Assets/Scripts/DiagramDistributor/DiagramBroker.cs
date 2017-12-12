@@ -57,8 +57,9 @@ public class DiagramBroker : MonoBehaviour
         else if (sequenceDiagramQueue.Count > 0)
         {
             JsonParser parser = new JsonParser(sequenceDiagramQueue.Dequeue());
-            StartCoroutine(RenderDeploymentConnections(parser.ParseSequence()));
-            PlaceSSD(parser.ParseSequence(), int.Parse(parser.GetMeta()));
+            var offset = int.Parse(parser.GetMeta());
+            StartCoroutine(RenderDeploymentConnections(parser.ParseSequence(), offset));
+            PlaceSSD(parser.ParseSequence(), offset);
         }
     }
 
@@ -82,17 +83,17 @@ public class DiagramBroker : MonoBehaviour
             // Checks if payload is a valid JSON and of valid type
             if (IsValidJson(payload) && IsValidDiagramType(payload))
             {
-                Debug.Log("Class diagram JSON received, verified and queued");
                 classDiagramQueue.Enqueue(payload);             // Adds payload (JSON) to the queue
+                Debug.Log("Class diagram JSON received, verified and queued");
             }
         }
         else if (e.Topic == coordinator.GetParentTopic() + "/deployment_diagram")
         {
             String payload = System.Text.Encoding.UTF8.GetString(e.Message);
-            Debug.Log("Deployment diagram JSON received, verified and queued");
             if (IsValidJson(payload) && IsValidDiagramType(payload))
             {
                 deploymentDiagramQueue.Enqueue(payload);
+                Debug.Log("Deployment diagram JSON received, verified and queued");
             }
         }
         else if(e.Topic == coordinator.GetParentTopic() + "/sequence_diagram")
@@ -109,6 +110,8 @@ public class DiagramBroker : MonoBehaviour
             if (IsValidJson(payload) && IsValidDiagramType(payload))
             {
                 sequenceDiagramQueue.Enqueue(payload);
+                Debug.Log("Sequence diagram JSON received, verified and queued");
+
             }
         }
     }
@@ -152,12 +155,12 @@ public class DiagramBroker : MonoBehaviour
         gameObject.GetComponent<RenderDevices>().CreateDevices(JSONDeployment, offset);
     }
 
-    private IEnumerator RenderDeploymentConnections(JSONSequence JSONSequence)
+    private IEnumerator RenderDeploymentConnections(JSONSequence JSONSequence, float offset)
     {
         print(Time.time);
         yield return new WaitForSeconds(1.5f);
         print(Time.time);
-        gameObject.GetComponent<FindDeploymentConnections>().NewMessage(JSONSequence);
+        gameObject.GetComponent<FindDeploymentConnections>().NewMessage(JSONSequence, offset);
     }
 
 
