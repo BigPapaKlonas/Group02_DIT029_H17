@@ -45,7 +45,7 @@ public class PublishDiagram : MonoBehaviour
 
                 coordinator.Publish(
                 "root/" + coordinator.GetInstructor() + "/" +
-                coordinator.GetRoom() + "/" + jsonStruct.diagramType,
+                coordinator.GetRoom() + "/" + jsonStruct.diagramType + "/diagram",
                 jsonStruct.json,
                 true);
             }

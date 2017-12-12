@@ -69,37 +69,22 @@ public class SSDSpawner : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
 
-        if (newSystem)
-        {
+        if (newSystem) {
             SpawnSystem();
             newSystem = false;
-        }
-        else if (newActivation)
-        {
+        } else if (newActivation) {
             SpawnActivation();
             newActivation = false;
-        }
-        else if (newMessage)
-        {
+        } else if (newMessage) {
             SpawnMsg();
             newMessage = false;
-        }
-        else if (endAct)
-        {
+        } else if (endAct) {
             GameObject.Find(message + systemName).SendMessage("Stop");
             endAct = false;
         }
-        else if (true)
-        {
-            int it = transform.childCount;
-            while (it > 0)
-            {
 
-            }
-        }
     }
     private void SpawnActivation()
     {

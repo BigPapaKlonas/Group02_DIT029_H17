@@ -95,7 +95,7 @@ public class DiagramBroker : MonoBehaviour
                 deploymentDiagramQueue.Enqueue(payload);
             }
         }
-        else if(e.Topic == coordinator.GetParentTopic() + "/sequence_diagram")
+        else if(e.Topic == coordinator.GetParentTopic() + "/sequence_diagram/diagram")
         {
             String payload = System.Text.Encoding.UTF8.GetString(e.Message);
             string[] array = payload.Split(' ');
