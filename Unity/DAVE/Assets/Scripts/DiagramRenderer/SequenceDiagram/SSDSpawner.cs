@@ -92,14 +92,7 @@ public class SSDSpawner : MonoBehaviour
             GameObject.Find(message + systemName).SendMessage("Stop");
             endAct = false;
         }
-        else if (true)
-        {
-            int it = transform.childCount;
-            while (it > 0)
-            {
-
-            }
-        }
+        
     }
     private void SpawnActivation()
     {
