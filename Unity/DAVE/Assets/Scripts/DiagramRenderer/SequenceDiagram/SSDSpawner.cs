@@ -159,7 +159,8 @@ public class SSDSpawner : MonoBehaviour
         mT.target = emptyGO.transform.position;
         mT.origin = empty.transform.position;
         mT.method = message;
-
+        mT.to = to;
+        mT.from = from;
 
 
     }
