@@ -30,6 +30,9 @@ public class MessageText : MonoBehaviour {
             distanceToSequence = distanceBetween.x + 10;
         }
 
+        to = to.Split(':')[0];
+        from = from.Split(':')[0];
+
         Debug.Log("logmsg" + "*"+ midPoint.y + "*" + midPoint.z + "*" + distanceToSequence + "*" + 
             "To: " + to + "\r\nFrom: " + from + "\r\nMessage: " + method);
     }
