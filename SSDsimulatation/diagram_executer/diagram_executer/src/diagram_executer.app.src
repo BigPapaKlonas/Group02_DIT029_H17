@@ -1,0 +1,17 @@
+{application, diagram_executer,
+ [{description, "An OTP application"},
+  {vsn, "0.1.0"},
+  {registered, []},
+  {mod, { diagram_executer_app, []}},
+  {applications,
+   [kernel,
+    stdlib,
+    emqttc
+   ]},
+  {env,[]},
+  {modules, []},
+
+  {maintainers, []},
+  {licenses, ["Apache 2.0"]},
+  {links, []}
+ ]}.

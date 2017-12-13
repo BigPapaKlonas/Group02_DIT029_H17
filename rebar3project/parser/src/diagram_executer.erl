@@ -14,7 +14,8 @@ terminate/2, code_change/3]).
                 nodelist, 
                 nodemap,
                 ssd,
-                mainroom}).
+                mainroom,
+                wholessd}).
 
 
 start(Room) ->
@@ -72,19 +73,31 @@ handle_info({publish, Topic, Payload}, S) when Topic =:= S#state.mainroom ->
     NodeListBinary = term_to_binary(Proc),
     %emqttc:publish(S#state.c, <<"root/processes">>, NodeListBinary),
     emqttc:unsubscribe(S#state.c, S#state.mainroom),
+    ParSSD = tl(hd(lists:reverse(tl(lists:reverse(WholeSSD))))),
+    LengthPar = integer_to_binary(length(ParSSD)),
+    if length(ParSSD) == 0 ->
+        Par = <<"nopar">>;
+        true ->
+            Par = <<"par">>
+        end,
     SSD = hd(hd(lists:reverse(tl(lists:reverse(WholeSSD))))),
-    io:format("SSD: ~n~p", [SSD]),
+    LengthWhole = integer_to_binary(length(ParSSD) + length(SSD)),
+    io:format("SSD: ~n~p", [ParSSD]),
     Room = S#state.mainroom,
     CoordRoom = <<Room/binary, <<"/">>/binary, <<"coordinator">>/binary>>,
     Nodes = maps:new(),
     State=S#state{topic=CoordRoom,room=Room,nodelist=NodeList,nodemap=Nodes,ssd=SSD},
+    Amount = integer_to_binary(length(NodeList)),
+    SpawnMsg = << Par/binary, <<" ">>/binary, Amount/binary, <<" ">>/binary, LengthPar/binary, <<" ">>/binary, LengthWhole/binary>>,
+    State2=State#state{wholessd=SpawnMsg},
     emqttc:subscribe(State#state.c, CoordRoom),
-    Amount = integer_to_binary(length(State#state.nodelist)),
     Request = <<CoordRoom/binary, <<" ">>/binary, Amount/binary>>,
     io:format("Request: ~n~p", [Request]),
     io:format("~nCoordRoom: ~n~p", [State#state.topic]),
     emqttc:publish(State#state.c, <<"root/initiate">>, Request),
-    {noreply, State};
+    timer:sleep(5000),
+    emqttc:publish(State2#state.c, Room, State2#state.wholessd),
+    {noreply, State2};
 
     
 handle_info(Info, State) ->
@@ -112,7 +125,6 @@ create_node(S, Worker) when length(S#state.nodelist) =:= 1 ->
     Uid = binary:list_to_bin(lists:flatten(NodeNumber)),
     BinName = <<ActName/binary, <<":">>/binary, Uid/binary>>,
     Room = S#state.room,
-    emqttc:publish(S#state.c, Room, <<"40 size">>),
     UserRoom = <<Room/binary, <<"/">>/binary, BinName/binary>>,
     emqttc:publish(S#state.c, UserRoom, <<"initial">>, [{qos, 1}, {retain, true}]),
     emqttc:publish(S#state.c, Worker, UserRoom, [{qos, 1}, {retain, true}]),

@@ -13,6 +13,18 @@ public class SSDSpawner : MonoBehaviour
 
     //Parelellism
     public GameObject parBoxPrefab;
+    public bool parAct;
+    public bool parBox;
+    public bool parMessage;
+    public bool parStop;
+    
+    public int width;
+    public int parAmount;
+    public string parSystem;
+    public string parTo;
+    public string parFrom;
+    public float parY;
+    public string parMsg;
 
     //Systemboxes
     public GameObject systemBoxPrefab;
@@ -27,8 +39,8 @@ public class SSDSpawner : MonoBehaviour
     public GameObject messageText;
 
     public bool newMessage;
-    public string from;
-    public string to;
+    public string normFrom;
+    public string normTo;
     public string message;
 
 
@@ -75,25 +87,37 @@ public class SSDSpawner : MonoBehaviour
             SpawnSystem();
             newSystem = false;
         } else if (newActivation) {
-            SpawnActivation();
+            SpawnActivation(message, systemName, y, false);
             newActivation = false;
         } else if (newMessage) {
-            SpawnMsg();
+            SpawnMsg(normTo, normFrom, message, y, false);
             newMessage = false;
         } else if (endAct) {
             GameObject.Find(message + systemName).SendMessage("Stop");
             endAct = false;
+        } else if (parMessage) {
+            SpawnMsg(parTo, parFrom, parMsg, parY, true);
+            parMessage = false;
+        } else if (parAct) {
+            SpawnActivation(parMsg, parSystem, parY, true);
+            parAct = false;
+        } else if (parStop) {
+            GameObject.Find(parMsg + systemName).SendMessage("Stop");
+            parStop = false;
+        } else if (parBox) {
+            SpawnParalellism(width, parAmount);
+            parBox = false;
         }
 
     }
-    private void SpawnActivation()
+    private void SpawnActivation(string msg, string system, float actY, bool isPar)
     {
 
-        systemBox = GameObject.Find(systemName);
+        systemBox = GameObject.Find(system);
 
         Vector3 positioning = new Vector3(
              systemBox.transform.position.x,
-             y - 1,
+             actY,
              systemBox.transform.position.z
            );
 
@@ -104,13 +128,18 @@ public class SSDSpawner : MonoBehaviour
         );
 
         ProcessAnimation p = activationBoxGO.GetComponent<ProcessAnimation>();
-        p.name = message + systemName;
+        p.name = msg + systemName;
         p.current = systemBox;
         p.room = room;
+        
+        if(isPar){
+            
+        }
+
 
     }
 
-    private void SpawnMsg()
+    private void SpawnMsg(string to, string from, string msg, float msgY, bool isPar)
     {
 
         next = GameObject.Find(to);
@@ -118,7 +147,7 @@ public class SSDSpawner : MonoBehaviour
 
         thisPos = new Vector3(
           current.transform.position.x,
-          y,
+          msgY,
           current.transform.position.z
         );
         GameObject empty = (GameObject)Instantiate(
@@ -134,7 +163,7 @@ public class SSDSpawner : MonoBehaviour
         MessageAnimation m = messageGO.GetComponent<MessageAnimation>();
         nextPos = new Vector3(
           next.transform.position.x,
-          y,
+          msgY,
           next.transform.position.z
         );
         GameObject emptyGO = (GameObject)Instantiate(emptyTarget, nextPos, this.transform.rotation);
@@ -142,6 +171,7 @@ public class SSDSpawner : MonoBehaviour
         m.origin = empty.transform;
         m.destination = emptyGO.transform;
         m.room = room;
+        m.isPar = isPar;
 
         m.current = next;
 
@@ -150,12 +180,12 @@ public class SSDSpawner : MonoBehaviour
         MessageText mT = messageTextGO.GetComponent<MessageText>();
         mT.target = emptyGO.transform.position;
         mT.origin = empty.transform.position;
-        mT.method = message;
+        mT.method = msg;
         mT.to = to;
         mT.from = from;
-
-
-
+        
+       
+        
     }
 
     private void SpawnSystem()
@@ -176,17 +206,18 @@ public class SSDSpawner : MonoBehaviour
 
     private void SpawnParalellism(int zSize, int parCount) 
     {
-        Vector3 position = new Vector3(myPos.x, y - 1, myPos.z);
+        Vector3 position = new Vector3(myPos.x, y - 8, myPos.z + zSize + 1);
+        Debug.Log(position);
         GameObject parBox = (GameObject)Instantiate(
           parBoxPrefab,
           position,
           this.transform.rotation
         );
 
-        parBox.transform.localScale += new Vector3(0, y - 1, zSize);
+        parBox.transform.localScale += new Vector3(0, (y - 1)/2, (zSize * 3));
         RenderParallelBox line = parBox.GetComponent<RenderParallelBox>();
         line.cube = parBox.GetComponent<MeshFilter>().mesh;
-        int positionY = 0;
+        int positionY = 10;
         while(parCount > 0) 
         {
             positionY += 5;

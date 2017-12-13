@@ -37,11 +37,10 @@ public class PositionParallelBox : MonoBehaviour
     {
         FindMaxMin(myObjects);
 
-        parallelBox.position = Vector3.Lerp(maxObject, minObject, 0.5f);
+ 
 
         // Adding extra size to the max object to make the parallel box go outside the activation boxes
         maxObject = new Vector3(maxObject.x + 1f, maxObject.y + 1f, maxObject.z + 1f);
-        parallelBox.localScale = maxObject - minObject;
     }
 
     /*

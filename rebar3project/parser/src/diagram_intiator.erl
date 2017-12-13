@@ -39,7 +39,7 @@ init(_Args) ->
                                  {reconnect, 3},
                                  {logger, {console, info}},
                                  {keepalive, 0}]),
-    {ok, C}.
+    {ok, {C, []}}.
 
 handle_call(stop, _From, State) ->
     {stop, normal, ok, State};
@@ -58,21 +58,27 @@ handle_cast(_Msg, State) ->
 %    {noreply, C};
 
 %% Receive Messages
-handle_info({publish, Topic, Room}, C) ->
+handle_info({publish, <<"root/newdiagram">>, Room}, {C, S}) ->
     io:format("~n Room ~n~p", [Room]),
-    diagram_executer:start(Room),
-    {noreply, C};
+    emqttc:publish(C, hd(S), Room),
+    {noreply, {C, tl(S)}};
 
 %% Client connected
-handle_info({mqttc, C, connected}, C) ->
+handle_info({mqttc, C, connected}, {C, S}) ->
     io:format("Client ~p is connected~n", [C]),
     emqttc:subscribe(C, <<"root/newdiagram">>),
-    {noreply, C};
+    emqttc:subscribe(C, <<"root/newdiagram/workers">>),
+    {noreply, {C, S}};
 
 %% Client disconnected
-handle_info({mqttc, C,  disconnected}, C) ->
+handle_info({mqttc, C,  disconnected}, {C, S}) ->
     io:format("Client ~p is disconnected~n", [C]),
-    {noreply, C};
+    {noreply, {C, S}};
+
+handle_info({publish, <<"root/newdiagram/workers">>, Payload}, {C, S}) ->
+    NewState = [Payload] ++ S,
+    io:format("NewState: ~n~p", [NewState]),
+    {noreply, {C, NewState}};
 
 handle_info(_Info, State) ->
     {noreply, State}.

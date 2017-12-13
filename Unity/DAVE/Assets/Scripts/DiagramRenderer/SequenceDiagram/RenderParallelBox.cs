@@ -14,11 +14,10 @@ public class RenderParallelBox : MonoBehaviour {
     public void AddLine(float position, Transform parallelBox, int width)
     {
         Transform papaTransform = parallelBox;
-        parallelBox.position = new Vector3(0, 0, 0);
 
         float positionZ = -0.4f;
         float positionZBack = -0.4f;
-        for (int i = 0; i <= width + 1; i++)
+        for (int i = 0; i <= 11; i++)
         {
             GameObject line = new GameObject("Line");
             line.transform.SetParent(parallelBox, true);
@@ -45,13 +44,13 @@ public class RenderParallelBox : MonoBehaviour {
                 positionZ += 0.2f;
             }
 
-            if (i == width)
+            if (i == 10)
             {
                 line.transform.localScale = new Vector3(0.025f, 0.015f, 0.6f);
                 line.transform.localRotation = Quaternion.Euler(0, 90, 0);
                 line.transform.localPosition = new Vector3(0, 0, 0.5f);
             }
-            else if (i == width + 1)
+            else if (i == 11)
             {
                 line.transform.localScale = new Vector3(0.025f, 0.015f, 0.6f);
                 line.transform.localRotation = Quaternion.Euler(0, 90, 0);
@@ -67,6 +66,6 @@ public class RenderParallelBox : MonoBehaviour {
             line.transform.position = new Vector3(line.transform.position.x, 
                 position + 0.1f, line.transform.position.z);
         }
-        parallelBox = papaTransform;
+        
     }
 }

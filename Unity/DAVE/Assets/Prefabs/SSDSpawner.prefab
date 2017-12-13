@@ -56,6 +56,19 @@ MonoBehaviour:
   y: 0
   ssdControllerPrefab: {fileID: 1512339163126104, guid: e2c7f85277b07d94f978ffe5e470d76a,
     type: 2}
+  parBoxPrefab: {fileID: 1697540776048424, guid: 987401dcfc8e43c4cafeb226f74634b7,
+    type: 2}
+  parAct: 0
+  parBox: 0
+  parMessage: 0
+  parStop: 0
+  width: 0
+  parAmount: 0
+  parSystem: 
+  parTo: 
+  parFrom: 
+  parY: 0
+  parMsg: 
   systemBoxPrefab: {fileID: 1550830525836188, guid: 5dfe543d50a65dc4fb869305d8a4b0a1,
     type: 2}
   newSystem: 0
@@ -68,8 +81,8 @@ MonoBehaviour:
   messageText: {fileID: 1437364483429642, guid: adf0234177d97b24aa23c4dc7a80ac74,
     type: 2}
   newMessage: 0
-  from: 
-  to: 
+  normFrom: 
+  normTo: 
   message: 
   activationBoxPrefab: {fileID: 1029934179124762, guid: 16c0d38c4dc59ce488280852a78131e5,
     type: 2}

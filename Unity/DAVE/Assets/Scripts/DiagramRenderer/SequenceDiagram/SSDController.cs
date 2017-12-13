@@ -20,6 +20,12 @@ public class SSDController : MonoBehaviour {
     private string reciever;
     private string message;
     private bool awaitMessage;
+
+    private string sendeePar;
+    private string recieverPar;
+    private string messagePar;
+    private bool awaitMessagePar;
+
     private MqttClient client;
 
 
@@ -69,12 +75,38 @@ public class SSDController : MonoBehaviour {
             message = array[3];
         } else if (array[1] == "recievedmessage" && awaitMessage) {
             spawner.message = message;
-            spawner.from = sendee;
-            spawner.to = reciever;
+            spawner.normFrom = sendee;
+            spawner.normTo = reciever;
             spawner.newMessage = true;
             awaitMessage = false;
         } else if (array[1] == "finished") {
 
+        } else if (array[1] == "nopar") {
+            spawner.y = float.Parse(array[3]) * 2 + 50;
+            spawner.parAmount = int.Parse(array[2]);
+            spawner.width = int.Parse(array[1]);
+            spawner.parBox = false;
+        } else if (array[0] == "par") {
+            spawner.y = float.Parse(array[3]) + 12;
+            spawner.parAmount = int.Parse(array[2]);
+            spawner.width = int.Parse(array[1]);
+            spawner.parBox = true;
+        } else if (array[1] == "parpreparemessage") {
+            spawner.parSystem = array[0];
+            spawner.parMsg = array[3];
+            spawner.parAct = true;
+        } else if (array[1] == "parsentmessage") {
+            spawner.parStop = true;
+            awaitMessagePar = true;
+            sendeePar = array[0];
+            recieverPar = array[2];
+            messagePar = array[3];
+        } else if (array[1] == "parrecievedmessage" && awaitMessage) {
+            spawner.parMsg = messagePar;
+            spawner.parFrom = sendeePar;
+            spawner.parTo = recieverPar;
+            spawner.parMessage = true;
+            awaitMessagePar = false;
         }
     }
 

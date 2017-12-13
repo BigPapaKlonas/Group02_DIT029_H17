@@ -16,6 +16,7 @@ public class ProcessAnimation : MonoBehaviour {
     Vector3 nextPos;
     public GameObject messageText;
     public float y;
+    public bool isPar;
 
     public string room;
 
@@ -57,7 +58,13 @@ public class ProcessAnimation : MonoBehaviour {
             y = y + 0.1f;
             GameObject go = GameObject.Find(room);
             spawner = (SSDSpawner)go.GetComponent(typeof(SSDSpawner));
-            spawner.y = y;
+            
+            if(isPar){
+                spawner.parY = y;
+                isPar = false;
+            }else{
+               spawner.y = y; 
+            }
 
         }
 	}

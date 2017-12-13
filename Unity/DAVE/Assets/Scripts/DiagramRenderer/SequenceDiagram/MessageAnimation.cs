@@ -21,6 +21,7 @@ public class MessageAnimation : MonoBehaviour {
     public Vector3 distThisFrame;
     GameObject arrowhead;
     public bool left = false;
+    public bool isPar;
 
     public string room;
 
@@ -89,6 +90,8 @@ public class MessageAnimation : MonoBehaviour {
         
         p.current = current;
         p.room = room;
+        p.isPar = isPar;
+        isPar = false;
        
         
         
