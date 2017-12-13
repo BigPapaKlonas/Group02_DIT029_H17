@@ -5,18 +5,23 @@ using UnityEngine;
 
 public class RenderConnections : MonoBehaviour
 {
+    private ArrayList processes = new ArrayList();
+    private ArrayList deviceList = new ArrayList();
+    private ArrayList devices;
 
-    ArrayList processes = new ArrayList();
-    ArrayList deviceList = new ArrayList();
     public Material connnectionMaterial;
-    ArrayList devices;
-    public void CreateConnections(ArrayList msgs)
-    {
-        devices = RenderDevices.Devices;
-        int nrOfProcesses = 0;
-        foreach (Device d in devices)
-            nrOfProcesses += d.GetProcesses().Count;
 
+    public void CreateConnections(ArrayList msgs, float offSet)
+    {
+        devices = GetComponentInChildren<RenderDevices>().Devices;
+        int nrOfProcesses = 0;
+        foreach (Device d in devices) {
+            if (d.GetOffset() == offSet)
+            {
+                nrOfProcesses += d.GetProcesses().Count;
+           
+            }
+        }
         foreach (FindDeploymentConnections.MessageData msg in msgs)
         {
 
@@ -24,38 +29,39 @@ public class RenderConnections : MonoBehaviour
             int j = processes.IndexOf(msg.to);
             if (i < 0)
             {
-                processes.Add( msg.from);
-                deviceList.Add(FindDevice(msg.from));
+                processes.Add(msg.from);
+                deviceList.Add(FindDevice(msg.from, offSet));
             }
 
             if (j < 0)
             {
                 processes.Add(msg.to);
-                deviceList.Add(FindDevice(msg.to));
+                deviceList.Add(FindDevice(msg.to, offSet));
             }
         }
 
         if (nrOfProcesses == processes.Count)
         {
             foreach (FindDeploymentConnections.MessageData msg in msgs)
-                DrawConnection(FindDevice(msg.from).GetName(), FindDevice(msg.to).GetName());
+                DrawConnection(FindDevice(msg.from, offSet).GetName(), FindDevice(msg.to, offSet).GetName(), offSet);
         }
     }
-    public Device FindDevice(string pr)
+    public Device FindDevice(string pr, float offSet)
     {
         foreach(Device d in devices)
         {
-            if (d.Contains(pr))
+            if (d.GetOffset() == offSet && d.Contains(pr))
                 return d;
         }
         return null;
     }
 
-    void DrawConnection(string from, string to)
+    void DrawConnection(string from, string to, float offSet)
     {
 
-        GameObject df = GameObject.Find(from);
-        GameObject dt = GameObject.Find(to);
+        GameObject df = GameObject.Find(offSet + from);
+        GameObject dt = GameObject.Find(offSet + to);
+        //Debug.Log("From device: " + df.name + " To device: " + dt.name + "With offset being:" + offSet);
         GameObject connObject = new GameObject("connObject");
         LineRenderer connection = connObject.AddComponent<LineRenderer>();
         connection.material = connnectionMaterial;

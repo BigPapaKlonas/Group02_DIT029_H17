@@ -29,7 +29,6 @@ public class DisplayStudents : MonoBehaviour
 
     private void OnClick()
     {
-        Debug.Log("logmsg" + "*" + "43" + "*" + "34" + "*" + "mmmmmmm miami"); // For debug
         showStudentsWindow = !showStudentsWindow; // // Disables/enables the students window
 
         if (showStudentsWindow)

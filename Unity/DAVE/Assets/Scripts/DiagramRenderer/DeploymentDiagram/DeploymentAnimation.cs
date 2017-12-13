@@ -55,10 +55,10 @@ public class DeploymentAnimation : MonoBehaviour {
             FromS = From;
             ToS = To;
             // Get the name of the devices the processes are mapped to
-            from = GetComponent<RenderConnections>().FindDevice(FromS);
-        to = GetComponent<RenderConnections>().FindDevice(ToS);
-        // Find the gameobject with the name of the device
-        fromDevice = GameObject.Find(from.GetName());
+            // from = GetComponent<RenderConnections>().FindDevice(FromS);
+            // to = GetComponent<RenderConnections>().FindDevice(ToS);
+            // Find the gameobject with the name of the device
+            fromDevice = GameObject.Find(from.GetName());
         toDevice = GameObject.Find(to.GetName());
 
         // Create the communication light in the posistion of the device sending the message

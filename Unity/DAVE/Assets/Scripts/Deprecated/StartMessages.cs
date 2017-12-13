@@ -96,7 +96,7 @@ public class StartMessages : MonoBehaviour
                 MessageData[] tmpData = new MessageData[messageDataList.Count];
                 messageDataList.CopyTo(tmpData, 0);
                 Debug.Log("I run parallelism \n");
-                GetComponent<RenderConnections>().CreateConnections(new ArrayList(tmpData));
+                //GetComponent<RenderConnections>().CreateConnections(new ArrayList(tmpData));
                 StartMessageChain(destList, offset);
                 StartParMessageChain(destListPar, offset);
                 //offset += json.Diagram.Content.Count + 0.5f;
@@ -141,7 +141,7 @@ public class StartMessages : MonoBehaviour
                 }
                 MessageData[] tmpData = new MessageData[messageDataList.Count];
                 messageDataList.CopyTo(tmpData, 0);
-                GetComponent<RenderConnections>().CreateConnections(new ArrayList(tmpData));
+                ////GetComponent<RenderConnections>().CreateConnections(new ArrayList(tmpData));
                 StartMessageChain(destList, 0f);
             }
         }

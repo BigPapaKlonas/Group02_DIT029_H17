@@ -264,7 +264,6 @@ public class CameraModeController : MonoBehaviour
         // Showing cursor
         if (!cursorEnabled)
         {
-            Debug.Log("!cursorEnabled");
             cursorEnabled = true;
             Cursor.visible = true;
 
@@ -284,8 +283,6 @@ public class CameraModeController : MonoBehaviour
         // If swapping to birdsview enable movement controll
         else if (cursorEnabled && eagleVision)
         {
-            Debug.Log("cursorEnabled && eagleVision");
-
             // Change color depending on press
             cKeyImage.GetComponent<Image> ().color = Color.white;
 
@@ -298,8 +295,6 @@ public class CameraModeController : MonoBehaviour
         // If swapping to noClip disable camera orbit script
         else if (cursorEnabled && noClip)
         {
-            Debug.Log("cursorEnabled && noClip");
-
             // Change color depending on press
             cKeyImage.GetComponent<Image> ().color = Color.white;
 
@@ -320,8 +315,6 @@ public class CameraModeController : MonoBehaviour
 
             // Change color depending on press
             cKeyImage.GetComponent<Image> ().color = Color.white;
-
-            Debug.Log("else");
 
             cursorEnabled = false;
             Cursor.visible = false;

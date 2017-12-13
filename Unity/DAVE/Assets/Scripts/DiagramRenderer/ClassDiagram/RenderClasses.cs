@@ -50,8 +50,6 @@ public class RenderClasses : MonoBehaviour
                     houseRotation[Random.Range(0, houseRotation.Count)])
             );
 
-            Debug.Log("Pos " + classHouse.transform.position);
-
             //Find if new house object collides with an existing one
             FindNewHousePosition(houseList, classHouse);
 
