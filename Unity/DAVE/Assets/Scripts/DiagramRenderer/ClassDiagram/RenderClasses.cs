@@ -36,7 +36,7 @@ public class RenderClasses : MonoBehaviour
 
             // Initial position for each new house object
             Vector3 positioning = new Vector3(
-                Random.Range(houseOffset, houseOffset + 30),
+                Random.Range(-110, -60),
                 0,
                 Random.Range(houseOffset, houseOffset + 30)    
             );
@@ -71,9 +71,6 @@ public class RenderClasses : MonoBehaviour
             {
                 AddFields(classHouse.transform, classes.Fields);
             }
-
-            // Increase offset for next loop iteration so houses don't overlap
-            offset += 10;
         }
     }
 
@@ -102,7 +99,7 @@ public class RenderClasses : MonoBehaviour
                 // Adding 6 (house wall length) to collision Vector3, 
                 // so the house don't intersect
                 newHouse.transform.position = new Vector3(
-                    collidePosition.x + 6,  
+                    Random.Range(-110, -60),  
                     0,
                     collidePosition.z + 6
                 );

@@ -57,7 +57,8 @@ public class DiagramBroker : MonoBehaviour
         else if (sequenceDiagramQueue.Count > 0)
         {
             JsonParser parser = new JsonParser(sequenceDiagramQueue.Dequeue());
-            StartCoroutine(RenderDeploymentConnections(parser.ParseSequence()));
+            var offset = int.Parse(parser.GetMeta());
+            StartCoroutine(RenderDeploymentConnections(parser.ParseSequence(), offset));
             PlaceSSD(parser.ParseSequence(), int.Parse(parser.GetMeta()), parser.GetSSDRoom());
         }
     }
@@ -147,12 +148,10 @@ public class DiagramBroker : MonoBehaviour
         gameObject.GetComponent<RenderDevices>().CreateDevices(JSONDeployment, offset);
     }
 
-    private IEnumerator RenderDeploymentConnections(JSONSequence JSONSequence)
+    private IEnumerator RenderDeploymentConnections(JSONSequence JSONSequence, float offset)
     {
-        print(Time.time);
-        yield return new WaitForSeconds(1.5f);
-        print(Time.time);
-        gameObject.GetComponent<FindDeploymentConnections>().NewMessage(JSONSequence);
+        yield return new WaitForSeconds(1.5f);   
+        gameObject.GetComponent<FindDeploymentConnections>().NewMessage(JSONSequence, offset);
     }
 
 

@@ -31,7 +31,7 @@ public class DiagramSelector : MonoBehaviour
         offset = -110;
 		if (SceneManager.GetActiveScene ().name == "Main") 
 		{
-			offset += 35;
+			offset += 40;
 			button.GetComponent<Button> ().interactable = false;
 		}
     }
@@ -50,7 +50,7 @@ public class DiagramSelector : MonoBehaviour
             }
             
         }
-        offset += 35;
+        offset += 40;
 
         // Only loads the "Main" scene in case file counter is not zero and active scene is "Start"
         if (SceneManager.GetActiveScene().name == "Start" && fileCounter != 0)
