@@ -32,11 +32,10 @@ public class PublishDiagram : MonoBehaviour
             var jsonStruct = coordinator.GetSelectedJsons().Dequeue();
 
             // If the diagram is a sequence diagram, it is retained for the simulation to work
-            if (jsonStruct.diagramType == "sequence_diagram")
-            {
-
+            if (jsonStruct.diagramType == "sequence_diagram") {
+                JsonParser parser = new JsonParser(jsonStruct.json);
                 string ssdRoom = "root/" + coordinator.GetInstructor() + "/" +
-                    coordinator.GetRoom() + "/sequence_diagram";
+                    coordinator.GetRoom() + "/sequence_diagram" + parser.GetSSDRoom();
                 coordinator.Publish(
                     "root/newdiagram",
                     ssdRoom.ToLower(),
@@ -44,18 +43,25 @@ public class PublishDiagram : MonoBehaviour
                 );
 
                 coordinator.Publish(
-                "root/" + coordinator.GetInstructor() + "/" +
-                coordinator.GetRoom() + "/" + jsonStruct.diagramType + "/diagram",
+                ssdRoom.ToLower(),
                 jsonStruct.json,
                 true);
-            }
 
-            coordinator.Publish(
-            "root/" + coordinator.GetInstructor() + "/" +
-            coordinator.GetRoom() + "/" + jsonStruct.diagramType,
-            jsonStruct.json,
-            false
-            );
+                coordinator.Publish(
+                "root/" + coordinator.GetInstructor() + "/" +
+                coordinator.GetRoom() + "/" + jsonStruct.diagramType,
+                jsonStruct.json,
+                false);
+
+            } else {
+
+                coordinator.Publish(
+                "root/" + coordinator.GetInstructor() + "/" +
+                coordinator.GetRoom() + "/" + jsonStruct.diagramType,
+                jsonStruct.json,
+                false
+                );
+            }
         }
 
 		if (maxUploads == false) 

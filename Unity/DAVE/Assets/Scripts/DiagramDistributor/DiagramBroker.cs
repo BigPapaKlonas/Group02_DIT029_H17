@@ -58,7 +58,7 @@ public class DiagramBroker : MonoBehaviour
         {
             JsonParser parser = new JsonParser(sequenceDiagramQueue.Dequeue());
             StartCoroutine(RenderDeploymentConnections(parser.ParseSequence()));
-            PlaceSSD(parser.ParseSequence(), int.Parse(parser.GetMeta()));
+            PlaceSSD(parser.ParseSequence(), int.Parse(parser.GetMeta()), parser.GetSSDRoom());
         }
     }
 
@@ -95,28 +95,23 @@ public class DiagramBroker : MonoBehaviour
                 deploymentDiagramQueue.Enqueue(payload);
             }
         }
-        else if(e.Topic == coordinator.GetParentTopic() + "/sequence_diagram/diagram")
+        else if(e.Topic == coordinator.GetParentTopic() + "/sequence_diagram")
         {
             String payload = System.Text.Encoding.UTF8.GetString(e.Message);
             string[] array = payload.Split(' ');
-            if(array[1] == "size")
-            {
-                ssdInit.size = int.Parse(array[0]);
-                ssdInit.spawnSpawner = true;
-
-            }
 
             if (IsValidJson(payload) && IsValidDiagramType(payload))
             {
                 sequenceDiagramQueue.Enqueue(payload);
+              
             }
         }
     }
 
-    public void PlaceSSD(JSONSequence JSONSeq, float offset)
+    public void PlaceSSD(JSONSequence JSONSeq, float offset, string room)
     {
         SSDInit init = ssdSpawnerSpawner.GetComponent<SSDInit>();
-        init.SpawnSSDSpawner(offset, topic + "/sequence_diagram");
+        init.SpawnSSDSpawner(offset, topic + "/sequence_diagram", room);
     }
 
     public void RenderClassDiagram(JSONClass JSONClass, float houseOffset)

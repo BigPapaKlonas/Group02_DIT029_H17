@@ -34,8 +34,6 @@ public class SSDSpawner : MonoBehaviour
     private GameObject next;
     private GameObject current;
 
-    public string uName;
-
     //Activationboxes
     public GameObject activationBoxPrefab;
     public bool newActivation;
@@ -47,8 +45,8 @@ public class SSDSpawner : MonoBehaviour
     {
 
         size = 15;
-        uName = room + Guid.NewGuid().ToString();
-        this.name = uName;
+        
+        this.name = room;
 
 
         myPos = this.transform.position;
@@ -63,7 +61,6 @@ public class SSDSpawner : MonoBehaviour
 
         SSDController ssdController = ssdControllerGO.GetComponent<SSDController>();
         ssdController.room = room;
-        ssdController.uName = uName;
 
 
     }
@@ -106,7 +103,7 @@ public class SSDSpawner : MonoBehaviour
         ProcessAnimation p = activationBoxGO.GetComponent<ProcessAnimation>();
         p.name = message + systemName;
         p.current = systemBox;
-        p.room = uName;
+        p.room = room;
 
     }
 
@@ -141,7 +138,7 @@ public class SSDSpawner : MonoBehaviour
 
         m.origin = empty.transform;
         m.destination = emptyGO.transform;
-        m.room = uName;
+        m.room = room;
 
         m.current = next;
 

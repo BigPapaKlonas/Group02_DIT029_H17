@@ -99,12 +99,20 @@ public class DiagramSelector : MonoBehaviour
             {
                 JsonParser parser = new JsonParser(output);
                 output = parser.AddMetaToSequence(offset.ToString());
+                Debug.Log(output.ToString());
+                if (IsSSD(output)) 
+                {
+                    JsonParser ssdParser = new JsonParser(output);
+                    output = ssdParser.AddMetaToSequence(Guid.NewGuid().ToString());
+                    Debug.Log("adding to meta");
+                }
                 //parser = new JsonParser(output);
                 Debug.Log(output.ToString());
                 // Adds the JSON diagram to the queue of strings to be ready to be uploaded
                 ConnectionManager.coordinator.AddSelectedJson(output);
                 // Coroutine for uploading data to Database
                 StartCoroutine(Insert());
+                
             }
             else
                 Debug.Log("Invalid type! Not a sequence, class or sequence diagram");
@@ -186,5 +194,12 @@ public class DiagramSelector : MonoBehaviour
         {
             return false;
         }
+    }
+    private bool IsSSD(string json) 
+    {
+        string diagramType = new JsonParser(json).GetDiagramType();
+        if (diagramType == "sequence_diagram")
+            return true;
+        return false;
     }
 }

@@ -8,6 +8,7 @@ using Newtonsoft.Json;
     private string JSONString;
     private string type;
     private string meta;
+    private string room;
 
     // JsonParser constructor.
     public JsonParser(string nJson)
@@ -20,6 +21,12 @@ using Newtonsoft.Json;
     {
         meta = JsonConvert.DeserializeObject<JSON>(JSONString, Converter.Settings).Meta.Extensions[0];
         return meta;
+    }
+
+    public string GetSSDRoom() 
+    {
+        room = JsonConvert.DeserializeObject<JSON>(JSONString, Converter.Settings).Meta.Extensions[1];
+        return room;
     }
 
     public string GetDiagramType()
