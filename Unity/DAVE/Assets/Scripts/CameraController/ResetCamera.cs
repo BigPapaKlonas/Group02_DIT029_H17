@@ -18,6 +18,6 @@ public class ResetCamera : MonoBehaviour
 
     private void OnClick()
     {
-        player.transform.position = new Vector3(0, 1, 0);
+        player.transform.position = new Vector3(-40, 1, -90);
     }
 }
