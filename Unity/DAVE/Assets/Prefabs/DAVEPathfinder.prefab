@@ -58,7 +58,7 @@ MonoBehaviour:
   HighestPoint: 10
   LowestPoint: -5
   MapStartPosition: {x: -120, y: -120}
-  MapEndPosition: {x: 120, y: 120}
+  MapEndPosition: {x: -50, y: 80}
   DisallowedTags:
   - Road
   - Wall
