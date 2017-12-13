@@ -11,6 +11,9 @@ public class SSDSpawner : MonoBehaviour
     public GameObject ssdControllerPrefab;
     private Vector3 myPos;
 
+    //Parelellism
+    public GameObject parBoxPrefab;
+
     //Systemboxes
     public GameObject systemBoxPrefab;
     public bool newSystem;
@@ -51,7 +54,7 @@ public class SSDSpawner : MonoBehaviour
 
         myPos = this.transform.position;
 
-        y = size + myPos.y - 1f;
+        y = size + myPos.y + 1;
 
         GameObject ssdControllerGO = (GameObject)Instantiate(
           ssdControllerPrefab,
@@ -90,7 +93,7 @@ public class SSDSpawner : MonoBehaviour
 
         Vector3 positioning = new Vector3(
              systemBox.transform.position.x,
-             y,
+             y - 1,
              systemBox.transform.position.z
            );
 
@@ -167,5 +170,26 @@ public class SSDSpawner : MonoBehaviour
         p = p + 3;
 
         box.GetComponentInChildren<TextMesh>().text = systemBoxName.Split(':')[0];
+    }
+
+    private void SpawnParalellism(int zSize, int parCount) 
+    {
+        Vector3 position = new Vector3(myPos.x, y - 1, myPos.z);
+        GameObject parBox = (GameObject)Instantiate(
+          parBoxPrefab,
+          position,
+          this.transform.rotation
+        );
+
+        parBox.transform.localScale += new Vector3(0, y - 1, zSize);
+        RenderParallelBox line = parBox.GetComponent<RenderParallelBox>();
+        line.cube = parBox.GetComponent<MeshFilter>().mesh;
+        int positionY = 0;
+        while(parCount > 0) 
+        {
+            positionY += 5;
+            line.AddLine(positionY, parBox.transform, zSize);
+            parCount--;
+        }
     }
 }

@@ -11,7 +11,7 @@ public class MessageAnimation : MonoBehaviour {
     public Transform destination;
     public float speed  = 50f;
     private bool sent;
-
+    public bool par;
     public GameObject activationBoxPrefab;
     public Queue destList;
     public GameObject current;
@@ -89,6 +89,7 @@ public class MessageAnimation : MonoBehaviour {
         
         p.current = current;
         p.room = room;
+       
         
         
 

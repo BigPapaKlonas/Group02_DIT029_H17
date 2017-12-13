@@ -234,7 +234,7 @@ public class StartMessages : MonoBehaviour
             RenderParallelBox line = parBox.GetComponent<RenderParallelBox>();
             line.cube = parBox.GetComponent<MeshFilter>().mesh;
 
-            line.AddLine(positionY, parBox.transform);
+            line.AddLine(positionY, parBox.transform, 11);
             contentCount--;
         }
     }
