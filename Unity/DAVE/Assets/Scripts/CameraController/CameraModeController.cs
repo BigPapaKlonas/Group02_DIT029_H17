@@ -252,7 +252,11 @@ public class CameraModeController : MonoBehaviour
         {
             playerObject.GetComponent<PlayerMovement>().enabled = false;
             cameraChild.GetComponent<MouseLook>().enabled = false;
-            cameraChild.GetComponent<CameraMover>().enabled = false;
+
+            if (cameraChild.gameObject.GetComponent<CameraMover>() != null)
+            {
+                Destroy(cameraChild.gameObject.GetComponent<CameraMover>());
+            }
         }
     }
 
