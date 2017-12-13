@@ -12,12 +12,8 @@ public class FindDeploymentConnections : MonoBehaviour
         public string message;
     }
 
-
     public static Queue<MessageData> messageDataList;
     MessageData messageData;
-    float length;
-    float contentCount;
-    float size;
 
     public void NewMessage(JSONSequence json, float offSet)
     {
@@ -25,27 +21,27 @@ public class FindDeploymentConnections : MonoBehaviour
         messageData = new MessageData();
 
 
-            foreach (var content in json.Diagram.Content)
+        foreach (var content in json.Diagram.Content)
+        {
+            foreach (var names in content.SubContent)
             {
-                foreach (var names in content.SubContent)
-                {
-                        string MessageString = "";
-                        foreach (var msg in names.Message)
-                            MessageString += msg + ", ";
-                        MessageString = MessageString.Remove(MessageString.Length - 2);
+                string MessageString = "";
+                foreach (var msg in names.Message)
+                    MessageString += msg + ", ";
+                MessageString = MessageString.Remove(MessageString.Length - 2);
 
-                        messageData.to = names.To;
-                        messageData.from = names.From;
-                        messageData.message = MessageString;
+                messageData.to = names.To;
+                messageData.from = names.From;
+                messageData.message = MessageString;
 
-                        messageDataList.Enqueue(messageData);
-                        messageDataList.Enqueue(messageData);
-                    
-                }
-                MessageData[] tmpData = new MessageData[messageDataList.Count];
-                messageDataList.CopyTo(tmpData, 0);
-                GetComponent<RenderConnections>().CreateConnections(new ArrayList(tmpData), offSet);
-            
+                messageDataList.Enqueue(messageData);
+                messageDataList.Enqueue(messageData);
+
+            }
+            MessageData[] tmpData = new MessageData[messageDataList.Count];
+            messageDataList.CopyTo(tmpData, 0);
+            GetComponent<RenderConnections>().CreateConnections(new ArrayList(tmpData), offSet);
+
         }
     }
 }
