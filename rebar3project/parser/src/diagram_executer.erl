@@ -14,7 +14,6 @@ terminate/2, code_change/3]).
                 nodelist, 
                 nodemap,
                 ssd,
-                droom,
                 mainroom}).
 
 
@@ -28,9 +27,8 @@ init([Room]) ->
     {ok, C} = emqttc:start_link([{host, "13.59.108.164"},
                                  {client_id, float_to_binary(rand:normal())},
                                  {logger, info}]),
-    DRoom = <<Room/binary, <<"/">>/binary, <<"diagram">>/binary>>,
-    emqttc:subscribe(C, DRoom),
-    State=#state{c=C, mainroom=Room, droom=DRoom},
+    emqttc:subscribe(C, Room),
+    State=#state{c=C, mainroom=Room},
     {ok, State}.
 
 handle_info({publish, Topic, <<"next">>}, S) when length(S#state.ssd) =:= 0->
@@ -67,14 +65,13 @@ handle_info({publish, Topic, Payload}, S) when Topic =:= S#state.topic ->
     NewS = create_node(S, Payload),
     {noreply, NewS};
 
-handle_info({publish, Topic, Payload}, S) when Topic =:= S#state.droom ->
+handle_info({publish, Topic, Payload}, S) when Topic =:= S#state.mainroom ->
     WholeSSD = parser:get_parsed_diagram(Payload),
     Proc = parser:get_processes(parser:decode_map(Payload)),
     NodeList = hd(tl(WholeSSD)),
     NodeListBinary = term_to_binary(Proc),
     %emqttc:publish(S#state.c, <<"root/processes">>, NodeListBinary),
     emqttc:unsubscribe(S#state.c, S#state.mainroom),
-    emqttc:unsubscribe(S#state.c, S#state.droom),
     SSD = hd(hd(lists:reverse(tl(lists:reverse(WholeSSD))))),
     io:format("SSD: ~n~p", [SSD]),
     Room = S#state.mainroom,
