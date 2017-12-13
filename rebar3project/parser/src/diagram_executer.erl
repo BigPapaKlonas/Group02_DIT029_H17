@@ -44,7 +44,7 @@ handle_info({publish, Topic, <<"next">>}, S) when length(S#state.ssd) =:= 0->
     {noreply, S};
 
 handle_info({publish, Topic, <<"next">>}, S) ->
-    timer:sleep(4000),
+    timer:sleep(5000),
     io:format("CurrentMessage: ~n~p", [S#state.ssd]),
     CurrentMessage = hd(S#state.ssd),
     {_SFrom, Fro} = hd(CurrentMessage),

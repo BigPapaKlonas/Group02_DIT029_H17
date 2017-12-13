@@ -37,7 +37,8 @@ init(_Args) ->
     {ok, C} = emqttc:start_link([{host, "13.59.108.164"},
                                  {client_id, float_to_binary(rand:normal())},
                                  {reconnect, 3},
-                                 {logger, {console, info}}]),
+                                 {logger, {console, info}},
+                                 {keepalive, 0}]),
     {ok, C}.
 
 handle_call(stop, _From, State) ->

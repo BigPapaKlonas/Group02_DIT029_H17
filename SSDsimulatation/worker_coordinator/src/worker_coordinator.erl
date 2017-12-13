@@ -18,7 +18,8 @@ stop() ->
 init([]) ->
     {ok, C} = emqttc:start_link([{host, "13.59.108.164"},
                                  {client_id, float_to_binary(rand:normal())},
-                                 {logger, info}]),
+                                 {logger, info},
+                                 {keepalive, 0}]),
     emqttc:publish(C, <<"root/processes">>, <<"10">>),
     {ok, {C, []}}.
 
