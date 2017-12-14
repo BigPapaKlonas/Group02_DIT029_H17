@@ -1,0 +1,23 @@
+{
+  "meta" : {
+  "format" : "DIT029 format",
+  "version" : "1.0",
+  "extensions" : []
+  },
+  "type" : "deployment_diagram",
+
+  "mapping" : [
+    {
+      "process" : "bank",
+      "device" : "server"
+    },
+    {
+      "process" : "u1",
+      "device" : "smartphone1"
+    },
+    {
+      "process" : "u2",
+      "device" : "desktop_computer1"
+    }
+  ]
+}
