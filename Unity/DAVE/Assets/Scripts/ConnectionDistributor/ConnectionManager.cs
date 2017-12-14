@@ -72,7 +72,7 @@ public class ConnectionManager : MonoBehaviour
 			// Mqtt
 			EstablishConnection();
 		} 
-		catch (SocketException e)
+		catch (Exception e)
 		{
 			foreach (var btn in startButtons)
 			{
@@ -85,7 +85,8 @@ public class ConnectionManager : MonoBehaviour
 			}
 
 			GameObject warning = GameObject.Find ("Warning");
-			warning.GetComponent<Text> ().text = "No internet connection";
+			warning.GetComponent<Text> ().text = "Could not connect to DAVE's server, " +
+                "press text to retry";
 			warning.GetComponent<Transform>().localPosition = new Vector3 (0, -180f, 0);
 			warning.AddComponent<Button> ();
 			warning.GetComponent<Button> ()
