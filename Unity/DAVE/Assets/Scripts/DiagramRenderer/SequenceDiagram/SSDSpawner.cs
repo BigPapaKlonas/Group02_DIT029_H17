@@ -47,14 +47,14 @@ public class SSDSpawner : MonoBehaviour
     void Start()
     {
 
-        size = 15;
+        
         
         this.name = room;
 
+        y = 40;
 
         myPos = this.transform.position;
 
-        y = size + myPos.y + 1;
 
         GameObject ssdControllerGO = (GameObject)Instantiate(
           ssdControllerPrefab,
@@ -93,7 +93,7 @@ public class SSDSpawner : MonoBehaviour
 
         Vector3 positioning = new Vector3(
              systemBox.transform.position.x,
-             y - 1,
+             y,
              systemBox.transform.position.z
            );
 

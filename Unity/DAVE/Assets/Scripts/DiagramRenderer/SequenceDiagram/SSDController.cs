@@ -75,6 +75,9 @@ public class SSDController : MonoBehaviour {
             awaitMessage = false;
         } else if (array[1] == "finished") {
 
+        } else if (array[1] == "nopar") {
+            spawner.y = float.Parse(array[3]) * 2;
+
         }
     }
 

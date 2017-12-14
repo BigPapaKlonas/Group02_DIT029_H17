@@ -58,7 +58,7 @@ public class ProcessAnimationOnRecieve : MonoBehaviour {
             y = y + 0.1f;
             GameObject go = GameObject.Find(room);
             spawner = (SSDSpawner)go.GetComponent(typeof(SSDSpawner));
-            spawner.y = y - 1;
+            spawner.y = y;
 
         }
     }
