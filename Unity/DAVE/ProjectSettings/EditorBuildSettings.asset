@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: Assets/NewScene/ExperimentalBG.unity
+    guid: b40250737293431478445a5d03d294d9
+  - enabled: 1
+    path: Assets/Scenes/Start.unity
+    guid: 5200afad6f3af4d73a22fc913a2deb98
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/RoomChoice.unity
+    guid: 2e8130f0324574c8d844174e0ff070c2
+  - enabled: 1
+    path: Assets/Scenes/InstructorChoice.unity
+    guid: adb426104d5f94a4cb12c9edb98b1269
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/Student.unity
+    guid: 2b001c1b723362b46b4e71b3f7fc06a6
+  - enabled: 1
+    path: Assets/Scenes/Main.unity
+    guid: fff412be7c5bc0946b40107da829b11e

@@ -1,0 +1,9 @@
+diagram_initiator
+=====
+
+An OTP application
+
+Build
+-----
+
+    $ rebar3 compile

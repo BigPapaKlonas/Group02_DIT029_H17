@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - LineSegment
+  - System_Box
+  - Activation_Box
+  - g
+  - u1
+  - u2
+  - u3
+  - SystemBox
+  - Door
+  - EntranceWall
+  - Wall
+  - House
+  - Road
+  - Terrain
+  - Map
+  - CameraControlPanel
+  - arrow_controls
+  - arrow_log
+  - arrow_students
+  - game_management
+  - WPPathfinder
+  - Waypoint
+  - Obst
+  - Enemy
+  - StartButtons
+  - DeactivateOnNoCon
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Map Only
+  - Map Hidden
+  - Map Seen
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0

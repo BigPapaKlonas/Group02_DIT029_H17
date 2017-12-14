@@ -1,0 +1,181 @@
+{
+  "meta" : {
+  "format" : "DIT029 format",
+  "version" : "1.0",
+  "extensions" : []
+  },
+  "type" : "sequence_diagram",
+  "processes" : [
+    {
+      "class" : "Wolf",
+      "name" : "wolf"
+    },
+    {
+      "class" : "Pig",
+      "name" : "firstLittlePig"
+    },
+    {
+      "class" : "Pig",
+      "name" : "secondLittlePig"
+    },
+    {
+      "class" : "Pig",
+      "name" : "thirdLittlePig"
+    },
+    {
+      "class" : "StrawHouse",
+      "name" : "strawHouse"
+    },
+    {
+      "class" : "StickHouse",
+      "name" : "stickHouse"
+    },
+    {
+      "class" : "BrickHouse",
+      "name" : "brickHouse"
+    },
+    {
+      "class" : "Chimney",
+      "name" : "chimney"
+    },
+    {
+      "class" : "PotOfWater",
+      "name" : "potOfWater"
+    }
+  ],
+
+  "diagram" : {
+    "node" : "par",
+    "content" : [
+      {
+      "node" : "seq",
+      "content" : [
+        {
+          "node" : "send",
+          "from" : "firstLittlePig",
+          "to" : "strawHouse",
+          "message" : ["build"]
+        },
+        {
+          "node" : "send",
+          "from" : "wolf",
+          "to" : "wolf",
+          "message" : ["huff"]
+        },
+        {
+          "node" : "send",
+          "from" : "wolf",
+          "to" : "wolf",
+          "message" : ["puff"]
+        },
+        {
+          "node" : "send",
+          "from" : "wolf",
+          "to" : "strawHouse",
+          "message" : ["blow"]
+        },
+        {
+          "node" : "send",
+          "from" : "strawHouse",
+          "to" : "strawHouse",
+          "message" : ["collapse"]
+        },
+        {
+          "node" : "send",
+          "from" : "wolf",
+          "to" : "firstLittlePig",
+          "message" : ["eat"]
+        },
+        {
+          "node" : "send",
+          "from" : "secondLittlePig",
+          "to" : "stickHouse",
+          "message" : ["build"]
+        },
+        {
+          "node" : "send",
+          "from" : "wolf",
+          "to" : "wolf",
+          "message" : ["huff"]
+        },
+        {
+          "node" : "send",
+          "from" : "wolf",
+          "to" : "wolf",
+          "message" : ["puff"]
+        },
+        {
+          "node" : "send",
+          "from" : "wolf",
+          "to" : "stickHouse",
+          "message" : ["blow"]
+        },
+        {
+          "node" : "send",
+          "from" : "stickHouse",
+          "to" : "stickHouse",
+          "message" : ["collapse"]
+        },
+        {
+          "node" : "send",
+          "from" : "wolf",
+          "to" : "secondLittlePig",
+          "message" : ["eat"]
+        },
+        {
+          "node" : "send",
+          "from" : "thirdLittlePig",
+          "to" : "brickHouse",
+          "message" : ["build"]
+        },
+        {
+          "node" : "send",
+          "from" : "wolf",
+          "to" : "wolf",
+          "message" : ["huff"]
+        },
+        {
+          "node" : "send",
+          "from" : "wolf",
+          "to" : "wolf",
+          "message" : ["puff"]
+        },
+        {
+          "node" : "send",
+          "from" : "wolf",
+          "to" : "stickHouse",
+          "message" : ["blow"]
+        },
+        {
+          "node" : "send",
+          "from" : "thirdLittlePig",
+          "to" : "potOfWater",
+          "message" : ["heat"]
+        },
+        {
+          "node" : "send",
+          "from" : "potOfWater",
+          "to" : "potOfWater",
+          "message" : ["boil"]
+        },
+        {
+          "node" : "send",
+          "from" : "wolf",
+          "to" : "chimney",
+          "message" : ["climbDown"]
+        },
+        {
+          "node" : "send",
+          "from" : "wolf",
+          "to" : "potOfWater",
+          "message" : ["fallInto"]
+        },
+        {
+          "node" : "send",
+          "from" : "wolf",
+          "to" : "wolf",
+          "message" : ["die"]
+        }]
+      }]
+    }
+}

@@ -1,0 +1,21 @@
+{
+  "meta" : {
+  "format" : "DIT029 format",
+  "version" : "1.0",
+  "extensions" : []
+  },
+  "type" : "class_diagram",
+  "classes" : [
+    {
+      "name" : "Account",
+      "fields" : [{ "name":"username", "type":"string" }, { "name":"balance", "type":"int"}]
+    },
+    {
+      "name" : "User",
+      "fields" : [{"name":"name", "type":"string"}, {"name":"email", "type":"string"}]
+    }
+  ],
+
+  "relationships" : [
+  ]
+}

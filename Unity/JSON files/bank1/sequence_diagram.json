@@ -1,0 +1,83 @@
+{
+  "meta" : {
+  "format" : "DIT029 format",
+  "version" : "1.0",
+  "extensions" : []
+  },
+  "type" : "sequence_diagram",
+  "processes" : [
+    {
+      "class" : "Bank",
+      "name" : "g"
+    },
+    {
+      "class" : "User",
+      "name" : "u1"
+    },
+    {
+      "class" : "User",
+      "name" : "u2"
+    }
+  ],
+
+  "diagram" : {
+    "node" : "par",
+    "content" : [
+      {
+      "node" : "seq",
+      "content" : [
+        {
+          "node" : "send",
+          "from" : "u1",
+          "to" : "g",
+          "message" : ["deposit", "amount1"]
+        },
+        {
+          "node" : "send",
+          "from" : "g",
+          "to" : "u1",
+          "message" : ["confirm"]
+        },
+        {
+          "node" : "send",
+          "from" : "u1",
+          "to" : "g",
+          "message" : ["balance"]
+        },
+        {
+          "node" : "send",
+          "from" : "g",
+          "to" : "u1",
+          "message" : ["balance_amount", "amount2"]
+        }]
+    },
+    {
+      "node" : "seq",
+      "content" : [
+        {
+          "node" : "send",
+          "from" : "u2",
+          "to" : "g",
+          "message" : ["deposit", "amount3"]
+        },
+        {
+          "node" : "send",
+          "from" : "g",
+          "to" : "u2",
+          "message" : ["confirm"]
+        },
+        {
+          "node" : "send",
+          "from" : "u2",
+          "to" : "g",
+          "message" : ["balance"]
+        },
+        {
+          "node" : "send",
+          "from" : "g",
+          "to" : "u2",
+          "message" : ["balance_amount", "amount3"]
+        }]
+    }]
+  }
+}

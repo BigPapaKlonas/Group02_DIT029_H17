@@ -1,0 +1,61 @@
+{
+  "meta" : {
+  "format" : "DIT029 format",
+  "version" : "1.0",
+  "extensions" : []
+  },
+  "type" : "class_diagram",
+  "classes" : [
+    {
+      "name" : "Wolf",
+      "fields" : []
+    },
+    {
+      "name" : "Pig",
+      "fields" : []
+    },
+    {
+      "name" : "House",
+      "fields" : []
+    },
+    {
+      "name" : "StrawHouse",
+      "fields" : []
+    },
+    {
+      "name" : "StickHouse",
+      "fields" : []
+    },
+    {
+      "name" : "BrickHouse",
+      "fields" : []
+    },
+    {
+      "name" : "Chimney",
+      "fields" : []
+    },
+    {
+      "name" : "PotOfWater",
+      "fields" : []
+    }
+  ],
+
+  "relationships" : [
+    {
+      "type" : "inheritance",
+      "superclass" : "House",
+      "subclass" : "StrawHouse"
+    },
+    {
+      "type" : "inheritance",
+      "superclass" : "House",
+      "subclass" : "StickHouse"
+    },
+    {
+      "type" : "inheritance",
+      "superclass" : "House",
+      "subclass" : "BrickHouse"
+    }
+  ]
+}
+

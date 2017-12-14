@@ -1,0 +1,7 @@
+[{release,"pubsub_ssdchat","0.1.0","8.3",
+          [{kernel,"5.2","./lib/kernel-5.2"},
+           {stdlib,"3.3","./lib/stdlib-3.3"},
+           {gen_logger,"1.2","./lib/gen_logger-1.2"},
+           {emqttc,"0.8.0","./lib/emqttc-0.8.0"},
+           {pubsub_ssdchat,"0.1.0","./lib/pubsub_ssdchat-0.1.0"}],
+          permanent}].

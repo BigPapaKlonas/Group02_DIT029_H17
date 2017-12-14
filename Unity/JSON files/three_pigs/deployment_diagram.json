@@ -1,0 +1,47 @@
+{
+  "meta" : {
+  "format" : "DIT029 format",
+  "version" : "1.0",
+  "extensions" : []
+  },
+  "type" : "deployment_diagram",
+
+  "mapping" : [
+    {
+      "process" : "wolf",
+      "device" : "server"
+    },
+    {
+      "process" : "firstLittlePig",
+      "device" : "desktop_computer1"
+    },
+    {
+      "process" : "secondLittlePig",
+      "device" : "desktop_computer1"
+    },
+    {
+      "process" : "thirdLittlePig",
+      "device" : "desktop_computer1"
+    },
+    {
+      "process" : "strawHouse",
+      "device" : "smartphone`"
+    },
+    {
+      "process" : "stickHouse",
+      "device" : "desktop_computer2"
+    },
+    {
+      "process" : "brickHouse",
+      "device" : "desktop_computer3"
+    },
+    {
+      "process" : "chimney",
+      "device" : "desktop_computer3"
+    },
+    {
+      "process" : "potOfWater",
+      "device" : "desktop_computer3"
+    }
+  ]
+}
