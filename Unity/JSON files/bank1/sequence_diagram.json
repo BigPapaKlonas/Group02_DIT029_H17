@@ -29,24 +29,24 @@
         {
           "node" : "send",
           "from" : "u1",
-          "to" : "bank",
+          "to" : "g",
           "message" : ["deposit", "amount1"]
         },
         {
           "node" : "send",
-          "from" : "bank",
+          "from" : "g",
           "to" : "u1",
           "message" : ["confirm"]
         },
         {
           "node" : "send",
           "from" : "u1",
-          "to" : "bank",
+          "to" : "g",
           "message" : ["balance"]
         },
         {
           "node" : "send",
-          "from" : "bank",
+          "from" : "g",
           "to" : "u1",
           "message" : ["balance_amount", "amount2"]
         }]
@@ -57,24 +57,24 @@
         {
           "node" : "send",
           "from" : "u2",
-          "to" : "bank",
+          "to" : "g",
           "message" : ["deposit", "amount3"]
         },
         {
           "node" : "send",
-          "from" : "bank",
+          "from" : "g",
           "to" : "u2",
           "message" : ["confirm"]
         },
         {
           "node" : "send",
           "from" : "u2",
-          "to" : "bank",
+          "to" : "g",
           "message" : ["balance"]
         },
         {
           "node" : "send",
-          "from" : "bank",
+          "from" : "g",
           "to" : "u2",
           "message" : ["balance_amount", "amount3"]
         }]
