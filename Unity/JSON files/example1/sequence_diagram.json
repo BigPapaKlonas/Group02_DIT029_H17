@@ -59,13 +59,13 @@
       "node" : "seq",
       "content" : [
         {
-          "type" : "send",
+          "node" : "send",
           "from" : "u3",
           "to" : "g",
           "message" : ["status"]
         },
         {
-          "type" : "send",
+          "node" : "send",
           "from" : "g",
           "to" : "u3",
           "message" : ["ok"]
