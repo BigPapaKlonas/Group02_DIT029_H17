@@ -16,6 +16,7 @@ public class ResetCamera : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
+    // Resets the player position (the camera is attached to player) to its original spawn position
     private void OnClick()
     {
         player.transform.position = new Vector3(-40, 1, -90);

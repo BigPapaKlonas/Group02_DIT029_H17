@@ -5,9 +5,11 @@ using UnityEngine.UI;
 /*
  * Window with a log displaying what is going on in the diagram 'in-game'. Clicking on one of the
  * generated buttons will zoom into the event it corresponds to.
- * Calling Debug.log("logmsg" + "*"+ placeholder.y + "*" + placeholder.z + "*" + "zzz") 
+ * Calling Debug.log("logmsg" + "*"+ placeholder.y + "*" + placeholder.z + "*" + "*" placeholder.x 
+ * + "*""zzz") 
  * will add "zzz" as a button to the log and onClick will take camera to placeholder position
- * Based on: https://gist.github.com/mminer/975374
+ * 
+ * Displaying GUI content is based on: https://gist.github.com/mminer/975374
  **/
 
 public class DisplayLog : MonoBehaviour

@@ -11,6 +11,7 @@ using System.Collections.Generic;
 public class DiagramSelector : MonoBehaviour
 {
     // The following variables dictates the file explorer's behaviour and looks
+    // Public so that the developer can change straight from Unity
     public string Title = "Select the your diagram file..";
     public string FileName = "";
     public string Directory = "";
@@ -29,6 +30,9 @@ public class DiagramSelector : MonoBehaviour
         button = GetComponent<Button>();
         button.onClick.AddListener(OnClick);
         offset = -110;
+
+        // Increments the offset (to move the new village composed of diagrams) and makes button
+        // uninteractable to prevent users to upload more diagrams before 'starting' them
 		if (SceneManager.GetActiveScene ().name == "Main") 
 		{
 			offset += 40;
@@ -40,6 +44,7 @@ public class DiagramSelector : MonoBehaviour
     {
         var paths = StandaloneFileBrowser.OpenFilePanel(Title, Directory, Extension, Multiselect);
          
+        // Iterates through the paths received from the file browser
         foreach (var file in paths)
         {
             if (file.Length > 0)
@@ -48,9 +53,8 @@ public class DiagramSelector : MonoBehaviour
                 // Starts a new routine with the path to the selected file as argument
                 AddJson(new Uri(file).AbsoluteUri);
             }
-            
         }
-        offset += 40;
+        offset += 40;   // Increments the offset to be ready for a new village
 
         // Only loads the "Main" scene in case file counter is not zero and active scene is "Start"
         if (SceneManager.GetActiveScene().name == "Start" && fileCounter != 0)
@@ -65,10 +69,9 @@ public class DiagramSelector : MonoBehaviour
             playBtn.SetActive(true);
             GameObject canvas = GameObject.Find("Canvas_Show_Reset_Upload_Play");
             playBtn.transform.SetParent(canvas.transform, false);
-
-
-			if (numberOfUploads >= 2) 
-			{
+            
+			if (numberOfUploads >= 2) // Makes upload button interactable when maximum uploads reached
+            {
 				playBtn.GetComponent<PublishDiagram> ().SetMaxUploads(true);
 				button.interactable = false;
 				button.GetComponentInChildren<Text>().text = "Max uploads";
@@ -93,16 +96,14 @@ public class DiagramSelector : MonoBehaviour
 
             {
                 JsonParser parser = new JsonParser(output);
-                output = parser.AddMetaToSequence(offset.ToString());
-                Debug.Log(output.ToString());
-                if (IsSSD(output)) 
+                output = parser.AddMetaToDiagram(offset.ToString()); // Adds offset to diagram
+
+                if (IsSSD(output)) // Adds UID to sequence diagram
                 {
                     JsonParser ssdParser = new JsonParser(output);
-                    output = ssdParser.AddMetaToSequence(Guid.NewGuid().ToString());
-                    Debug.Log("adding to meta");
+                    output = ssdParser.AddMetaToDiagram(Guid.NewGuid().ToString());
                 }
-                //parser = new JsonParser(output);
-                Debug.Log(output.ToString());
+
                 // Adds the JSON diagram to the queue of strings to be ready to be uploaded
                 ConnectionManager.coordinator.AddSelectedJson(output);
                 // Coroutine for uploading data to Database

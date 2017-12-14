@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
   public class JsonParser
 {
-    //To serialize (to string) JsonConvert.SerializeObject(JSONSequence, Converter.Settings);
+    // To serialize example: JsonConvert.SerializeObject(JSONSequence, Converter.Settings);
 
     private string JSONString;
     private string type;
@@ -50,7 +50,7 @@ using Newtonsoft.Json;
 
     }
 
-	public string AddMetaToSequence (string addition)
+	public string AddMetaToDiagram (string addition)
 	{
         switch (type)
         {
@@ -58,24 +58,18 @@ using Newtonsoft.Json;
             JSONClass classD = JsonConvert.DeserializeObject<JSONClass>(JSONString, Converter.Settings);
 		    classD.Meta.Extensions.Add (addition);
 		    return JsonConvert.SerializeObject(classD, Converter.Settings);
-            break;
         case "deployment_diagram":
             JSONDeployment deployment = JsonConvert.DeserializeObject<JSONDeployment>(JSONString, Converter.Settings);
 		    deployment.Meta.Extensions.Add (addition);
 		    return JsonConvert.SerializeObject(deployment, Converter.Settings);
-            break;
         case "sequence_diagram":
             JSONSequence seq = JsonConvert.DeserializeObject<JSONSequence>(JSONString, Converter.Settings);
 		    seq.Meta.Extensions.Add (addition);
 		    return JsonConvert.SerializeObject(seq, Converter.Settings);
-            break;
         default:
-            return "whoops";
-            break;
+            return null;
         }
-
 	}
-
 }
 
 
@@ -93,7 +87,7 @@ public partial class JSONSequence : JSON     //Extends the JSON class
     [JsonProperty("diagram")]
     public Diagram Diagram { get; set; }
 
-    //Processes is a list composed of process classes
+    // Processes is a list composed of process classes
     [JsonProperty("processes")]
     public List<Process> Processes { get; set; }
 }

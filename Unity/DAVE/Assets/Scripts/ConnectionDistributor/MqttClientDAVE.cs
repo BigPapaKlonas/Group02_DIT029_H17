@@ -7,14 +7,13 @@ public class MqttClientDAVE
 {
     private MqttClient client;
 
-    //Tries to establish a connection to the broker at the IP and Port provided and subscribes to SubsribeTopic
+    //Tries to establish a connection to the broker at the IP and Port provided
     public MqttClientDAVE(String brokerIpAdress, int brokerPort, String clientID)
     {
         // create client instance 
         client = new MqttClient(IPAddress.Parse(brokerIpAdress), brokerPort, false, null);
 
         // sets the client ID for this connection
-        //string clientID = Guid.NewGuid().ToString();
         client.Connect(clientID);
     }
 

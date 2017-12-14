@@ -37,11 +37,12 @@ public class DiagramBroker : MonoBehaviour
         // Subscribes to choosen intructor's room 
         coordinator.Subscribe(topic + "/sequence_diagram");
 
+        // Gets SSD initiator
         ssdInit = ssdSpawnerSpawner.GetComponent<SSDInit>();
     }
 
     private void Update()
-    {   //Dequeues and render the diagrams
+    {   //Dequeues and calls render functions for the different diagrams
         if (classDiagramQueue.Count > 0)
         {
             Debug.Log("Dequeued: " + classDiagramQueue.Peek());
@@ -104,7 +105,6 @@ public class DiagramBroker : MonoBehaviour
             if (IsValidJson(payload) && IsValidDiagramType(payload))
             {
                 sequenceDiagramQueue.Enqueue(payload);
-              
             }
         }
     }
@@ -148,6 +148,8 @@ public class DiagramBroker : MonoBehaviour
         gameObject.GetComponent<RenderDevices>().CreateDevices(JSONDeployment, offset);
     }
 
+    // Waits 1.5 seconds before rendering deployment connections since FindDeploymentConnections
+    // is depedant on that the deployment diagrams has been rendered before it executes
     private IEnumerator RenderDeploymentConnections(JSONSequence JSONSequence, float offset)
     {
         yield return new WaitForSeconds(1.5f);   
