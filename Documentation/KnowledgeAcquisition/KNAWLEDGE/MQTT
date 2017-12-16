@@ -1,0 +1,96 @@
+MQTT
+Message Queue Telemetery Transport
+
+Publish/subscribe based protocol
+Used on top of TCP/IP
+Lightweight
+Needs broker ie Mosquito
+Used mostly used for IoT
+Event driven
+
+A publisher publishes content, the broker pushes the content to
+	the users instead of users requesting like HTTP
+
+A topic that you can subscribe to is a String that is hierachical
+	seperated by slashes 
+		EX: Michael/SoftwareArch/SSD
+I can use a + which is a wildcard to get all of the topics related
+		EX: Michael/+/SSD
+	In this example I would recieve all SSD under Michael for all his classes
+If I wanted to subscrube to all of Michels publishings I can use a
+	multilevel wildcard
+		EX: Michael/#
+
+The language and idea is easy enough, the main thing to worry about
+	here is setting up a configurable and scalabale broker an 
+	option mad in erlang alternative to mosquitto is
+		emqtt.io
+
+		
+Connect
+    Waits for a connection to be established with the server.
+
+Disconnect
+    Waits for the MQTT client to finish any work it must do, and for the TCP/IP session to disconnect.
+
+Subscribe
+    Waits for completion of the Subscribe or UnSubscribe method.
+
+UnSubscribe
+    Requests the server unsubscribe the client from one or more topics.
+
+Publish
+    Returns immediately to the application thread after passing the request to the MQTT client. 
+
+
+
+
+Some Example code in Java using a raspberryPi as a publisher
+	sending updates about attached sensors
+
+public class Publisher
+{
+     public static final String BROKER_URL = "tcp://broker.mqttdashboard.com:1883";
+     private MqttClient client;
+
+     public Publisher()
+     {
+
+          String clientId = Utils.getMacAddress() + "-pub";
+          try
+          {
+               client = new MqttClient(BROKER_URL, clientId);
+          }
+          catch (MqttException e)
+         {
+              e.printStackTrace();
+              System.exit(1);
+          }
+     }
+}
+
+MqttConnectOptions options = new MqttConnectOptions();
+options.setCleanSession(false);
+options.setWill(client.getTopic("home/LWT"),
+"I'm gone".getBytes(), 2, true);
+
+client.connect(options);
+
+	public static final String TOPIC_TEMPERATURE = "home/temperature";
+
+     while (true)
+     {
+          publishBrightness();
+          Thread.sleep(500);
+          publishTemperature();
+          Thread.sleep(500);
+     }
+
+     private void publishTemperature() throws MqttException {
+         final MqttTopic temperatureTopic = client.getTopic(TOPIC_TEMPERATURE);
+
+         final int temperatureNumber = Utils.createRandomNumberBetween(20, 30);
+         final String temperature = temperatureNumber + "°C";
+
+         temperatureTopic.publish(new MqttMessage(temperature.getBytes()));
+     }

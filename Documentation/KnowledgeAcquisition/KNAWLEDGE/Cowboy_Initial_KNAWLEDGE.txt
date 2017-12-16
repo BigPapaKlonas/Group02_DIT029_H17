@@ -1,0 +1,63 @@
+Cowboy info:			 	https://ninenines.eu/docs/en/cowboy/2.0/manual/
+Cowboy Function Overview:	https://ninenines.eu/docs/en/cowboy/2.0/manual/	
+Git Link: 					https://github.com/ninenines/cowboy
+
+NOTE: There's Cowboy 2.0 and Cowboy 1.0 (Erik be careful)
+
+Description:
+	A HTTP server for Erlang/OTP with support for the HTTP/1.1, HTTP/2 and Websocket protocols.
+
+Licence (Erik was talking about licences):
+	ISC License.
+
+Dependencies:
+	ranch(7) - Socket acceptor pool for TCP protocols
+	cowlib(7) - Support library for manipulating Web protocols
+	ssl - Secure communication over sockets
+	crypto - Crypto functions
+
+	All these applications must be started before the cowboy application. To start Cowboy and all dependencies at once:
+	{ok, _} = application:ensure_all_started(cowboy).
+
+Prerequisites:
+	Erlang.mk
+
+Getting Started:
+	To see how to make a base app with Erlang.mk and set up Cowboy on it go to link below
+	https://ninenines.eu/docs/en/cowboy/2.0/guide/getting_started/
+
+Cowboy also provides templates that you can generate.
+For example the line "$ make new t=cowboy.http n=hello_handler" generates the handler used in a tutorial
+The templates could be used to base our future code on
+Cowboy also seems to be pretty massive, meaning the tutorial and fucking documentation are long as shit
+
+Cowboy needs to be configured, because apparently it does nothing by itself (shocker).
+To configure Cowboy you are gonna need Listeners, Handlers and Constraints(this one's optional)
+
+Listeners:
+	Listen to new connections on a port
+	Listeners point to handlers i.e. Erlang modules we implement 
+
+	Example of a "Clear TCP Listener"
+
+	start(_Type, _Args) ->
+    	Dispatch = cowboy_router:compile([
+    	%% {HostMatch, list({PathMatch, Handler, InitialState})} <- host match are a set of rules(patterns) that decide which host match
+        	{'_', [{"/", hello_handler, []}]}			<- "_" is a host, after that it specifies the URI path that we listen to, "hello_handler" would be replaced by our own handler
+    	]),													the empty list are the constraints
+    	{ok, _} = cowboy:start_clear(my_http_listener,	<- Once routes for compilation are specified we start the listener on a port
+    	    [{port, 8080}],
+    	    #{env => #{dispatch => Dispatch}}			<- No fucking clue what this does. It's not mentioned in the tutorial
+    	),
+    	hello_erlang_sup:start_link().
+
+Handlers:
+	Example code for HTTP handler (generated from template)
+
+	init(Req0, State) ->
+    Req = cowboy_req:reply(200,						<- 200 code, means everything executed correctly
+        #{<<"content-type">> => <<"text/plain">>},	<- content type is set to return plain text
+        <<"Hello Erlang!">>,						<- Containt body i.e. the thing the user would receive/see
+        Req0),
+    {ok, Req, State}.								<- responce from handler
+
