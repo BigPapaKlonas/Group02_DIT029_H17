@@ -4,7 +4,7 @@ import uuid
 
 docker_client = docker.from_env()   # Gets the default socket and configuration in the environment
 
-# Start docker containers according to JSON string (processes)
+# Start request number of docker containers
 def start_containers(request):
 
     containers = int(request)
