@@ -1,3 +1,0 @@
-State third party source codesource code in your submission:
-
-Everything in scripts folder is ours. However, other folders inside the assets folder might not be.
