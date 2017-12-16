@@ -31,7 +31,7 @@ esac
 SCRIPT_DIR="$(cd `dirname "$SCRIPT"` && pwd -P)"
 RELEASE_ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd -P)"
 # Make the value available to variable substitution calls below
-export REL_NAME="default"
+export REL_NAME="diagram_executer"
 REL_VSN="0.0.1"
 ERTS_VSN="8.2"
 CODE_LOADING_MODE="${CODE_LOADING_MODE:-embedded}"

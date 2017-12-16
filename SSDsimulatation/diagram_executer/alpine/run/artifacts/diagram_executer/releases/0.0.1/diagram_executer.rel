@@ -1,0 +1,3 @@
+{release,{"diagram_executer","0.0.1"},
+         {erts,"8.2"},
+         [{kernel,"5.1.1"},{stdlib,"3.2"},{diagram_executer,"0.1.0"}]}. 

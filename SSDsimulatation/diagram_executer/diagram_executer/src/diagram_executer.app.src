@@ -5,8 +5,7 @@
   {mod, { diagram_executer_app, []}},
   {applications,
    [kernel,
-    stdlib,
-    emqttc
+    stdlib
    ]},
   {env,[]},
   {modules, []},

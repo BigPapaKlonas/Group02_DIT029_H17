@@ -108,10 +108,19 @@ handle_info({publish, Topic, Payload}, S) when Topic =:= S#state.mainroom ->
     Request = <<CoordRoom/binary, <<" ">>/binary, Amount/binary>>,
     io:format("Request: ~n~p", [Request]),
     io:format("~nCoordRoom: ~n~p", [State#state.topic]),
+    timer:sleep(3000),
     emqttc:publish(State#state.c, <<"root/initiate">>, Request),
-    timer:sleep(5000),
-    emqttc:publish(State2#state.c, Room, State2#state.wholessd),
     {noreply, State2};
+
+handle_info({mqttc, C, connected}, S) ->
+    io:format("Client ~p is connected~n", [C]),
+    
+    {noreply, S};
+
+%% Client disconnected
+handle_info({mqttc, C,  disconnected}, S) ->
+    io:format("Client ~p is disconnected~n", [C]),
+    {noreply, S};
 
     
 handle_info(Info, State) ->
@@ -132,6 +141,8 @@ code_change(_OldVsn, State, _Extra) ->
 
 
 create_node(S, Worker) when length(S#state.nodelist) =:= 1 ->
+    R = rand:uniform(1000),
+    timer:sleep(R),
     Number = abs(rand:normal()),
     NodeNumber = io_lib:format("~p",[Number]),
     {_Title, Name} = hd(tl(hd(S#state.nodelist))),
